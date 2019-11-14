@@ -1,0 +1,48 @@
+{
+  "name": "the-journey-app",
+  "version": "1.0.0",
+  "description": "an app which allows user to note, plan, share they journey",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "init": "node_modules/.bin/sequelize init",
+    "migrate": "node_modules/.bin/sequelize db:migrate",
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [
+    "travel",
+    "journey",
+    "the journey"
+  ],
+  "author": "Ken Hsieh",
+  "license": "ISC",
+  "dependencies": {
+    "amazon-s3-uri": "0.0.3",
+    "aws-sdk": "^2.94.0",
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "dotenv": "^8.0.0",
+    "express": "^4.16.2",
+    "googleapis": "^20.1.0",
+    "graphql": "^14.0.2",
+    "graphql-tools": "^4.0.3",
+    "graphql-upload": "^8.0.4",
+    "graphql-yoga": "^1.17.0",
+    "jsonwebtoken": "^7.4.3",
+    "jwks-rsa": "^1.6.0",
+    "memcached": "^2.2.2",
+    "mysql2": "^2.0.0",
+    "robots-parser": "^2.1.1",
+    "sequelize": "^5.21.2",
+    "sequelize-cli": "^5.5.1",
+    "stream-to-buffer": "^0.1.0",
+    "uuid": "^3.3.3",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "nodemon": "^1.18.7",
+    "mocha": "^6.1.4"
+  }
+}

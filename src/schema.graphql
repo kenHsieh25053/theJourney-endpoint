@@ -1,0 +1,166 @@
+type Query {
+  user(userId: String!): User!
+  users: [User!]!
+  friends(userId: String!): [Friend!]!
+  posts(travelList: String!): [Post!]!
+  travelLists(userId: String!): [Travel_list!]!
+  courtries(userId: String!): [Country!]!
+  cities(travelList: String!): [City!]!
+  touristSpots(cityId: String!): [Tourist_spot!]!
+}
+
+type Mutation {
+  user(name: String!, email: String!, profile: String): User!
+  friend(userAid: String!, userBid: String!): UserRelationshipA!
+  post(userId: String!, text: String!, travelList: String!): Post!
+  travelList(
+    userId: String!
+    name: String!
+    tags: [String!]!
+    stay_time_from: String!
+    stay_time_to: String!
+    cost: Int
+  ): [Travel_list!]!
+  city(
+    userId: String!
+    name: String!
+    stay_time_from: String!
+    stay_time_to: String!
+    cost: Int
+    transportation: String
+    review: String
+    travelList: String!
+  ): [City!]!
+  touristSpot(
+    userId: String!
+    name: String!
+    type: String!
+    stay_time_total: String
+    cost: Int!
+    rates: Int!
+    transportation: String!
+    review: String
+    city: String!
+  ): [Tourist_spot!]!
+}
+
+# input UserCreateInput {
+#   name: String!
+#   email: String!
+#   profile: String
+# }
+
+type User {
+  id: String!
+  name: String!
+  email: String!
+  position: String!
+  country_count: Int!
+  city_count: Int!
+  headshot: String
+  profile: String
+  createdAt: String!
+  updatedAt: String!
+  travel_list: [Travel_list!]!
+  userRelationshipA: String!
+  userRelationshipB: String!
+}
+
+type UserRelationshipA {
+  id: String!
+  user_a: String!
+  user_b: String!
+  request_date: String!
+  status: String!
+}
+
+type UserRelationshipB {
+  id: String!
+  user_b: String!
+  user_a: String!
+  request_date: String!
+  status: String!
+}
+
+type Friend {
+  id: String!
+  friends: [String!]!
+  friends_count: Int!
+  user: String!
+}
+
+type Post {
+  id: String!
+  text: String!
+  createdAt: String!
+  updatedAt: String!
+  user: String!
+  travel_list: String!
+}
+
+type Travel_list {
+  id: String!
+  name: String!
+  tags: [String!]!
+  stay_time_from: String!
+  stay_time_to: String!
+  stay_time_total: String!
+  cost: Int
+  rates: Int
+  likes: Int
+  createdAt: String!
+  updatedAt: String!
+  user: String!
+  cities: [String!]!
+}
+
+type Country {
+  id: String!
+  name: String!
+  longtitude: Int!
+  latitude: Int!
+  stay_time_from: String!
+  stay_time_to: String!
+  stay_time_total: String!
+  cost: Int
+  rates: Int
+  createdAt: String!
+  updatedAt: String!
+  cities: [String!]!
+}
+
+type City {
+  id: String!
+  name: String!
+  longtitude: Int!
+  latitude: Int!
+  stay_time_from: String!
+  stay_time_to: String!
+  cost: Int
+  rates: Int
+  transportation: String
+  review: String
+  photo_url: String
+  createdAt: String!
+  updatedAt: String!
+  tourist_spots: [String!]!
+  country: String!
+  travel_list: String!
+}
+
+type Tourist_spot {
+  id: String!
+  name: String!
+  type: String!
+  longtitude: Int!
+  latitude: Int!
+  stay_time_total: String!
+  cost: Int
+  rates: Int
+  transportation: String
+  review: String
+  photo_url: String
+  createdAt: String!
+  updatedAt: String!
+  city: String!
+}
