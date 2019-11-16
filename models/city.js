@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const City = sequelize.define('City', {
+  const city = sequelize.define('city', {
     name: DataTypes.STRING,
     longtitude: DataTypes.FLOAT,
     latitude: DataTypes.FLOAT,
@@ -11,9 +11,30 @@ module.exports = (sequelize, DataTypes) => {
     transportation: DataTypes.STRING,
     review: DataTypes.TEXT,
     photo_url: DataTypes.STRING
-  }, {});
-  City.associate = function(models) {
+  }, {
+    freezeTableName: true,
+    tableName: 'city'
+  });
+  city.associate = function (models) {
     // associations can be defined here
+    city.hasMany(models.touristSpot, {
+      foreignKey: 'cityId',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
+      sourceKey: 'id'
+    });
+    city.belongsTo(models.country, {
+      foreignKey: 'countryId',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
+      targetKey: 'id'
+    });
+    city.belongsTo(models.travelList, {
+      foreignKey: 'travelListId',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
+      targetKey: 'id'
+    });
   };
-  return City;
+  return city;
 };

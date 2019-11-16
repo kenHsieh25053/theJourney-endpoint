@@ -1,11 +1,20 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Friend = sequelize.define('Friend', {
+  const friend = sequelize.define('friend', {
     friend_count: DataTypes.INTEGER,
     friend_list: DataTypes.UUID
-  }, {});
-  Friend.associate = function(models) {
+  }, {
+    freezeTableName: true,
+    tableName: 'friend'
+  });
+  friend.associate = function (models) {
     // associations can be defined here
+    friend.belongsTo(models.user, {
+      foreignKey: 'userId',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
+      targetKey: 'id'
+    });
   };
-  return Friend;
+  return friend;
 };

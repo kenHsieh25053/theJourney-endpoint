@@ -7,13 +7,13 @@ const Memcached = require('memcached');
 const path = require('path');
 
 const {
-    graphqlUploadExpress
+  graphqlUploadExpress
 } = require('graphql-upload');
 const {
-    makeExecutableSchema
+  makeExecutableSchema
 } = require('graphql-tools');
 const {
-    GraphQLServer
+  GraphQLServer
 } = require('graphql-yoga');
 
 const Query = require('./resolvers/Query');
@@ -22,18 +22,28 @@ const Mutation = require('./resolvers/Mutation');
 app.use(cors());
 app.use(bodyParser.json());
 
+const db = require('../models/index.js');
+
+db
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 
 // Graphql setting
 const schemaFile = path.join(__dirname, 'schema.graphql');
 const schema = fs.readFileSync(schemaFile, 'utf8');
 const server = new GraphQLServer({
-    schema: makeExecutableSchema({
-        typeDefs: schema,
-        resolvers: {
-            Query,
-            Mutation
-        },
-        context: {},
-    })
+  schema: makeExecutableSchema({
+    typeDefs: schema,
+    resolvers: {
+      Query,
+      Mutation
+    },
+    context: {},
+  })
 });
 server.start(() => console.log('Graphql Server is running on http://localhost:4000'));

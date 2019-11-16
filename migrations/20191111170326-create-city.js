@@ -1,12 +1,14 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Cities', {
+    queryInterface.addIndex('city', ['id']);
+    return queryInterface.createTable('city', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.UUID,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        allowNull: false,
+        autoIncrement: false,
+        defaultValue: Sequelize.UUIDV4
       },
       name: {
         type: Sequelize.STRING
@@ -24,10 +26,12 @@ module.exports = {
         type: Sequelize.DATE
       },
       cost: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       rates: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       transportation: {
         type: Sequelize.STRING
@@ -45,10 +49,32 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      countryId: {
+        type: Sequelize.UUID,
+        references: {
+          model: {
+            tableName: "country",
+            key: "id"
+          },
+        },
+        foreignKey: true,
+        allowNull: false
+      },
+      travelListId: {
+        type: Sequelize.UUID,
+        references: {
+          model: {
+            tableName: "travelList",
+            key: "id"
+          },
+        },
+        foreignKey: true,
+        allowNull: false
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Cities');
+    return queryInterface.dropTable('city');
   }
 };

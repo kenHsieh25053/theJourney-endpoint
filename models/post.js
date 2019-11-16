@@ -1,11 +1,20 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Post = sequelize.define('Post', {
+  const post = sequelize.define('post', {
     text: DataTypes.TEXT,
     like: DataTypes.INTEGER
-  }, {});
-  Post.associate = function(models) {
+  }, {
+    freezeTableName: true,
+    tableName: 'post'
+  });
+  post.associate = function (models) {
     // associations can be defined here
+    post.belongsTo(models.user, {
+      foreignKey: 'userId',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
+      targetKey: 'id'
+    });
   };
-  return Post;
+  return post;
 };
