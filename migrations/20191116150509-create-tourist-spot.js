@@ -1,16 +1,18 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    queryInterface.addIndex('city', ['id']);
-    return queryInterface.createTable('city', {
+    return queryInterface.createTable('touristSpots', {
       id: {
         type: Sequelize.UUID,
-        primaryKey: true,
         allowNull: false,
         autoIncrement: false,
+        primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
       name: {
+        type: Sequelize.STRING
+      },
+      type: {
         type: Sequelize.STRING
       },
       longtitude: {
@@ -19,25 +21,20 @@ module.exports = {
       latitude: {
         type: Sequelize.FLOAT
       },
-      stay_from: {
-        type: Sequelize.DATE
-      },
-      stay_to: {
-        type: Sequelize.DATE
+      days: {
+        type: Sequelize.INTEGER
       },
       cost: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+        type: Sequelize.INTEGER
       },
       rates: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+        type: Sequelize.INTEGER
       },
       transportation: {
         type: Sequelize.STRING
       },
       review: {
-        type: Sequelize.TEXT
+        type: Sequelize.STRING
       },
       photo_url: {
         type: Sequelize.STRING
@@ -50,31 +47,22 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      countryId: {
+      cityId: {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "country",
+            tableName: "cities",
             key: "id"
           },
         },
         foreignKey: true,
-        allowNull: false
-      },
-      travelListId: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: "travelList",
-            key: "id"
-          },
-        },
-        foreignKey: true,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('city');
+    return queryInterface.dropTable('touristSpots');
   }
 };

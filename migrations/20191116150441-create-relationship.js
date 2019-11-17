@@ -1,20 +1,19 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    queryInterface.addIndex('relationship', ['id', 'user_a', 'user_b']);
-    return queryInterface.createTable('relationship', {
+    return queryInterface.createTable('relationships', {
       id: {
         type: Sequelize.UUID,
-        primaryKey: true,
         allowNull: false,
         autoIncrement: false,
+        primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
       user_a: {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "user",
+            tableName: "users",
             key: "id"
           },
         },
@@ -25,7 +24,7 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "user",
+            tableName: "users",
             key: "id"
           },
         },
@@ -46,6 +45,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('relationship');
+    return queryInterface.dropTable('relationships');
   }
 };

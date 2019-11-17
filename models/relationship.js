@@ -1,13 +1,14 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const relationship = sequelize.define('relationship', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
     user_a: DataTypes.UUID,
     user_b: DataTypes.UUID,
     status: DataTypes.STRING
-  }, {
-    freezeTableName: true,
-    tableName: 'relationship'
-  });
+  }, {});
   relationship.associate = function (models) {
     // associations can be defined here
     relationship.belongsTo(models.user, {

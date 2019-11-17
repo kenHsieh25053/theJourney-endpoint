@@ -1,13 +1,12 @@
-"use strict";
+'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    queryInterface.addIndex('user', ['id']);
-    return queryInterface.createTable("user", {
+    return queryInterface.createTable('users', {
       id: {
         type: Sequelize.UUID,
-        primaryKey: true,
         allowNull: false,
         autoIncrement: false,
+        primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
       password: {
@@ -21,29 +20,29 @@ module.exports = {
       position: {
         type: Sequelize.STRING
       },
-      country_count: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+      countries: {
+        type: Sequelize.INTEGER
       },
-      city_count: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+      cities: {
+        type: Sequelize.INTEGER
       },
       headshot: {
         type: Sequelize.STRING
       },
       profile: {
-        type: Sequelize.TEXT
+        type: Sequelize.STRING
       },
       createdAt: {
+        allowNull: false,
         type: Sequelize.DATE
       },
       updatedAt: {
+        allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("user");
+    return queryInterface.dropTable('users');
   }
 };

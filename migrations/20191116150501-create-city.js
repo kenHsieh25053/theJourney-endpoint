@@ -1,47 +1,46 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    queryInterface.addIndex('travelList', ['id']);
-    return queryInterface.createTable('travelList', {
+    return queryInterface.createTable('cities', {
       id: {
         type: Sequelize.UUID,
-        primaryKey: true,
         allowNull: false,
         autoIncrement: false,
+        primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
       name: {
         type: Sequelize.STRING
       },
-      tag: {
-        type: Sequelize.STRING
+      longtitude: {
+        type: Sequelize.FLOAT
       },
-      type: {
-        type: Sequelize.STRING
+      latitude: {
+        type: Sequelize.FLOAT
       },
-      stay_from: {
+      stayFrom: {
         type: Sequelize.DATE
       },
-      stay_to: {
+      stayTo: {
         type: Sequelize.DATE
       },
       days: {
-        type: Sequelize.FLOAT,
-        defaultValue: 0.0
+        type: Sequelize.INTEGER
       },
       cost: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+        type: Sequelize.INTEGER
       },
       rates: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+        type: Sequelize.INTEGER
       },
       transportation: {
         type: Sequelize.STRING
       },
       review: {
-        type: Sequelize.TEXT
+        type: Sequelize.STRING
+      },
+      photo_url: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -51,20 +50,35 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      userId: {
+      countryId: {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "user",
+            tableName: "countries",
             key: "id"
           },
         },
         foreignKey: true,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
+      travelListId: {
+        type: Sequelize.UUID,
+        references: {
+          model: {
+            tableName: "travelLists",
+            key: "id"
+          },
+        },
+        foreignKey: true,
+        allowNull: false,
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('travelList');
+    return queryInterface.dropTable('cities');
   }
 };

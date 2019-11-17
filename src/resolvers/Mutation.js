@@ -1,5 +1,3 @@
-const User = require('../user/models/user')
-
 const user = async (parent, args, context) => {
     console.log(context)
     try {

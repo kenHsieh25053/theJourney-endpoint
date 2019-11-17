@@ -1,46 +1,48 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    queryInterface.addIndex('touristSpot', ['id']);
-    return queryInterface.createTable('touristSpot', {
+    return queryInterface.createTable('travelLists', {
       id: {
         type: Sequelize.UUID,
-        primaryKey: true,
         allowNull: false,
         autoIncrement: false,
+        primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
       name: {
         type: Sequelize.STRING
       },
+      tag: {
+        type: Sequelize.STRING,
+        get() {
+          return this.getDataValue('tag').split(',')
+        },
+        set(val) {
+          this.setDataValue('tag', val.join(','));
+        },
+      },
       type: {
         type: Sequelize.STRING
       },
-      longtitude: {
-        type: Sequelize.FLOAT
+      stayFrom: {
+        type: Sequelize.DATE
       },
-      latitude: {
-        type: Sequelize.FLOAT
+      stayTo: {
+        type: Sequelize.DATE
       },
       days: {
-        type: Sequelize.FLOAT,
-        defaultValue: 0.0
+        type: Sequelize.INTEGER
       },
       cost: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+        type: Sequelize.INTEGER
       },
       rates: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+        type: Sequelize.INTEGER
       },
       transportation: {
         type: Sequelize.STRING
       },
       review: {
-        type: Sequelize.TEXT
-      },
-      photo_url: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -51,20 +53,22 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      cityId: {
+      userId: {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "city",
+            tableName: "users",
             key: "id"
           },
         },
         foreignKey: true,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('touristSpot');
+    return queryInterface.dropTable('travelLists');
   }
 };

@@ -1,17 +1,24 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const user = sequelize.define('user', {
-    password: DataTypes.STRING,
-    email: DataTypes.STRING,
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
+    password: {
+      type: DataTypes.STRING,
+      unique: true
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true
+    },
     position: DataTypes.STRING,
-    country_count: DataTypes.INTEGER,
-    city_count: DataTypes.INTEGER,
+    countries: DataTypes.INTEGER,
+    cities: DataTypes.INTEGER,
     headshot: DataTypes.STRING,
-    profile: DataTypes.TEXT
-  }, {
-    freezeTableName: true,
-    tableName: 'user'
-  });
+    profile: DataTypes.STRING
+  }, {});
   user.associate = function (models) {
     // associations can be defined here
     user.hasOne(models.friend, {

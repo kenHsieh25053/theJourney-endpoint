@@ -1,21 +1,19 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    queryInterface.addIndex('friend', ['id']);
-    return queryInterface.createTable('friend', {
+    return queryInterface.createTable('posts', {
       id: {
         type: Sequelize.UUID,
-        primaryKey: true,
         allowNull: false,
         autoIncrement: false,
+        primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
-      friend_count: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
+      text: {
+        type: Sequelize.TEXT
       },
-      friend_list: {
-        type: Sequelize.UUID
+      like: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -29,16 +27,18 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "user",
+            tableName: "users",
             key: "id"
           },
         },
         foreignKey: true,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('friend');
+    return queryInterface.dropTable('posts');
   }
 };

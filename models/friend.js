@@ -1,12 +1,13 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const friend = sequelize.define('friend', {
-    friend_count: DataTypes.INTEGER,
-    friend_list: DataTypes.UUID
-  }, {
-    freezeTableName: true,
-    tableName: 'friend'
-  });
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
+    friends: DataTypes.INTEGER,
+    friendList: DataTypes.UUID
+  }, {});
   friend.associate = function (models) {
     // associations can be defined here
     friend.belongsTo(models.user, {

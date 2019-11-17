@@ -1,20 +1,21 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const touristSpot = sequelize.define('touristSpot', {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+    },
     name: DataTypes.STRING,
     type: DataTypes.STRING,
     longtitude: DataTypes.FLOAT,
     latitude: DataTypes.FLOAT,
-    days: DataTypes.FLOAT,
+    days: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
     rates: DataTypes.INTEGER,
     transportation: DataTypes.STRING,
-    review: DataTypes.TEXT,
+    review: DataTypes.STRING,
     photo_url: DataTypes.STRING
-  }, {
-    freezeTableName: true,
-    tableName: 'touristSpot'
-  });
+  }, {});
   touristSpot.associate = function (models) {
     // associations can be defined here
     touristSpot.belongsTo(models.city, {
