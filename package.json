@@ -8,7 +8,7 @@
     "init": "node_modules/.bin/sequelize init",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon --exec babel-node src/app.js"
   },
   "keywords": [
     "travel",
@@ -18,8 +18,12 @@
   "author": "Ken Hsieh",
   "license": "ISC",
   "dependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/node": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
     "amazon-s3-uri": "0.0.3",
     "apollo-server": "^2.9.9",
+    "apollo-server-express": "^2.9.9",
     "aws-sdk": "^2.94.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",

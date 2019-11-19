@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       primaryKey: true,
     },
+    usernmae: DataTypes.STRING,
     password: {
       type: DataTypes.STRING,
       unique: true

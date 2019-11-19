@@ -22,16 +22,9 @@ db.sequelize
   });
 
 // Graphql setting
-const {
-  graphqlUploadExpress
-} = require("graphql-upload");
-const {
-  makeExecutableSchema
-} = require("graphql-tools");
-const {
-  ApolloServer,
-  gql
-} = require("apollo-server");
+const { graphqlUploadExpress } = require("graphql-upload");
+const { makeExecutableSchema } = require("graphql-tools");
+import { ApolloServer } from "apollo-server-express";
 
 const Query = require("./resolvers/Query");
 const Mutation = require("./resolvers/Mutation");
@@ -48,8 +41,12 @@ const server = new ApolloServer({
     context: {}
   })
 });
-server.listen().then(({
-  url
-}) => {
-  console.log(`🚀 Server ready at ${url}`);
+
+server.applyMiddleware({
+  app,
+  path: "/graphql"
+});
+
+app.listen({ port: 4000 }, () => {
+  console.log("🚀 Server ready at http://localhost:8000/graphql");
 });
