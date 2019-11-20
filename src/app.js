@@ -6,11 +6,12 @@ const fs = require("fs");
 const Memcached = require("memcached");
 const path = require("path");
 
+
 app.use(cors());
 app.use(bodyParser.json());
 
-// Database connection
-const db = require("../models/index.js");
+// Database connection setting
+const db = require("./models/index.js");
 
 db.sequelize
   .authenticate()
@@ -22,31 +23,36 @@ db.sequelize
   });
 
 // Graphql setting
-const { graphqlUploadExpress } = require("graphql-upload");
-const { makeExecutableSchema } = require("graphql-tools");
 import { ApolloServer } from "apollo-server-express";
+import { mergeSchemas } from 'graphql-toolkit';
 
-const Query = require("./resolvers/Query");
-const Mutation = require("./resolvers/Mutation");
-const schemaFile = path.join(__dirname, "schema.graphql");
-const schema = fs.readFileSync(schemaFile, "utf8");
+// import graphql modules
+import { UserModule } from './user/index.js';
+import { TravelModule } from './travel/index.js';
 
+const schemas = [
+  UserModule.schema,
+  TravelModule.schema
+];
+
+const resolvers = [
+  UserModule.resolvers,
+  TravelModule.resolvers
+];
+
+const mergedSchema = mergeSchemas({
+  schemas,
+  resolvers
+})
+
+// Server configration
 const server = new ApolloServer({
-  schema: makeExecutableSchema({
-    typeDefs: schema,
-    resolvers: {
-      Query,
-      Mutation
-    },
-    context: {}
-  })
+  schema: mergedSchema,
+  context: session => session,
+  tracing: true
 });
 
-server.applyMiddleware({
-  app,
-  path: "/graphql"
-});
-
+server.applyMiddleware({ app, path: '/graphql' });
 app.listen({ port: 4000 }, () => {
-  console.log("🚀 Server ready at http://localhost:8000/graphql");
+  console.log('Apollo Server ready on http://localhost:4000/graphql');
 });

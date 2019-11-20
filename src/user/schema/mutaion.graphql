@@ -1,0 +1,51 @@
+type Mutation {
+  user(name: String!, email: String!, profile: String): User!
+  friend(userAid: String!, userBid: String!): UserRelationshipA!
+  post(userId: String!, text: String!, travelList: String!): Post!
+}
+
+type User {
+  id: String!
+  name: String!
+  email: String!
+  position: String!
+  country_count: Int!
+  city_count: Int!
+  headshot: String
+  profile: String
+  createdAt: String!
+  updatedAt: String!
+  userRelationshipA: String!
+  userRelationshipB: String!
+}
+
+type UserRelationshipA {
+  id: String!
+  user_a: String!
+  user_b: String!
+  request_date: String!
+  status: String!
+}
+
+type UserRelationshipB {
+  id: String!
+  user_b: String!
+  user_a: String!
+  request_date: String!
+  status: String!
+}
+
+type Friend {
+  id: String!
+  friends: [String!]!
+  friends_count: Int!
+  user: String!
+}
+
+type Post {
+  id: String!
+  text: String!
+  createdAt: String!
+  updatedAt: String!
+  user: String!
+}

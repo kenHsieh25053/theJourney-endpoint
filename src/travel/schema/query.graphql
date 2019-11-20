@@ -1,0 +1,79 @@
+type Query {
+    travelList(
+    userId: String!
+    name: String!
+    tags: [String!]!
+    stay_time_from: String!
+    stay_time_to: String!
+    cost: Int
+  ): [Travel_list!]!
+  courtries(userId: String!): [Country!]!
+  cities(travelList: String!): [City!]!
+  touristSpots(cityId: String!): [Tourist_spot!]!
+}
+
+type Travel_list {
+  id: String!
+  name: String!
+  tags: [String!]!
+  stay_time_from: String!
+  stay_time_to: String!
+  stay_time_total: String!
+  cost: Int
+  rates: Int
+  likes: Int
+  createdAt: String!
+  updatedAt: String!
+  user: String!
+  cities: [String!]!
+}
+
+type Country {
+  id: String!
+  name: String!
+  longtitude: Int!
+  latitude: Int!
+  stay_time_from: String!
+  stay_time_to: String!
+  stay_time_total: String!
+  cost: Int
+  rates: Int
+  createdAt: String!
+  updatedAt: String!
+  cities: [String!]!
+}
+
+type City {
+  id: String!
+  name: String!
+  longtitude: Int!
+  latitude: Int!
+  stay_time_from: String!
+  stay_time_to: String!
+  cost: Int
+  rates: Int
+  transportation: String
+  review: String
+  photo_url: String
+  createdAt: String!
+  updatedAt: String!
+  tourist_spots: [String!]!
+  country: String!
+}
+
+type Tourist_spot {
+  id: String!
+  name: String!
+  type: String!
+  longtitude: Int!
+  latitude: Int!
+  stay_time_total: String!
+  cost: Int
+  rates: Int
+  transportation: String
+  review: String
+  photo_url: String
+  createdAt: String!
+  updatedAt: String!
+  city: String!
+}
