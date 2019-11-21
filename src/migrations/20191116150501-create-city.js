@@ -54,8 +54,8 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "countries",
-            key: "id"
+            tableName: 'countries',
+            key: 'id'
           },
         },
         foreignKey: true,
@@ -67,8 +67,8 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "travelLists",
-            key: "id"
+            tableName: 'travelLists',
+            key: 'id'
           },
         },
         foreignKey: true,

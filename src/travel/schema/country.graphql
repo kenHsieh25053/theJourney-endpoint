@@ -1,0 +1,22 @@
+type Query {
+  courtries(userId: String!): [Country!]!
+}
+
+type Mutation {
+
+}
+
+type Country {
+  id: String!
+  name: String!
+  longtitude: Int!
+  latitude: Int!
+  stay_time_from: String!
+  stay_time_to: String!
+  stay_time_total: String!
+  cost: Int
+  rates: Int
+  createdAt: String!
+  updatedAt: String!
+  cities: [String!]!
+}

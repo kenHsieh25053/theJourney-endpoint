@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "init": "node_modules/.bin/sequelize init",
-    "migrate": "node_modules/.bin/sequelize db:migrate",
+    "migrate": "node_modules/.bin/sequelize db:migrate --env development",
     "verify": "./node_modules/.bin/eslint ./src/",
     "start": "node src/app.js",
     "dev": "nodemon --exec babel-node src/app.js"
@@ -22,10 +22,12 @@
     "@babel/core": "^7.7.2",
     "@babel/node": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
+    "@babel/register": "^7.0.0",
     "@graphql-modules/core": "^0.7.13",
     "amazon-s3-uri": "0.0.3",
     "apollo-server-express": "^2.9.9",
     "aws-sdk": "^2.94.0",
+    "babel-core": "^7.0.0-bridge.0",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "dotenv": "^8.0.0",
@@ -36,18 +38,19 @@
     "graphql-upload": "^8.0.4",
     "jsonwebtoken": "^7.4.3",
     "jwks-rsa": "^1.6.0",
-    "memcached": "^2.2.2",
     "mysql2": "^2.0.0",
     "robots-parser": "^2.1.1",
     "sequelize": "^5.21.2",
     "sequelize-cli": "^5.5.1",
+    "sqlite3": "^4.1.0",
     "stream-to-buffer": "^0.1.0",
     "uuid": "^3.3.3",
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@babel/node": "^7.0.0",
     "eslint": "^6.0.1",
-    "nodemon": "^1.18.7",
-    "mocha": "^6.1.4"
+    "mocha": "^6.1.4",
+    "nodemon": "^1.18.7"
   }
 }

@@ -1,29 +1,26 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const fs = require("fs");
-const Memcached = require("memcached");
-const path = require("path");
+const bodyParser = require('body-parser');
+const cors = require('cors');
 
 
 app.use(cors());
 app.use(bodyParser.json());
 
 // Database connection setting
-const db = require("./models/index.js");
+const db = require('./models/index.js');
 
 db.sequelize
   .authenticate()
   .then(() => {
-    console.log("Connection has been established successfully.");
+    console.log('Connection has been established successfully.');
   })
   .catch(err => {
-    console.error("Unable to connect to the database:", err);
+    console.error('Unable to connect to the database:', err);
   });
 
 // Graphql setting
-import { ApolloServer } from "apollo-server-express";
+import { ApolloServer } from 'apollo-server-express';
 import { mergeSchemas } from 'graphql-toolkit';
 
 // import graphql modules
@@ -43,13 +40,14 @@ const resolvers = [
 const mergedSchema = mergeSchemas({
   schemas,
   resolvers
-})
+});
 
 // Server configration
 const server = new ApolloServer({
   schema: mergedSchema,
   context: session => session,
-  tracing: true
+  tracing: true,
+  cacheControl: false //enable this when schema cache is set up
 });
 
 server.applyMiddleware({ app, path: '/graphql' });

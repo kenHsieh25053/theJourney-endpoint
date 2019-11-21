@@ -1,0 +1,37 @@
+type Query {
+    travelList(
+    userId: String!
+    name: String!
+    tags: [String!]!
+    stay_time_from: String!
+    stay_time_to: String!
+    cost: Int
+  ): [Travel_list!]!
+}
+
+type Mutation {
+  travelList(
+    userId: String!
+    name: String!
+    tags: [String!]!
+    stay_time_from: String!
+    stay_time_to: String!
+    cost: Int
+  ): [Travel_list!]!
+}
+
+type Travel_list {
+  id: String!
+  name: String!
+  tags: [String!]!
+  stay_time_from: String!
+  stay_time_to: String!
+  stay_time_total: String!
+  cost: Int
+  rates: Int
+  likes: Int
+  createdAt: String!
+  updatedAt: String!
+  user: String!
+  cities: [String!]!
+}

@@ -57,8 +57,8 @@ module.exports = {
         type: Sequelize.UUID,
         references: {
           model: {
-            tableName: "users",
-            key: "id"
+            tableName: 'users',
+            key: 'id'
           },
         },
         foreignKey: true,
