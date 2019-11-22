@@ -25,16 +25,16 @@ import { mergeSchemas } from 'graphql-toolkit';
 
 // import graphql modules
 import { UserModule } from './user/index.js';
-import { TravelModule } from './travel/index.js';
+// import { TravelModule } from './travel/index.js';
 
 const schemas = [
   UserModule.schema,
-  TravelModule.schema
+  // TravelModule.schema
 ];
 
 const resolvers = [
   UserModule.resolvers,
-  TravelModule.resolvers
+  // TravelModule.resolvers
 ];
 
 const mergedSchema = mergeSchemas({

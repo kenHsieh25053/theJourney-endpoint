@@ -1,0 +1,35 @@
+# """
+# Use Cases
+
+# User can
+
+# - signup
+# - login&logout
+
+# - edit personal profile
+# - edit travel list 
+# - edit city
+# - edit travel spot
+
+# - edit post
+# - like post 
+# - send friend request
+# - make friend
+# - see friend list
+# - edit friend list
+# """
+
+# type Query {
+
+# }
+
+# type Mutation {
+
+# }
+
+# type Friend {
+#   id: ID!
+#   friends: [String!]!
+#   friends_count: Int!
+#   user: String!
+# }

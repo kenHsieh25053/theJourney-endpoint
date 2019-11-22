@@ -1,21 +1,53 @@
+"""
+Use Cases
+
+User can
+
+- signup
+- login
+- logout
+- view user profile
+- edit user profile
+"""
+
+
 type Query {
-  user(userId: ID!): User!
-  users: [User!]!
+  # login(email: String!, password: String!): LoginInfo
+  # logout(id_token: String!): Successful
+  # userProfile(id_token: String!): User
+  user: User
+}
+
+type User{
+  email: String
 }
 
 type Mutation {
-  user(name: String!, email: String!, profile: String): User!
+  signup(email: String!, password: String!): Successful
+  # userProfile(id_token: String!, username: String, password: String!, email: String!, profile: String): User
 }
 
 type User {
-  id: ID!
-  name: String!
+  id_token: String!
+  username: String!
+  password: String!
   email: String!
-  position: String!
-  countries: Int!
-  cities: Int!
+  position: String
+  countries: Int
+  cities: Int
   headshot: String
   profile: String
   createdAt: String!
   updatedAt: String!
+}
+
+type Successful {
+  status: String
+  message: String
+}
+
+type LoginInfo {
+  status: String!
+  message: String
+  id_token: String!
 }
