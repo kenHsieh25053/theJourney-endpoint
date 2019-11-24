@@ -4,6 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4
     },
     text: DataTypes.TEXT,
     like: DataTypes.INTEGER
@@ -12,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     post.belongsTo(models.user, {
       foreignKey: 'userId',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
+      targetKey: 'id'
+    });
+    post.belongsTo(models.post, {
+      foreignKey: 'travelListId',
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE',
       targetKey: 'id'

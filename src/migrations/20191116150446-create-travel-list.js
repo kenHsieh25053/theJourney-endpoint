@@ -12,13 +12,13 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      tag: {
+      tags: {
         type: Sequelize.STRING,
         get() {
-          return this.getDataValue('tag').split(',')
+          return this.getDataValue('tags').split(',');
         },
         set(val) {
-          this.setDataValue('tag', val.join(','));
+          this.setDataValue('tags', val.join(','));
         },
       },
       type: {

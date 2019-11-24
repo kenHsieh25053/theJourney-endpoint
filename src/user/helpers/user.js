@@ -1,37 +1,89 @@
-import models from '../../models/user.js';
+import models from '../../models';
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+
+const saltrounds = 10;
 
 module.exports = {
-  userSignup
+  userSignup,
+  userLogin,
+  userLogout
 };
 
-async function userSignup (email, password) {
-  let hash = bcrypt.hashSync(password, saltRounds);
-  console.log(hash);
-  console.log(email);
+async function userSignup(email, password) {
+  let hash = bcrypt.hashSync(password, saltrounds);
   try {
-    const result = await models.User.findOne({
+    // validate email
+    const result = await models.user.findOne({
       where: {
-        email: email
+        email,
       }
     });
-    console.log(result);
     if (result === null) {
-      return 'Plase use other email!';
+      await models.user.create({
+        email,
+        password: hash
+      });
+      return {
+        status: 200,
+        message: 'User create successfully!'
+      };
     } else {
-      return await models.User.create({email: email, password: hash});
+      return {
+        status: 403,
+        message: 'Please use other email!'
+      };
     }
-  } catch (e) {
-    return e;
+  } catch (err) {
+    return {
+      status: 500,
+      message: err.message
+    };
   }
+}
 
+async function userLogin(args) {
+  try {
+    // validate email
+    const result = await models.user.findOne({
+      where: {
+        email: args.email
+      },
+      attributes: ['id', 'email', 'password']
+    });
+    if (!result) {
+      return {
+        status: 403,
+        message: 'Invaild email'
+      };
+    }
 
-  // userLogin(id_token) {
-      
-  // }
+    // validate password
+    let match = await bcrypt.compare(args.password, result.password);
+    if (!match) {
+      return {
+        status: 403,
+        message: 'Invaild password'
+      };
+    }
 
-  // userLogout(id_token) {
+    const id_token = jwt.sign({
+      id: result.id,
+      exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
+    }, process.env.JWT_SECRETKEY);
 
-  // }
+    return {
+      status: 200,
+      id_token: id_token
+    };
+  } catch (err) {
+    return {
+      status: 500,
+      message: err.message
+    };
+  }
+}
+
+async function userLogout() {
+
 }

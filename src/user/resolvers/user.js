@@ -1,42 +1,47 @@
-import { userSignup } from '../helpers/user.js';
+import {
+  userSignup,
+  userLogin
+} from "../helpers/user.js";
+import {
+  getUserProfile,
+  postUserProfile
+} from "../helpers/userProfile.js";
 
 export default {
   Query: {
-    user: () => {
-      return {
-        email: 'kkw25053@gmail.com'
-      };
-    }
-    // login : (_, { email, password }) => {
-      
-    // },
-
-    // logout: (_, { id_token }) => {
-      
-    // },
-
-    // userProfile: (_, { id_token }) => {
-      
-    // },
-  },
-  Mutation: {
-    signup: async (_, { email, password }) => {
-      try {
-        const result = await userSignup(email, password);
-        return {
-          status: 200,
-          message: result
-        }
-      } catch (e) {
-        return {
-          status: 500,
-          message: e
-        };
-      }
+    login: async (_, args) => {
+      return await userLogin(args);
     },
 
-    // userProfile: (_, { id_token, username, password, email, profile }) => {
-      
+    // logout: (_, {}, { user }) => {
+    //   return {
+    //     status: 200,
+    //     message: 'User logout',
+    //     id_token: ''
+    //   };
     // },
+
+    userProfile: async (_, {}, {
+      user
+    }) => {
+      const userId = user.id;
+      return await getUserProfile(userId);
+    }
+  },
+  Mutation: {
+    signup: async (_, {
+      email,
+      password
+    }) => {
+      return await userSignup(email, password);
+    },
+
+    userProfile: async (_, args, {
+      user
+    }) => {
+      const userId = user.id;
+
+      return await postUserProfile(userId, args);
+    }
   }
 };

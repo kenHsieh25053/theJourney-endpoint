@@ -19,17 +19,17 @@
 # - edit friend list
 # """
 
-# type Query {
+type Query {
 
-# }
+}
 
-# type Mutation {
+type Mutation {
 
-# }
+}
 
-# type Friend {
-#   id: ID!
-#   friends: [String!]!
-#   friends_count: Int!
-#   user: String!
-# }
+type Friend {
+  id: ID!
+  friends: [String!]!
+  friends_count: Int!
+  userId: String!
+}

@@ -1,34 +1,38 @@
-"""
-Use Cases
-
-User can
-
-- signup
-- login
-- logout
-- view user profile
-- edit user profile
-"""
-
-
 type Query {
-  # login(email: String!, password: String!): LoginInfo
-  # logout(id_token: String!): Successful
-  # userProfile(id_token: String!): User
-  user: User
-}
+  """
+  login with email and password
+  """
+  login(email: String!, password: String!): LoginInfo!
 
-type User{
-  email: String
+  """
+  get the user own profile
+  """
+  userProfile: UserProfileResponse!
 }
 
 type Mutation {
-  signup(email: String!, password: String!): Successful
-  # userProfile(id_token: String!, username: String, password: String!, email: String!, profile: String): User
+  """
+  sign up with email and password
+  """
+  signup(email: String!, password: String!): Response!
+
+  """
+  update userprofile
+  """
+  userProfile(
+    username: String
+    email: String!
+    profile: String
+  ): UserProfileResponse!
+}
+
+type UserProfileResponse {
+  status: String!
+  message: String
+  userProfile: [User]
 }
 
 type User {
-  id_token: String!
   username: String!
   password: String!
   email: String!
@@ -41,13 +45,13 @@ type User {
   updatedAt: String!
 }
 
-type Successful {
-  status: String
+type Response {
+  status: String!
   message: String
 }
 
 type LoginInfo {
   status: String!
   message: String
-  id_token: String!
+  id_token: String
 }

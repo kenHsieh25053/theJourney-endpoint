@@ -4,6 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4
     },
     friends: DataTypes.INTEGER,
     friendList: DataTypes.UUID

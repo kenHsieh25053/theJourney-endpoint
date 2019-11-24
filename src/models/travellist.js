@@ -4,9 +4,19 @@ module.exports = (sequelize, DataTypes) => {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4
     },
     name: DataTypes.STRING,
-    tag: DataTypes.STRING,
+    tags: {
+      type: DataTypes.STRING,
+      get() {
+        return this.getDataValue('tags').split(',');
+      },
+      set(val) {
+        this.setDataValue('tags', val.join(','));
+      },
+    },
     type: DataTypes.STRING,
     stayFrom: DataTypes.DATE,
     stayTo: DataTypes.DATE,
@@ -19,6 +29,12 @@ module.exports = (sequelize, DataTypes) => {
   travelList.associate = function (models) {
     // associations can be defined here
     travelList.hasMany(models.city, {
+      foreignKey: 'travelListId',
+      sourceKey: 'id',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
+    });
+    travelList.hasMany(models.post, {
       foreignKey: 'travelListId',
       sourceKey: 'id',
       onDelete: 'SET NULL',

@@ -1,23 +1,47 @@
-# type Query {
+type Query {
+  travelList: TravelListResponses!
+}
 
-# }
+type Mutation {
+  travelList(
+    id: ID
+    name: String!
+    tags: [String]
+    stayFrom: String!
+    stayTo: String!
+    cost: Int
+    rates: Int
+    likes: Int
+    transportation: String
+    review: String
+  ): TravelListResponse!
+}
 
-# type Mutation {
+type TravelListResponse {
+  status: String!
+  message: String
+  travelList: [Travellist]
+}
 
-# }
+type TravelListResponses {
+  status: String!
+  message: String
+  travelList: [Travellist]
+}
 
-# type Travel_list {
-#   id: String!
-#   name: String!
-#   tags: [String!]!
-#   stay_time_from: String!
-#   stay_time_to: String!
-#   stay_time_total: String!
-#   cost: Int
-#   rates: Int
-#   likes: Int
-#   createdAt: String!
-#   updatedAt: String!
-#   user: String!
-#   cities: [String!]!
-# }
+type Travellist {
+  id: ID!
+  name: String!
+  tags: [String]
+  stayFrom: String!
+  stayTo: String!
+  days: String!
+  cost: Int
+  rates: Int
+  likes: Int
+  transportation: String
+  review: String
+  createdAt: String!
+  updatedAt: String!
+  userId: ID!
+}

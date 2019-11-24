@@ -1,11 +1,14 @@
+require('dotenv').config();
 const express = require('express');
-const app = express();
+const compression = require('compression');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-
+const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(compression());
+
 
 // Database connection setting
 const db = require('./models/index.js');
@@ -20,37 +23,32 @@ db.sequelize
   });
 
 // Graphql setting
-import { ApolloServer } from 'apollo-server-express';
-import { mergeSchemas } from 'graphql-toolkit';
+import {
+  ApolloServer
+} from 'apollo-server-express';
+import {
+  auth
+} from './auth.js';
+import {
+  schema
+} from './schema.js';
 
-// import graphql modules
-import { UserModule } from './user/index.js';
-// import { TravelModule } from './travel/index.js';
 
-const schemas = [
-  UserModule.schema,
-  // TravelModule.schema
-];
-
-const resolvers = [
-  UserModule.resolvers,
-  // TravelModule.resolvers
-];
-
-const mergedSchema = mergeSchemas({
-  schemas,
-  resolvers
-});
 
 // Server configration
 const server = new ApolloServer({
-  schema: mergedSchema,
-  context: session => session,
-  tracing: true,
-  cacheControl: false //enable this when schema cache is set up
+  schema,
+  tracing: false,
+  cacheControl: false, //enable this when schema cache is set up
+  context: auth
 });
 
-server.applyMiddleware({ app, path: '/graphql' });
-app.listen({ port: 4000 }, () => {
+server.applyMiddleware({
+  app,
+  path: '/graphql'
+});
+app.listen({
+  port: 4000
+}, () => {
   console.log('Apollo Server ready on http://localhost:4000/graphql');
 });

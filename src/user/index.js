@@ -1,8 +1,12 @@
-import { GraphQLModule } from '@graphql-modules/core';
-import { loadResolversFiles, loadSchemaFiles } from 'graphql-toolkit';
+import path from "path";
+import {
+  fileLoader
+} from "merge-graphql-schemas";
 
+const userTypesArray = fileLoader(path.join(__dirname, "./schema"));
+const userResolversArray = fileLoader(path.join(__dirname, './resolvers'));
 
-export const UserModule = new GraphQLModule({
-  typeDefs: loadSchemaFiles(__dirname + '/schema/'),
-  resolvers: loadResolversFiles(__dirname + '/resolvers/')
-});
+module.exports = {
+  userTypesArray,
+  userResolversArray
+};

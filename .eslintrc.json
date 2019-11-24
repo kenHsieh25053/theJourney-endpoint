@@ -16,14 +16,10 @@
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
       "jsx": true
-  }
+    }
   },
   "rules": {
-    "no-console": 0, //關掉console.log()錯誤
-    "quotes": [
-      "error",
-      "single"
-    ],
+    "no-console": 0,
     "semi": [
       "error",
       "always"
