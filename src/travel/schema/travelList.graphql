@@ -1,8 +1,14 @@
 type Query {
-  travelList: TravelListResponses!
+  """
+  get all travelLists
+  """
+  travelList: TravelListsResponse!
 }
 
 type Mutation {
+  """
+  create or update travelList
+  """
   travelList(
     id: ID
     name: String!
@@ -15,18 +21,19 @@ type Mutation {
     transportation: String
     review: String
   ): TravelListResponse!
+  # deleteTravelList(id: ID!): Response
 }
 
 type TravelListResponse {
   status: String!
   message: String
-  travelList: [Travellist]
+  travelList: Travellist!
 }
 
-type TravelListResponses {
+type TravelListsResponse {
   status: String!
   message: String
-  travelList: [Travellist]
+  travelList: [Travellist!]!
 }
 
 type Travellist {
@@ -35,7 +42,7 @@ type Travellist {
   tags: [String]
   stayFrom: String!
   stayTo: String!
-  days: String!
+  days: String
   cost: Int
   rates: Int
   likes: Int

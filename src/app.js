@@ -2,13 +2,14 @@ require('dotenv').config();
 const express = require('express');
 const compression = require('compression');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
 const cors = require('cors');
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(compression());
-
+app.use(helmet());
 
 // Database connection setting
 const db = require('./models/index.js');

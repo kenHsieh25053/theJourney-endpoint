@@ -1,16 +1,28 @@
 import {
   userSignup,
   userLogin
-} from "../helpers/user.js";
+} from '../helpers/user.js';
 import {
   getUserProfile,
   postUserProfile
-} from "../helpers/userProfile.js";
+} from '../helpers/userProfile.js';
 
 export default {
   Query: {
     login: async (_, args) => {
-      return await userLogin(args);
+      try {
+        const result = await userLogin(args);
+        return {
+          status: result.status,
+          id_token: result.id_token,
+          message: result.message
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err.message
+        };
+      }
     },
 
     // logout: (_, {}, { user }) => {
@@ -24,24 +36,77 @@ export default {
     userProfile: async (_, {}, {
       user
     }) => {
-      const userId = user.id;
-      return await getUserProfile(userId);
+      try {
+        const userId = user.id;
+        const result = await getUserProfile(userId);
+        return {
+          status: 200,
+          userProfile: [{
+            username: result.username,
+            email: result.email,
+            position: result.position,
+            countries: result.countries,
+            cities: result.cities,
+            headshot: result.headshot,
+            profile: result.profile,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt
+          }]
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err.message
+        };
+      }
     }
   },
+
   Mutation: {
     signup: async (_, {
       email,
       password
     }) => {
-      return await userSignup(email, password);
+      try {
+        const result = await userSignup(email, password);
+        return {
+          status: result.status,
+          message: result.message
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err.message
+        };
+      }
     },
 
     userProfile: async (_, args, {
       user
     }) => {
-      const userId = user.id;
-
-      return await postUserProfile(userId, args);
+      try {
+        const userId = user.id;
+        const result = await postUserProfile(userId, args);
+        return {
+          status: 200,
+          userProfile: [{
+            username: result.username,
+            email: result.email,
+            position: result.position,
+            countries: result.countries,
+            cities: result.cities,
+            headshot: result.headshot,
+            profile: result.profile,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt
+          }]
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err.message
+        };
+      }
     }
   }
 };
