@@ -1,27 +1,32 @@
 type Query {
-  cities(travelList: ID!): CitiesResponse!
+  """
+  get all city
+  """
+  cities(travelListId: ID!): Cities!
 }
 
 type Mutation {
+  """
+  create or update city
+  """
   city(
     id: ID
     name: String!
-    stay_time_from: String!
-    stay_time_to: String!
-    cost: Int
+    stayFrom: String!
+    stayTo: String!
     transportation: String
     review: String
-    travelListId: ID
-  ): CityResponse!
+    travelListId: ID!
+  ): CityPayload!
 }
 
-type CityResponse {
+type CityPayload {
   status: String!
   message: String
   city: City!
 }
 
-type CitiesResponse {
+type Cities {
   status: String!
   message: String
   city: [City!]!
@@ -32,8 +37,8 @@ type City {
   name: String!
   longtitude: Int
   latitude: Int
-  stay_time_from: String!
-  stay_time_to: String!
+  stayFrom: String!
+  stayTo: String!
   cost: Int
   rates: Int
   transportation: String
@@ -41,7 +46,6 @@ type City {
   photo_url: String
   createdAt: String!
   updatedAt: String!
-  countryId: ID
   travelListId: ID!
   # tourist_spots: [String!]!
   # country: String!

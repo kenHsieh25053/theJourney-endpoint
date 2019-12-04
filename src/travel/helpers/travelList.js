@@ -20,7 +20,7 @@ async function postTravelList(userId, args) {
   let data = Object.assign({}, args, {
     userId
   });
-  // Insert id for new travelList
+  // Insert id for new travelList row
   data['id'] = id;
   const result = await models.travelList.findOrCreate({
     where: {

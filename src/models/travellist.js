@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     stayTo: DataTypes.DATE,
     days: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
-    rates: DataTypes.INTEGER,
+    rates: DataTypes.FLOAT,
     transportation: DataTypes.STRING,
     review: DataTypes.STRING
   }, {});

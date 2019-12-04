@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       rates: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       transportation: {
         type: Sequelize.STRING
@@ -49,19 +49,6 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      countryId: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'countries',
-            key: 'id'
-          },
-        },
-        foreignKey: true,
-        allowNull: false,
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       },
       travelListId: {
         type: Sequelize.UUID,

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     stayTo: DataTypes.DATE,
     days: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
-    rates: DataTypes.INTEGER,
+    rates: DataTypes.FLOAT,
     transportation: DataTypes.STRING,
     review: DataTypes.STRING,
     photo_url: DataTypes.STRING
@@ -26,12 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE',
       sourceKey: 'id'
-    });
-    city.belongsTo(models.country, {
-      foreignKey: 'countryId',
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE',
-      targetKey: 'id'
     });
     city.belongsTo(models.travelList, {
       foreignKey: 'travelListId',

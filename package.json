@@ -4,12 +4,13 @@
   "description": "an app which allows user to note, plan, share they journey",
   "main": "index.js",
   "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon --exec babel-node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "verify": "./node_modules/.bin/eslint ./src/",
     "init": "node_modules/.bin/sequelize init",
     "migrate": "node_modules/.bin/sequelize db:migrate --env development",
-    "verify": "./node_modules/.bin/eslint ./src/",
-    "start": "node src/app.js",
-    "dev": "nodemon --exec babel-node src/app.js"
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "keywords": [
     "travel",

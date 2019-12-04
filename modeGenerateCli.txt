@@ -6,10 +6,12 @@ npx sequelize-cli model:generate --name Friend  --attributes id:uuid,friends:int
 
 npx sequelize-cli model:generate --name Relationship  --attributes id:uuid,user_a:uuid,user_b:uuid,status:string
 
-npx sequelize-cli model:generate --name TravelList --attributes id:uuid,name:string,tag:string,type:string,stayFrom:date,stayTo:date,days:integer,cost:integer,rates:integer,transportation:string,review:string
+npx sequelize-cli model:generate --name TravelList --attributes id:uuid,name:string,tag:string,type:string,stayFrom:date,stayTo:date,days:integer,cost:float,rates:integer,transportation:string,review:string
 
-npx sequelize-cli model:generate --name Country --attributes id:uuid,name:string,longtitude:float,latitude:float,days:integer,cost:integer,rates:integer
+npx sequelize-cli model:generate --name Country --attributes id:uuid,name:string,longtitude:float,latitude:float,days:integer,cost:float,rates:integer
 
-npx sequelize-cli model:generate --name City --attributes id:uuid,name:string,longtitude:float,latitude:float,stayFrom:date,stayTo:date,days:integer,cost:integer,rates:integer,transportation:string,review:string,photo_url:string
+npx sequelize-cli model:generate --name City --attributes id:uuid,name:string,longtitude:float,latitude:float,stayFrom:date,stayTo:date,days:integer,cost:float,rates:integer,transportation:string,review:string,photo_url:string
 
-npx sequelize-cli model:generate --name ToruistSpot --attributes id:uuid,name:string,type:string,longtitude:float,latitude:float,days:integer,cost:integer,rates:integer,transportation:string,review:string,photo_url:string
+npx sequelize-cli model:generate --name ToruistSpot --attributes id:uuid,name:string,type:string,longtitude:float,latitude:float,days:integer,cost:float,rates:integer,transportation:string,review:string,photo_url:string
+
+npx sequelize-cli model:generate --name Notification  --attributes id:uuid,type:string,message:text,createdAt

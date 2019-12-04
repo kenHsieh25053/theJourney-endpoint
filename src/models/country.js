@@ -12,16 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     latitude: DataTypes.FLOAT,
     days: DataTypes.INTEGER,
     cost: DataTypes.INTEGER,
-    rates: DataTypes.INTEGER
+    rates: DataTypes.FLOAT
   }, {});
   country.associate = function (models) {
     // associations can be defined here
-    country.hasMany(models.city, {
-      foreignKey: 'countryId',
-      sourceKey: 'id',
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE',
-    });
   };
   return country;
 };

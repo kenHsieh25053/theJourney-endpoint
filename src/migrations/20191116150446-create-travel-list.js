@@ -37,7 +37,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       rates: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       transportation: {
         type: Sequelize.STRING

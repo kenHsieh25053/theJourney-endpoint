@@ -1,8 +1,8 @@
 type Query {
   """
-  get all travelLists
+  get all travelList
   """
-  travelList: TravelListsResponse!
+  travelList: TravelLists!
 }
 
 type Mutation {
@@ -20,17 +20,17 @@ type Mutation {
     likes: Int
     transportation: String
     review: String
-  ): TravelListResponse!
+  ): TravelListPayload!
   # deleteTravelList(id: ID!): Response
 }
 
-type TravelListResponse {
+type TravelListPayload {
   status: String!
   message: String
   travelList: Travellist!
 }
 
-type TravelListsResponse {
+type TravelLists {
   status: String!
   message: String
   travelList: [Travellist!]!

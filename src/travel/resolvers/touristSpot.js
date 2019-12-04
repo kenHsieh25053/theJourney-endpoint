@@ -1,24 +1,23 @@
 import {
-  postCity,
-  getCities
-} from '../helpers/city.js';
+  postTouristSpot,
+  getTouristSpot
+} from '../helpers/touristSpot.js';
 
 
 export default {
   Query: {
-    cities: async (_, args, {}) => {
+    touristSpots: async (_, args, {}) => {
       try {
-        const result = await getCities(args);
+        const result = await getTouristSpot(args);
         return {
           status: 200,
-          city: result.map(item => {
+          touristSpot: result.map(item => {
             return {
               id: item.id,
               name: item.name,
+              type: item.type,
               longtitude: item.longtitude,
               latitude: item.latitude,
-              stayFrom: item.stayFrom,
-              stayTo: item.stayTo,
               days: item.days,
               cost: item.cost,
               rates: item.rates,
@@ -27,7 +26,7 @@ export default {
               photo_url: item.photo_url,
               createdAt: item.createdAt,
               updatedAt: item.updatedAt,
-              travelListId: item.travelListId
+              cityId: item.cityId
             };
           })
         };
@@ -41,19 +40,17 @@ export default {
   },
 
   Mutation: {
-    city: async (_, args, {}) => {
+    touristSpot: async (_, args, {}) => {
       try {
-        const result = await postCity(args);
-        // console.log(result);
+        const result = await postTouristSpot(args);
         return {
           status: 200,
-          city: {
+          touristSpot: {
             id: result.id,
             name: result.name,
+            type: result.type,
             longtitude: result.longtitude,
             latitude: result.latitude,
-            stayFrom: result.stayFrom,
-            stayTo: result.stayTo,
             days: result.days,
             cost: result.cost,
             rates: result.rates,
@@ -62,7 +59,7 @@ export default {
             photo_url: result.photo_url,
             createdAt: result.createdAt,
             updatedAt: result.updatedAt,
-            travelListId: result.travelListId
+            cityId: result.cityId
           }
         };
       } catch (err) {
