@@ -1,0 +1,23 @@
+
+type Query {
+  getPosts(travelList: String!): [Post!]!
+}
+
+type Mutation {
+  addorUpdatePost(id: ID, travelListId: ID!, text: String!): PostPayload!
+}
+
+type PostPayload {
+  status: String!
+  message: String
+  post: Post!
+}
+
+type Post implements Node {
+  id: ID!
+  text: String!
+  createdAt: String!
+  updatedAt: String!
+  userId: ID!
+  travelListId: ID!
+}

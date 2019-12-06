@@ -1,14 +1,15 @@
 import {
-  postTouristSpot,
-  getTouristSpot
+  _postTouristSpot,
+  _getTouristSpot,
+  _deleteTouristSpot
 } from '../helpers/touristSpot.js';
 
 
 export default {
   Query: {
-    touristSpots: async (_, args, {}) => {
+    getTouristSpots: async (_, args, {}) => {
       try {
-        const result = await getTouristSpot(args);
+        const result = await _getTouristSpot(args);
         return {
           status: 200,
           touristSpot: result.map(item => {
@@ -40,9 +41,9 @@ export default {
   },
 
   Mutation: {
-    touristSpot: async (_, args, {}) => {
+    postTouristSpot: async (_, args, {}) => {
       try {
-        const result = await postTouristSpot(args);
+        const result = await _postTouristSpot(args);
         return {
           status: 200,
           touristSpot: {
@@ -61,6 +62,21 @@ export default {
             updatedAt: result.updatedAt,
             cityId: result.cityId
           }
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err.message
+        };
+      }
+    },
+
+    deleteTouristSpot: async (_, args, {}) => {
+      try {
+        const result = await _deleteTouristSpot(args);
+        return {
+          status: 200,
+          message: result
         };
       } catch (err) {
         return {

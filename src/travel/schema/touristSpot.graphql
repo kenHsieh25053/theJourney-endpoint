@@ -2,14 +2,14 @@ type Query {
   """
   get all touristSpot
   """
-  touristSpots(cityId: ID!): TouristSpots
+  getTouristSpots(cityId: ID!): TouristSpots
 }
 
 type Mutation {
   """
   create or update touristSpot
   """
-  touristSpot(
+  postTouristSpot(
     id: ID
     name: String!
     type: String!
@@ -20,6 +20,10 @@ type Mutation {
     review: String
     cityId: ID!
   ): TouristSpotPayload!
+  """
+  delete touristSpot
+  """
+  deleteTouristSpot(id: ID!): Payload
 }
 
 type TouristSpotPayload {
@@ -34,8 +38,8 @@ type TouristSpots {
   touristSpot: [TouristSpot!]!
 }
 
-type TouristSpot {
-  id: String!
+type TouristSpot implements Node {
+  id: ID!
   name: String!
   type: String!
   longtitude: Int
@@ -48,5 +52,5 @@ type TouristSpot {
   photo_url: String
   createdAt: String!
   updatedAt: String!
-  cityId: String!
+  cityId: ID!
 }

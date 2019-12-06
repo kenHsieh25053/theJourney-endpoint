@@ -2,11 +2,13 @@ import models from '../../models';
 import uuidv4 from 'uuid/v4';
 
 module.exports = {
-  postTravelList,
-  getTravelList
+  _getTravelList,
+  _getAllTravelList,
+  _postTravelList,
+  _deleteTravelList
 };
 
-async function getTravelList(userId) {
+async function _getTravelList(userId) {
   const result = await models.travelList.findAll({
     where: {
       userId: userId
@@ -15,7 +17,14 @@ async function getTravelList(userId) {
   return result;
 }
 
-async function postTravelList(userId, args) {
+async function _getAllTravelList() {
+  const result = await models.travelList.findAll({
+    order: [['updatedAt', 'DESC']]
+  });
+  return result;
+}
+
+async function _postTravelList(userId, args) {
   const id = uuidv4();
   let data = Object.assign({}, args, {
     userId
@@ -39,5 +48,19 @@ async function postTravelList(userId, args) {
     return updatedResult;
   } else {
     return result[0];
+  }
+}
+
+async function _deleteTravelList(args) {
+  const result = await models.travelList.destroy({
+    where: {
+      id: args.id
+    }
+  });
+
+  if (result) {
+    return 'TravelList deleted!';
+  } else {
+    return 'Can\'t find travelList';
   }
 }

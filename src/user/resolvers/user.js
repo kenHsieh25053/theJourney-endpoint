@@ -1,17 +1,18 @@
 import {
-  userSignup,
-  userLogin
+  _userSignup,
+  _userLogin,
+  _userDeleted
 } from '../helpers/user.js';
 import {
-  getUserProfile,
-  postUserProfile
+  _getUserProfile,
+  _postUserProfile
 } from '../helpers/userProfile.js';
 
 export default {
   Query: {
     login: async (_, args) => {
       try {
-        const result = await userLogin(args);
+        const result = await _userLogin(args);
         return {
           status: result.status,
           id_token: result.id_token,
@@ -33,15 +34,16 @@ export default {
     //   };
     // },
 
-    userProfile: async (_, {}, {
+    getUserProfile: async (_, {}, {
       user
     }) => {
       try {
         const userId = user.id;
-        const result = await getUserProfile(userId);
+        const result = await _getUserProfile(userId);
         return {
           status: 200,
-          userProfile: [{
+          userProfile: {
+            id: result.id,
             username: result.username,
             email: result.email,
             position: result.position,
@@ -51,7 +53,7 @@ export default {
             profile: result.profile,
             createdAt: result.createdAt,
             updatedAt: result.updatedAt
-          }]
+          }
         };
       } catch (err) {
         return {
@@ -68,7 +70,7 @@ export default {
       password
     }) => {
       try {
-        const result = await userSignup(email, password);
+        const result = await _userSignup(email, password);
         return {
           status: result.status,
           message: result.message
@@ -81,15 +83,15 @@ export default {
       }
     },
 
-    userProfile: async (_, args, {
+    postUserProfile: async (_, args, {
       user
     }) => {
       try {
         const userId = user.id;
-        const result = await postUserProfile(userId, args);
+        const result = await _postUserProfile(userId, args);
         return {
           status: 200,
-          userProfile: [{
+          userProfile: {
             username: result.username,
             email: result.email,
             position: result.position,
@@ -99,7 +101,25 @@ export default {
             profile: result.profile,
             createdAt: result.createdAt,
             updatedAt: result.updatedAt
-          }]
+          }
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err.message
+        };
+      }
+    },
+
+    deleteUser: async (_, args, {
+      user
+    }) => {
+      try {
+        const userId = user.id;
+        const result = await _userDeleted(userId);
+        return {
+          status: 200,
+          message: result
         };
       } catch (err) {
         return {

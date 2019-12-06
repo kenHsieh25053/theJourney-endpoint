@@ -1,15 +1,19 @@
 type Query {
   """
-  get all travelList
+  get user's travelList
   """
-  travelList: TravelLists!
+  getTravelLists: TravelLists!
+  """
+  get all user's travelList
+  """
+  getAllTravelLists: TravelLists!
 }
 
 type Mutation {
   """
   create or update travelList
   """
-  travelList(
+  postTravelList (
     id: ID
     name: String!
     tags: [String]
@@ -21,7 +25,10 @@ type Mutation {
     transportation: String
     review: String
   ): TravelListPayload!
-  # deleteTravelList(id: ID!): Response
+  """
+  delete travelList
+  """
+  deleteTravelList(id: ID!): Payload
 }
 
 type TravelListPayload {
@@ -36,7 +43,7 @@ type TravelLists {
   travelList: [Travellist!]!
 }
 
-type Travellist {
+type Travellist implements Node {
   id: ID!
   name: String!
   tags: [String]

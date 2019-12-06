@@ -1,11 +1,11 @@
 import models from '../../models';
 
 module.exports = {
-  postUserProfile,
-  getUserProfile
+  _postUserProfile,
+  _getUserProfile
 };
 
-async function postUserProfile(userId, args) {
+async function _postUserProfile(userId, args) {
   await models.user.update(args, {
     where: {
       id: userId
@@ -15,7 +15,7 @@ async function postUserProfile(userId, args) {
   return result;
 }
 
-async function getUserProfile(userId) {
+async function _getUserProfile(userId) {
   const result = await models.user.findByPk(userId);
   return result;
 }

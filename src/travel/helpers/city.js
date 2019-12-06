@@ -2,11 +2,12 @@ import models from '../../models';
 import uuidv4 from 'uuid/v4';
 
 module.exports = {
-  postCity,
-  getCities
+  _postCity,
+  _getCities,
+  _deleteCity
 };
 
-async function postCity(args) {
+async function _postCity(args) {
   const id = uuidv4();
   // Insert id for new city row
   args['id'] = id;
@@ -30,11 +31,25 @@ async function postCity(args) {
   }
 }
 
-async function getCities(args) {
+async function _getCities(args) {
   const result = await models.city.findAll({
     where: {
       travelListId: args.travelListId
     }
   });
   return result;
+}
+
+async function _deleteCity(args) {
+  const result = await models.city.destroy({
+    where: {
+      id: args.id
+    }
+  });
+
+  if (result) {
+    return 'City deleted!';
+  } else {
+    return 'Can\'t find city';
+  }
 }

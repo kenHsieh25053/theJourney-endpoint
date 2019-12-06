@@ -2,11 +2,12 @@ import models from '../../models';
 import uuidv4 from 'uuid/v4';
 
 module.exports = {
-  postTouristSpot,
-  getTouristSpot
+  _postTouristSpot,
+  _getTouristSpot,
+  _deleteTouristSpot
 };
 
-async function postTouristSpot(args) {
+async function _postTouristSpot(args) {
   const id = uuidv4();
   // Insert id for new touristSpot row
   args['id'] = id;
@@ -70,11 +71,25 @@ async function postTouristSpot(args) {
   }
 }
 
-async function getTouristSpot(args) {
+async function _getTouristSpot(args) {
   const result = await models.touristSpot.findAll({
     where: {
       cityId: args.cityId
     }
   });
   return result;
+}
+
+async function _deleteTouristSpot(args) {
+  const result = await models.touristSpot.destroy({
+    where: {
+      id: args.id
+    }
+  });
+
+  if (result) {
+    return 'TouristSpot deleted!';
+  } else {
+    return 'Can\'t find touristSpot';
+  }
 }

@@ -5,12 +5,13 @@ const jwt = require('jsonwebtoken');
 const saltrounds = 10;
 
 module.exports = {
-  userSignup,
-  userLogin,
-  userLogout
+  _userSignup,
+  _userLogin,
+  _userLogout,
+  _userDeleted
 };
 
-async function userSignup(email, password) {
+async function _userSignup(email, password) {
   let hash = bcrypt.hashSync(password, saltrounds);
 
   // validate email
@@ -36,7 +37,7 @@ async function userSignup(email, password) {
   }
 }
 
-async function userLogin(args) {
+async function _userLogin(args) {
   // validate email
   const result = await models.user.findOne({
     where: {
@@ -70,6 +71,20 @@ async function userLogin(args) {
   };
 }
 
-async function userLogout() {
+async function _userLogout() {
 
+}
+
+async function _userDeleted(userId) {
+  const result = await models.user.destroy({
+    where: {
+      id: userId
+    }
+  });
+
+  if (result) {
+    return 'User deleted!';
+  } else {
+    return 'Can\'t find user';
+  }
 }

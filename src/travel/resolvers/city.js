@@ -1,14 +1,15 @@
 import {
-  postCity,
-  getCities
+  _postCity,
+  _getCities,
+  _deleteCity
 } from '../helpers/city.js';
 
 
 export default {
   Query: {
-    cities: async (_, args, {}) => {
+    getCities: async (_, args, {}) => {
       try {
-        const result = await getCities(args);
+        const result = await _getCities(args);
         return {
           status: 200,
           city: result.map(item => {
@@ -41,10 +42,9 @@ export default {
   },
 
   Mutation: {
-    city: async (_, args, {}) => {
+    postCity: async (_, args, {}) => {
       try {
-        const result = await postCity(args);
-        // console.log(result);
+        const result = await _postCity(args);
         return {
           status: 200,
           city: {
@@ -64,6 +64,21 @@ export default {
             updatedAt: result.updatedAt,
             travelListId: result.travelListId
           }
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err.message
+        };
+      }
+    },
+
+    deleteCity: async (_, args, {}) => {
+      try {
+        const result = await _deleteCity(args);
+        return {
+          status: 200,
+          message: result
         };
       } catch (err) {
         return {

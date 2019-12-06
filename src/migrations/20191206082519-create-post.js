@@ -23,6 +23,19 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
+      travelListId: {
+        type: Sequelize.UUID,
+        references: {
+          model: {
+            tableName: 'travelLists',
+            key: 'id'
+          },
+        },
+        foreignKey: true,
+        allowNull: false,
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
+      },
       userId: {
         type: Sequelize.UUID,
         references: {

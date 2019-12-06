@@ -2,14 +2,14 @@ type Query {
   """
   get all city
   """
-  cities(travelListId: ID!): Cities!
+  getCities(travelListId: ID!): Cities!
 }
 
 type Mutation {
   """
   create or update city
   """
-  city(
+  postCity(
     id: ID
     name: String!
     stayFrom: String!
@@ -18,6 +18,10 @@ type Mutation {
     review: String
     travelListId: ID!
   ): CityPayload!
+  """
+  delete city
+  """
+  deleteCity(id: ID!): Payload
 }
 
 type CityPayload {
@@ -32,7 +36,7 @@ type Cities {
   city: [City!]!
 }
 
-type City {
+type City implements Node {
   id: ID!
   name: String!
   longtitude: Int
