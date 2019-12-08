@@ -6,15 +6,18 @@ module.exports = {
       id: 'f924766a-5785-4174-acf8-654cfcc6dbe9',
       name: 'Holland',
       tags: [
-        'cheese,',
-        'red district'
+        'cheese'
       ],
+      type: 'family trip',
       stayFrom: '2019-10-07',
       stayTo: '2019-10-11',
+      days: null,
+      costs: null,
+      rates: null,
       transportation: 'air',
       review: 'boring',
-      createdAt: 1575096228000,
-      updatedAt: 1575096228000,
+      createdAt: '2019-10-10',
+      updatedAt: '2019-10-15',
       userId: 'aef8ab8d-0d33-46f3-a23e-fe0ef12190cd'
     }], {});
   },

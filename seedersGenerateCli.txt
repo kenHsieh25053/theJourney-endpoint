@@ -1,0 +1,15 @@
+npx sequelize-cli seed:generate --name demo-user
+
+npx sequelize-cli seed:generate --name demo-country
+
+npx sequelize-cli seed:generate --name demo-travellist
+
+npx sequelize-cli seed:generate --name demo-city
+
+npx sequelize-cli seed:generate --name demo-touristspot
+
+npx sequelize-cli seed:generate --name demo-post
+
+npx sequelize-cli seed:generate --name demo-friend
+
+npx sequelize-cli seed:generate --name demo-relationship

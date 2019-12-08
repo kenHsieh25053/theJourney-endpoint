@@ -1,6 +1,6 @@
 import {
   _postTouristSpot,
-  _getTouristSpot,
+  _getTouristSpots,
   _deleteTouristSpot
 } from '../helpers/touristSpot.js';
 
@@ -9,10 +9,10 @@ export default {
   Query: {
     getTouristSpots: async (_, args, {}) => {
       try {
-        const result = await _getTouristSpot(args);
+        const result = await _getTouristSpots(args);
         return {
           status: 200,
-          touristSpot: result.map(item => {
+          touristSpots: result.map(item => {
             return {
               id: item.id,
               name: item.name,

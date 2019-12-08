@@ -2,24 +2,29 @@ import models from '../../models';
 import uuidv4 from 'uuid/v4';
 
 module.exports = {
-  _getTravelList,
-  _getAllTravelList,
+  _getTravelLists,
+  _getAllTravelLists,
   _postTravelList,
   _deleteTravelList
 };
 
-async function _getTravelList(userId) {
+async function _getTravelLists(userId) {
   const result = await models.travelList.findAll({
     where: {
       userId: userId
-    }
+    },
+    order: [
+      ['createdAt', 'DESC']
+    ]
   });
   return result;
 }
 
-async function _getAllTravelList() {
+async function _getAllTravelLists() {
   const result = await models.travelList.findAll({
-    order: [['updatedAt', 'DESC']]
+    order: [
+      ['updatedAt', 'DESC']
+    ]
   });
   return result;
 }

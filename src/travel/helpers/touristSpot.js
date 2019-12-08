@@ -3,17 +3,19 @@ import uuidv4 from 'uuid/v4';
 
 module.exports = {
   _postTouristSpot,
-  _getTouristSpot,
+  _getTouristSpots,
   _deleteTouristSpot
 };
 
 async function _postTouristSpot(args) {
-  const id = uuidv4();
-  // Insert id for new touristSpot row
-  args['id'] = id;
+  // Insert id for new touristSpot row if id is null
+  if (!args.id) {
+    const id = uuidv4();
+    args['id'] = id;
+  }
   const result = await models.touristSpot.findOrCreate({
     where: {
-      id
+      id: args.id
     },
     defaults: args
   });
@@ -48,7 +50,6 @@ async function _postTouristSpot(args) {
   });
 
   let averageRate = new Number(totalRate / countOfCity).toFixed(1);
-  // change all tables' rate column from int to float
 
   await models.city.update({
     rates: averageRate
@@ -71,11 +72,14 @@ async function _postTouristSpot(args) {
   }
 }
 
-async function _getTouristSpot(args) {
+async function _getTouristSpots(args) {
   const result = await models.touristSpot.findAll({
     where: {
       cityId: args.cityId
-    }
+    },
+    order: [
+      ['createdAt', 'ASC']
+    ]
   });
   return result;
 }

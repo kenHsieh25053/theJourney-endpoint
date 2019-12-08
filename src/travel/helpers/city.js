@@ -8,12 +8,14 @@ module.exports = {
 };
 
 async function _postCity(args) {
-  const id = uuidv4();
-  // Insert id for new city row
-  args['id'] = id;
+  // Insert id for new city row if id is null
+  if (!args.id) {
+    const id = uuidv4();
+    args['id'] = id;
+  }
   const result = await models.city.findOrCreate({
     where: {
-      id
+      id: args.id
     },
     defaults: args
   });
@@ -35,7 +37,10 @@ async function _getCities(args) {
   const result = await models.city.findAll({
     where: {
       travelListId: args.travelListId
-    }
+    },
+    order: [
+      ['createdAt', 'ASC']
+    ]
   });
   return result;
 }
@@ -50,6 +55,6 @@ async function _deleteCity(args) {
   if (result) {
     return 'City deleted!';
   } else {
-    return 'Can\'t find city';
+    return 'Can\'t find the city';
   }
 }

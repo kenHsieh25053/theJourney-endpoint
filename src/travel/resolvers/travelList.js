@@ -1,6 +1,6 @@
 import {
-  _getTravelList,
-  _getAllTravelList,
+  _getTravelLists,
+  _getAllTravelLists,
   _postTravelList,
   _deleteTravelList
 } from '../helpers/travelList.js';
@@ -12,10 +12,10 @@ export default {
     }) => {
       const userId = user.id;
       try {
-        const result = await _getTravelList(userId);
+        const result = await _getTravelLists(userId);
         return {
           status: 200,
-          travelList: result.map(item => {
+          travelLists: result.map(item => {
             return {
               id: item.id,
               name: item.name,
@@ -44,10 +44,10 @@ export default {
 
     getAllTravelLists: async () => {
       try {
-        const result = await _getAllTravelList();
+        const result = await _getAllTravelLists();
         return {
           status: 200,
-          travelList: result.map(item => {
+          travelLists: result.map(item => {
             return {
               id: item.id,
               name: item.name,

@@ -33,7 +33,7 @@ module.exports = {
       days: {
         type: Sequelize.INTEGER
       },
-      cost: {
+      costs: {
         type: Sequelize.INTEGER
       },
       rates: {

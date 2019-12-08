@@ -35,7 +35,7 @@ type TouristSpotPayload {
 type TouristSpots {
   status: String!
   message: String
-  touristSpot: [TouristSpot!]!
+  touristSpots: [TouristSpot!]!
 }
 
 type TouristSpot implements Node {

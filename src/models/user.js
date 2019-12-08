@@ -36,14 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE'
     });
-    user.hasMany(models.relationship, {
-      foreignKey: 'user_a',
-      sourceKey: 'id',
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE'
-    });
-    user.hasMany(models.relationship, {
-      foreignKey: 'user_b',
+    user.hasOne(models.relationship, {
+      foreignKey: 'actionUserId',
       sourceKey: 'id',
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE'

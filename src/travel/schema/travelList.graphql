@@ -13,7 +13,7 @@ type Mutation {
   """
   create or update travelList
   """
-  postTravelList (
+  postTravelList(
     id: ID
     name: String!
     tags: [String]
@@ -40,7 +40,7 @@ type TravelListPayload {
 type TravelLists {
   status: String!
   message: String
-  travelList: [Travellist!]!
+  travelLists: [Travellist!]!
 }
 
 type Travellist implements Node {

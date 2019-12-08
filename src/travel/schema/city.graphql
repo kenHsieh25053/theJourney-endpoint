@@ -33,7 +33,7 @@ type CityPayload {
 type Cities {
   status: String!
   message: String
-  city: [City!]!
+  cities: [City!]!
 }
 
 type City implements Node {

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     longtitude: DataTypes.FLOAT,
     latitude: DataTypes.FLOAT,
     days: DataTypes.INTEGER,
-    cost: DataTypes.INTEGER,
+    costs: DataTypes.INTEGER,
     rates: DataTypes.FLOAT
   }, {});
   country.associate = function (models) {

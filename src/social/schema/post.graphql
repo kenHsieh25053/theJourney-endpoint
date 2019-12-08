@@ -1,10 +1,10 @@
-
 type Query {
-  getPosts(travelList: String!): [Post!]!
+  getPosts(travelListId: ID!): Posts!
 }
 
 type Mutation {
   addorUpdatePost(id: ID, travelListId: ID!, text: String!): PostPayload!
+  deletePost(id: ID!): Payload!
 }
 
 type PostPayload {
@@ -20,4 +20,10 @@ type Post implements Node {
   updatedAt: String!
   userId: ID!
   travelListId: ID!
+}
+
+type Posts {
+  status: String!
+  message: String
+  posts: [Post!]!
 }

@@ -10,7 +10,8 @@
     "verify": "./node_modules/.bin/eslint ./src/",
     "init": "node_modules/.bin/sequelize init",
     "migrate": "node_modules/.bin/sequelize db:migrate --env development",
-    "seed": "npx sequelize-cli db:seed:all"
+    "undo": "node_modules/.bin/sequelize db:migrate:undo:all --env development",
+    "seed": "node_modules/.bin/sequelize db:seed:all --env development"
   },
   "keywords": [
     "travel",

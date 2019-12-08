@@ -14,13 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   relationship.associate = function (models) {
     // associations can be defined here
     relationship.belongsTo(models.user, {
-      foreignKey: 'user_a',
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE',
-      targetKey: 'id'
-    });
-    relationship.belongsTo(models.user, {
-      foreignKey: 'user_b',
+      foreignKey: 'actionUserId',
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE',
       targetKey: 'id'

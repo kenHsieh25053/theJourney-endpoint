@@ -11,24 +11,10 @@ module.exports = {
       },
       user_a: {
         type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'users',
-            key: 'id'
-          },
-        },
-        foreignKey: true,
         allowNull: false
       },
       user_b: {
         type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'users',
-            key: 'id'
-          },
-        },
-        foreignKey: true,
         allowNull: false
       },
       status: {
@@ -41,6 +27,19 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      actionUserId: {
+        type: Sequelize.UUID,
+        references: {
+          model: {
+            tableName: 'users',
+            key: 'id'
+          },
+        },
+        foreignKey: true,
+        allowNull: false,
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       }
     });
   },

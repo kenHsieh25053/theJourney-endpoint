@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     stayFrom: DataTypes.DATE,
     stayTo: DataTypes.DATE,
     days: DataTypes.INTEGER,
-    cost: DataTypes.INTEGER,
+    costs: DataTypes.INTEGER,
     rates: DataTypes.FLOAT,
     transportation: DataTypes.STRING,
     review: DataTypes.STRING

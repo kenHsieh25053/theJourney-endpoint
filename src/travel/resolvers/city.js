@@ -12,7 +12,7 @@ export default {
         const result = await _getCities(args);
         return {
           status: 200,
-          city: result.map(item => {
+          cities: result.map(item => {
             return {
               id: item.id,
               name: item.name,
