@@ -2,14 +2,14 @@ type Query {
   """
   get all touristSpot
   """
-  getTouristSpots(cityId: ID!): TouristSpots
+  touristSpots(cityId: ID!): TouristSpots
 }
 
 type Mutation {
   """
   create or update touristSpot
   """
-  postTouristSpot(
+  touristSpotPost(
     id: ID
     name: String!
     type: String!
@@ -23,7 +23,7 @@ type Mutation {
   """
   delete touristSpot
   """
-  deleteTouristSpot(id: ID!): Payload
+  touristSpotDelete(id: ID!): Payload
 }
 
 type TouristSpotPayload {

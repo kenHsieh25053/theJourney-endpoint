@@ -1,0 +1,35 @@
+
+# check friend status
+# server should send notification and lock the user_b's invitation button
+type Query {
+  friendPendingList: Relationships
+}
+
+type Mutation {
+  # friendAdd(user_b: ID!): Payload!
+  # friendAdded: Payload!
+  # friendAddCancel(user_b: ID!): Payload!
+  # friendDisconnect(user_b: ID!): Payload!
+  friendActions(user_b: ID, status: String!, actionUserId: ID): Payload!
+}
+
+type RelationshipPayload {
+  status: String!
+  message: String
+  relationship: Relationship
+}
+
+type Relationships {
+  status: String!
+  message: String
+  relationships: [Relationship!]!  
+}
+
+type Relationship implements Node {
+  id: ID!
+  user_b: ID!
+  status: String!
+  createdAt: String!
+  updatedAt: String!
+  actionUserId: ID!
+}

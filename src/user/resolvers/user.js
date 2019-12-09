@@ -34,7 +34,7 @@ export default {
     //   };
     // },
 
-    getUserProfile: async (_, {}, {
+    userProfile: async (_, {}, {
       user
     }) => {
       try {
@@ -83,7 +83,7 @@ export default {
       }
     },
 
-    postUserProfile: async (_, args, {
+    userProfilePost: async (_, args, {
       user
     }) => {
       try {
@@ -111,7 +111,7 @@ export default {
       }
     },
 
-    deleteUser: async (_, args, {
+    userDelete: async (_, args, {
       user
     }) => {
       try {

@@ -7,7 +7,7 @@ import {
 
 export default {
   Query: {
-    getTouristSpots: async (_, args, {}) => {
+    touristSpots: async (_, args, {}) => {
       try {
         const result = await _getTouristSpots(args);
         return {
@@ -41,7 +41,7 @@ export default {
   },
 
   Mutation: {
-    postTouristSpot: async (_, args, {}) => {
+    touristSpotPost: async (_, args, {}) => {
       try {
         const result = await _postTouristSpot(args);
         return {
@@ -71,7 +71,7 @@ export default {
       }
     },
 
-    deleteTouristSpot: async (_, args, {}) => {
+    touristSpotDelete: async (_, args, {}) => {
       try {
         const result = await _deleteTouristSpot(args);
         return {

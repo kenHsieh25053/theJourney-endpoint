@@ -9,10 +9,6 @@ module.exports = {
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
-      user_a: {
-        type: Sequelize.UUID,
-        allowNull: false
-      },
       user_b: {
         type: Sequelize.UUID,
         allowNull: false

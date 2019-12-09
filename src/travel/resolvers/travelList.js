@@ -7,7 +7,7 @@ import {
 
 export default {
   Query: {
-    getTravelLists: async (_, {}, {
+    travelLists: async (_, {}, {
       user
     }) => {
       const userId = user.id;
@@ -42,7 +42,7 @@ export default {
       }
     },
 
-    getAllTravelLists: async () => {
+    travelListsAll: async () => {
       try {
         const result = await _getAllTravelLists();
         return {
@@ -76,7 +76,7 @@ export default {
   },
 
   Mutation: {
-    postTravelList: async (_, args, {
+    travelListPost: async (_, args, {
       user
     }) => {
       try {
@@ -109,7 +109,7 @@ export default {
       }
     },
 
-    deleteTravelList: async (_, args, {}) => {
+    travelListDelete: async (_, args, {}) => {
       try {
         const result = await _deleteTravelList(args);
         return {

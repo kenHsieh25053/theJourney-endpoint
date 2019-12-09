@@ -7,7 +7,7 @@ import {
 
 export default {
   Query: {
-    getCities: async (_, args, {}) => {
+    cities: async (_, args, {}) => {
       try {
         const result = await _getCities(args);
         return {
@@ -42,7 +42,7 @@ export default {
   },
 
   Mutation: {
-    postCity: async (_, args, {}) => {
+    cityPost: async (_, args, {}) => {
       try {
         const result = await _postCity(args);
         return {
@@ -73,7 +73,7 @@ export default {
       }
     },
 
-    deleteCity: async (_, args, {}) => {
+    cityDelete: async (_, args, {}) => {
       try {
         const result = await _deleteCity(args);
         return {

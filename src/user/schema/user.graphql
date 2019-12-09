@@ -7,7 +7,7 @@ type Query {
   """
   get the user own profile
   """
-  getUserProfile: UserProfilePayload!
+  userProfile: UserProfilePayload!
 }
 
 type Mutation {
@@ -18,7 +18,7 @@ type Mutation {
   """
   update userprofile
   """
-  postUserProfile(
+  userProfilePost(
     username: String
     email: String!
     profile: String
@@ -26,7 +26,7 @@ type Mutation {
   """
   delete user
   """
-  deleteUser: Payload
+  userDelete: Payload
 }
 
 interface Node {

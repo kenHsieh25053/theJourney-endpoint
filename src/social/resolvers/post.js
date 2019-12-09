@@ -7,7 +7,7 @@ import {
 
 export default {
   Query: {
-    getPosts: async (_, args, {}) => {
+    posts: async (_, args, {}) => {
       try {
         const result = await _getPosts(args);
         return {
@@ -33,7 +33,7 @@ export default {
   },
 
   Mutation: {
-    addorUpdatePost: async (_, args, {
+    postAddorUpdate: async (_, args, {
       user
     }) => {
       try {
@@ -58,7 +58,7 @@ export default {
       }
     },
 
-    deletePost: async (_, args, {}) => {
+    postDelete: async (_, args, {}) => {
       try {
         const result = await _deletePost(args);
         return {

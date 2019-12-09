@@ -2,14 +2,14 @@ type Query {
   """
   get all city
   """
-  getCities(travelListId: ID!): Cities!
+  cities(travelListId: ID!): Cities!
 }
 
 type Mutation {
   """
   create or update city
   """
-  postCity(
+  cityPost(
     id: ID
     name: String!
     stayFrom: String!
@@ -21,7 +21,7 @@ type Mutation {
   """
   delete city
   """
-  deleteCity(id: ID!): Payload
+  cityDelete(id: ID!): Payload
 }
 
 type CityPayload {
