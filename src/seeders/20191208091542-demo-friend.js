@@ -3,12 +3,12 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('friends', [{
-      id: '3',
-      friends: 2,
-      friendList: ['1'],
-      createdAt: '2019-10-10',
-      updatedAt: '2019-10-15',
-      userId: 'aef8ab8d-0d33-46f3-a23e-fe0ef12190cd'
+      id: 'ea72f884-b88b-4ba1-8aee-93890f538c73',
+      friends: 1,
+      friendList: ['8be1fec5-27e6-4cfa-8e67-3281607a7048'],
+      createdAt: '2019-12-10',
+      updatedAt: '2019-12-15',
+      userId: '24e40ba8-5a21-4ba8-a293-445741a2b08f'
     }], {});
   },
 

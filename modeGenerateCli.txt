@@ -15,3 +15,7 @@ npx sequelize-cli model:generate --name City --attributes id:uuid,name:string,lo
 npx sequelize-cli model:generate --name ToruistSpot --attributes id:uuid,name:string,type:string,longtitude:float,latitude:float,days:integer,cost:float,rates:integer,transportation:string,review:string,photo_url:string
 
 npx sequelize-cli model:generate --name Notification  --attributes id:uuid,type:string,message:text,createdAt
+
+npx sequelize-cli model:generate --name PostLike --attributes id:uuid,likeList:json,postId:uuid
+
+npx sequelize-cli model:generate --name TravelListLike --attributes id:uuid,likeList:json,postId:uuid

@@ -19,13 +19,16 @@ module.exports = {
         type: Sequelize.FLOAT
       },
       days: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       costs: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       rates: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
+        defaultValue: 0.0
       },
       createdAt: {
         allowNull: false,

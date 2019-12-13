@@ -8,10 +8,19 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4
     },
     text: DataTypes.TEXT,
-    like: DataTypes.INTEGER
+    likes: {
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER
+    } 
   }, {});
   post.associate = function (models) {
     // associations can be defined here
+    post.hasOne(models.postLike, {
+      foreignKey: 'postId',
+      sourceKey: 'id',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE'
+    });
     post.belongsTo(models.user, {
       foreignKey: 'userId',
       onDelete: 'SET NULL',

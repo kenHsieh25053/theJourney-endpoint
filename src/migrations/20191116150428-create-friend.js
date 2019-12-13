@@ -10,12 +10,13 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4
       },
       friends: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
       friendList: {
         type: Sequelize.UUID,
         get() {
-          return this.getDataValue('friendList').split(',')
+          return this.getDataValue('friendList').split(',');
         },
         set(val) {
           this.setDataValue('friendList', val.join(','));

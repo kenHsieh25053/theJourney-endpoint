@@ -13,3 +13,7 @@ npx sequelize-cli seed:generate --name demo-post
 npx sequelize-cli seed:generate --name demo-friend
 
 npx sequelize-cli seed:generate --name demo-relationship
+
+npx sequelize-cli seed:generate --name demo-postLike
+
+npx sequelize-cli seed:generate --name demo-travelListLike

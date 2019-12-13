@@ -2,34 +2,44 @@
 # check friend status
 # server should send notification and lock the user_b's invitation button
 type Query {
-  friendPendingList: Relationships
+  """
+  get all pending request from friends
+  """
+  friendPendingList: UserLists!
+  likeList(id: ID!, type: String!): UserLists!
 }
 
 type Mutation {
-  # friendAdd(user_b: ID!): Payload!
-  # friendAdded: Payload!
-  # friendAddCancel(user_b: ID!): Payload!
-  # friendDisconnect(user_b: ID!): Payload!
+  """
+  create or update relationship depends on 'PENDING', 'CONFIRMED', 'CANCELED' and 'UNFRIEND' status
+  """
   friendActions(user_b: ID, status: String!, actionUserId: ID): Payload!
+  """
+  like/dislike post and travelList
+  """
+  like(id: ID!, type: String!): LikesPayload!
 }
 
-type RelationshipPayload {
+type UserLists {
   status: String!
   message: String
-  relationship: Relationship
+  userLists: [userList!]!
 }
 
-type Relationships {
-  status: String!
-  message: String
-  relationships: [Relationship!]!  
-}
-
-type Relationship implements Node {
+type userList implements Node {
   id: ID!
-  user_b: ID!
+  username: String
+  headshot: String
+  href: String
+}
+
+type LikesPayload {
   status: String!
-  createdAt: String!
-  updatedAt: String!
-  actionUserId: ID!
+  message: String
+  likes: Like
+}
+
+type Like implements Node {
+  id: ID!
+  liked: Boolean!
 }

@@ -11,8 +11,22 @@ module.exports = {
   _userDeleted
 };
 
-async function _userSignup(email, password) {
+async function _userSignup(email, username, password) {
   let hash = bcrypt.hashSync(password, saltrounds);
+
+  // validate username
+  const usernameValidation = await models.user.findOne({
+    where: {
+      username,
+    }
+  });
+
+  if (usernameValidation) {
+    return {
+      status: 403,
+      message: 'Please use other name!'
+    };
+  }
 
   // validate email
   const result = await models.user.findOne({
@@ -20,7 +34,7 @@ async function _userSignup(email, password) {
       email,
     }
   });
-  if (result === null) {
+  if (!result) {
     await models.user.create({
       email,
       password: hash

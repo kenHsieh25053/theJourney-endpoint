@@ -11,7 +11,8 @@
     "init": "node_modules/.bin/sequelize init",
     "migrate": "node_modules/.bin/sequelize db:migrate --env development",
     "undo": "node_modules/.bin/sequelize db:migrate:undo:all --env development",
-    "seed": "node_modules/.bin/sequelize db:seed:all --env development"
+    "seed": "node_modules/.bin/sequelize db:seed:all --env development",
+    "dbsetup": "npm run undo && npm run migrate && npm run seed"
   },
   "keywords": [
     "travel",

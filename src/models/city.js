@@ -12,9 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     latitude: DataTypes.FLOAT,
     stayFrom: DataTypes.DATE,
     stayTo: DataTypes.DATE,
-    days: DataTypes.INTEGER,
-    costs: DataTypes.INTEGER,
-    rates: DataTypes.FLOAT,
+    days: {
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER
+    },
+    costs: {
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER
+    },
+    rates: {
+      type: DataTypes.FLOAT,
+      defaultValue: DataTypes.FLOAT
+    },
     transportation: DataTypes.STRING,
     review: DataTypes.STRING,
     photo_url: DataTypes.STRING

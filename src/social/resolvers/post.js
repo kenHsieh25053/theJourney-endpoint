@@ -44,6 +44,7 @@ export default {
           post: {
             id: result.id,
             text: result.text,
+            likes: result.likes,
             createdAt: result.createdAt,
             updatedAt: result.updatedAt,
             userId: result.userId,

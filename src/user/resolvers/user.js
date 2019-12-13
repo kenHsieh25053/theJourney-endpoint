@@ -67,10 +67,11 @@ export default {
   Mutation: {
     signup: async (_, {
       email,
+      username,
       password
     }) => {
       try {
-        const result = await _userSignup(email, password);
+        const result = await _userSignup(email, username, password);
         return {
           status: result.status,
           message: result.message

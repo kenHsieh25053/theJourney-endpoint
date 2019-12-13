@@ -14,7 +14,7 @@ type Mutation {
   """
   sign up with email and password
   """
-  signup(email: String!, password: String!): Payload!
+  signup(email: String!, username: String!, password: String!): Payload!
   """
   update userprofile
   """

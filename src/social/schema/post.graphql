@@ -1,9 +1,19 @@
 type Query {
+  """
+  get posts
+  """
   posts(travelListId: ID!): Posts!
+  # postLikes(id:ID!): PostLikes!
 }
 
 type Mutation {
+  """
+  create or update post
+  """
   postAddorUpdate(id: ID, travelListId: ID!, text: String!): PostPayload!
+  """
+  delete post
+  """
   postDelete(id: ID!): Payload!
 }
 
@@ -16,6 +26,7 @@ type PostPayload {
 type Post implements Node {
   id: ID!
   text: String!
+  likes: Int!
   createdAt: String!
   updatedAt: String!
   userId: ID!
@@ -27,3 +38,15 @@ type Posts {
   message: String
   posts: [Post!]!
 }
+
+# type PostLikes {
+#   status: String!
+#   message: String
+#   postlikes: [PostLike!]!
+# }
+
+# type PostLike implements Node {
+#   id: ID!
+#   likeList: JSON!
+#   postId: ID!
+# }

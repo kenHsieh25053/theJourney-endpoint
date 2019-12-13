@@ -11,6 +11,7 @@ module.exports = {
       },
       username: {
         type: Sequelize.STRING,
+        defaultValue: 'Please fill your name'
       },
       password: {
         type: Sequelize.STRING,
@@ -19,6 +20,12 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         unique: true
+      },
+      gender: {
+        type: Sequelize.STRING
+      },
+      birthday: {
+        type: Sequelize.DATE
       },
       position: {
         type: Sequelize.STRING

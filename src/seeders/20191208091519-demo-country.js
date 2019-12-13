@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('countries', [{
-      id: '1',
+      id: '6912b57e-42c9-4f7e-b7e5-686476b3432f',
       name: 'Japan',
       longtitude: null,
       latitude: null,

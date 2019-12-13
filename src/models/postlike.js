@@ -1,26 +1,22 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const friend = sequelize.define('friend', {
+  const postLike = sequelize.define('postLike', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
       defaultValue: DataTypes.UUIDV4
     },
-    friends: {
-      type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER
-    },
-    friendList: DataTypes.UUID
+    likeList: DataTypes.JSON
   }, {});
-  friend.associate = function (models) {
+  postLike.associate = function(models) {
     // associations can be defined here
-    friend.belongsTo(models.user, {
-      foreignKey: 'userId',
+    postLike.belongsTo(models.post, {
+      foreignKey: 'postId',
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE',
       targetKey: 'id'
     });
   };
-  return friend;
+  return postLike;
 };

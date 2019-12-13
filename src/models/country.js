@@ -10,9 +10,18 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     longtitude: DataTypes.FLOAT,
     latitude: DataTypes.FLOAT,
-    days: DataTypes.INTEGER,
-    costs: DataTypes.INTEGER,
-    rates: DataTypes.FLOAT
+    days: {
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER
+    },
+    costs: {
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.INTEGER
+    },
+    rates: {
+      type: DataTypes.INTEGER,
+      defaultValue: DataTypes.FLOAT
+    }
   }, {});
   country.associate = function (models) {
     // associations can be defined here
