@@ -17,11 +17,9 @@ type Mutation {
     id: ID
     name: String!
     tags: [String]
+    type: String
     stayFrom: String!
     stayTo: String!
-    cost: Int
-    rates: Int
-    likes: Int
     transportation: String
     review: String
   ): TravelListPayload!
@@ -47,11 +45,12 @@ type Travellist implements Node {
   id: ID!
   name: String!
   tags: [String]
+  type: String
   stayFrom: String!
   stayTo: String!
   days: String
   cost: Int
-  rates: Int
+  rates: Float
   likes: Int
   transportation: String
   review: String

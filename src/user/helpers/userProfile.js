@@ -11,11 +11,11 @@ async function _postUserProfile(userId, args) {
       id: userId
     }
   });
-  const result = await models.user.findByPk(userId);
-  return result;
+  const userProfile = await models.user.findByPk(userId);
+  return userProfile;
 }
 
 async function _getUserProfile(userId) {
-  const result = await models.user.findByPk(userId);
-  return result;
+  const userProfile = await models.user.findByPk(userId);
+  return userProfile;
 }

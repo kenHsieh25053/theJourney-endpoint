@@ -44,7 +44,7 @@ type City implements Node {
   stayFrom: String!
   stayTo: String!
   cost: Int
-  rates: Int
+  rates: Float
   transportation: String
   review: String
   photo_url: String

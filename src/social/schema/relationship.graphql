@@ -1,11 +1,17 @@
-
 # check friend status
 # server should send notification and lock the user_b's invitation button
 type Query {
   """
-  get all pending request from friends
+  get all pending request
   """
   friendPendingList: UserLists!
+  """
+  get all confrimed friends' list
+  """
+  friendList: UserLists!
+  """
+  get all users who like this post/travellist
+  """
   likeList(id: ID!, type: String!): UserLists!
 }
 

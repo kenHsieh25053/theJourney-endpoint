@@ -29,12 +29,12 @@ async function _userSignup(email, username, password) {
   }
 
   // validate email
-  const result = await models.user.findOne({
+  const emailValidation = await models.user.findOne({
     where: {
       email,
     }
   });
-  if (!result) {
+  if (!emailValidation) {
     await models.user.create({
       email,
       password: hash
@@ -53,13 +53,13 @@ async function _userSignup(email, username, password) {
 
 async function _userLogin(args) {
   // validate email
-  const result = await models.user.findOne({
+  const emailValidation = await models.user.findOne({
     where: {
       email: args.email
     },
     attributes: ['id', 'email', 'password']
   });
-  if (!result) {
+  if (!emailValidation) {
     return {
       status: 403,
       message: 'Invaild email'
@@ -67,7 +67,7 @@ async function _userLogin(args) {
   }
 
   // validate password
-  let match = await bcrypt.compare(args.password, result.password);
+  let match = await bcrypt.compare(args.password, emailValidation.password);
   if (!match) {
     return {
       status: 403,
@@ -76,7 +76,7 @@ async function _userLogin(args) {
   }
 
   const id_token = jwt.sign({
-    id: result.id,
+    id: emailValidation.id,
     exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24)
   }, process.env.JWT_SECRETKEY);
   return {
@@ -90,13 +90,13 @@ async function _userLogout() {
 }
 
 async function _userDeleted(userId) {
-  const result = await models.user.destroy({
+  const user = await models.user.destroy({
     where: {
       id: userId
     }
   });
 
-  if (result) {
+  if (user) {
     return 'User deleted!';
   } else {
     return 'Can\'t find user';

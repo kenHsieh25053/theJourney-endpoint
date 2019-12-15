@@ -1,26 +1,24 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const friend = sequelize.define('friend', {
+  const notification = sequelize.define('notification', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
       defaultValue: DataTypes.UUIDV4
     },
-    friends: {
-      type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER
-    },
-    friendList: DataTypes.JSON // todo friendlist json
+    type: DataTypes.STRING,
+    href: DataTypes.STRING,
+    message: DataTypes.STRING
   }, {});
-  friend.associate = function (models) {
+  notification.associate = function (models) {
     // associations can be defined here
-    friend.belongsTo(models.user, {
+    notification.belongsTo(models.user, {
       foreignKey: 'userId',
+      sourceKey: 'id',
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE',
-      targetKey: 'id'
     });
   };
-  return friend;
+  return notification;
 };

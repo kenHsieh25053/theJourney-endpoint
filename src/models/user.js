@@ -50,6 +50,12 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE'
     });
+    user.hasMany(models.notification, {
+      foreignKey: 'userId',
+      sourceKey: 'id',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE'
+    });
   };
   return user;
 };

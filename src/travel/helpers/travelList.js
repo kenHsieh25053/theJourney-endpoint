@@ -9,7 +9,7 @@ module.exports = {
 };
 
 async function _getTravelLists(userId) {
-  const result = await models.travelList.findAll({
+  const travelLists = await models.travelList.findAll({
     where: {
       userId: userId
     },
@@ -17,53 +17,56 @@ async function _getTravelLists(userId) {
       ['createdAt', 'DESC']
     ]
   });
-  return result;
+  return travelLists;
 }
 
 async function _getAllTravelLists() {
-  const result = await models.travelList.findAll({
+  const allTravelLists = await models.travelList.findAll({
     order: [
       ['updatedAt', 'DESC']
     ]
   });
-  return result;
+  return allTravelLists;
 }
 
 async function _postTravelList(userId, args) {
   const id = uuidv4();
+  // convert tags from string to json string
+  args.tags = JSON.stringify(args.tags);
+  // Insert id, userId for new travelList row
   let data = Object.assign({}, args, {
+    id,
     userId
   });
-  // Insert id for new travelList row
-  data['id'] = id;
-  const result = await models.travelList.findOrCreate({
+
+  const travelList = await models.travelList.findOrCreate({
     where: {
       id: args.id
     },
     defaults: data
   });
 
-  if (!result[1]) {
+  if (!travelList[1]) {
     await models.travelList.update(args, {
       where: {
-        id: result[0].id
+        id: travelList[0].id
       }
     });
-    const updatedResult = await models.travelList.findByPk(result[0].id);
+    const updatedResult = await models.travelList.findByPk(travelList[0].id);
     return updatedResult;
   } else {
-    return result[0];
+    return travelList;
   }
 }
 
 async function _deleteTravelList(args) {
-  const result = await models.travelList.destroy({
+  const travelList = await models.travelList.destroy({
     where: {
       id: args.id
     }
   });
 
-  if (result) {
+  if (travelList) {
     return 'TravelList deleted!';
   } else {
     return 'Can\'t find travelList';

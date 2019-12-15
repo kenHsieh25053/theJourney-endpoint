@@ -1,5 +1,6 @@
 import {
   _friendPendingList,
+  _friendList,
   _friendActions,
   _likeLists,
   _updateLike
@@ -14,6 +15,37 @@ export default {
       try {
         const userId = user.id;
         const result = await _friendPendingList(userId);
+        if (!result) {
+          return {
+            status: 200,
+            userLists: null
+          };
+        }
+        return {
+          status: 200,
+          userLists: result.map(item => {
+            return {
+              id: item.id,
+              username: item.username,
+              headshot: item.headshot,
+              href: null
+            };
+          })
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err.message
+        };
+      }
+    },
+
+    friendList: async (_, {}, {
+      user
+    }) => {
+      try {
+        const userId = user.id;
+        const result = await _friendList(userId);
         if (!result) {
           return {
             status: 200,

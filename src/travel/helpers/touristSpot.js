@@ -13,7 +13,7 @@ async function _postTouristSpot(args) {
     const id = uuidv4();
     args['id'] = id;
   }
-  const result = await models.touristSpot.findOrCreate({
+  const touristSpot = await models.touristSpot.findOrCreate({
     where: {
       id: args.id
     },
@@ -59,21 +59,21 @@ async function _postTouristSpot(args) {
     }
   });
 
-  if (!result[1]) {
+  if (!touristSpot[1]) {
     await models.touristSpot.update(args, {
       where: {
-        id: result[0].id
+        id: touristSpot[0].id
       }
     });
-    const updatedResult = await models.touristSpot.findByPk(result[0].id);
+    const updatedResult = await models.touristSpot.findByPk(touristSpot[0].id);
     return updatedResult;
   } else {
-    return result[0];
+    return touristSpot[0];
   }
 }
 
 async function _getTouristSpots(args) {
-  const result = await models.touristSpot.findAll({
+  const touristSpot = await models.touristSpot.findAll({
     where: {
       cityId: args.cityId
     },
@@ -81,17 +81,17 @@ async function _getTouristSpots(args) {
       ['createdAt', 'ASC']
     ]
   });
-  return result;
+  return touristSpot;
 }
 
 async function _deleteTouristSpot(args) {
-  const result = await models.touristSpot.destroy({
+  const touristSpot = await models.touristSpot.destroy({
     where: {
       id: args.id
     }
   });
 
-  if (result) {
+  if (touristSpot) {
     return 'TouristSpot deleted!';
   } else {
     return 'Can\'t find touristSpot';

@@ -7,11 +7,8 @@ module.exports = {
   _deletePost
 };
 
-// todo
-// getPosts
-
 async function _getPosts(args) {
-  const result = await models.post.findAll({
+  const posts = await models.post.findAll({
     where: {
       travelListId: args.travelListId
     },
@@ -19,7 +16,7 @@ async function _getPosts(args) {
       ['createdAt', 'DESC']
     ]
   });
-  return result;
+  return posts;
 }
 
 async function _addorUpdatePost(args, userId) {
@@ -27,34 +24,34 @@ async function _addorUpdatePost(args, userId) {
   // Insert id for new post row
   args['id'] = id;
   args['userId'] = userId;
-  const result = await models.post.findOrCreate({
+  const post = await models.post.findOrCreate({
     where: {
       id
     },
     defaults: args
   });
 
-  if (!result[1]) {
+  if (!post[1]) {
     await models.post.update(args, {
       where: {
-        id: result[0].id
+        id: post[0].id
       }
     });
-    const updatedResult = await models.post.findByPk(result[0].id);
+    const updatedResult = await models.post.findByPk(post[0].id);
     return updatedResult;
   } else {
-    return result[0];
+    return post[0];
   }
 }
 
 async function _deletePost(args) {
-  const result = await models.post.destroy({
+  const post = await models.post.destroy({
     where: {
       id: args.id
     }
   });
 
-  if (result) {
+  if (post) {
     return 'Post deleted!';
   } else {
     return 'Can\'t find the post';

@@ -13,28 +13,28 @@ async function _postCity(args) {
     const id = uuidv4();
     args['id'] = id;
   }
-  const result = await models.city.findOrCreate({
+  const city = await models.city.findOrCreate({
     where: {
       id: args.id
     },
     defaults: args
   });
 
-  if (!result[1]) {
+  if (!city[1]) {
     await models.city.update(args, {
       where: {
-        id: result[0].id
+        id: city[0].id
       }
     });
-    const updatedResult = await models.city.findByPk(result[0].id);
+    const updatedResult = await models.city.findByPk(city[0].id);
     return updatedResult;
   } else {
-    return result[0];
+    return city[0];
   }
 }
 
 async function _getCities(args) {
-  const result = await models.city.findAll({
+  const city = await models.city.findAll({
     where: {
       travelListId: args.travelListId
     },
@@ -42,17 +42,17 @@ async function _getCities(args) {
       ['createdAt', 'ASC']
     ]
   });
-  return result;
+  return city;
 }
 
 async function _deleteCity(args) {
-  const result = await models.city.destroy({
+  const city = await models.city.destroy({
     where: {
       id: args.id
     }
   });
 
-  if (result) {
+  if (city) {
     return 'City deleted!';
   } else {
     return 'Can\'t find the city';

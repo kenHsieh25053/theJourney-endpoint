@@ -8,17 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4
     },
     name: DataTypes.STRING,
-    // tags: { // need to find another way to do this
-    //   type: DataTypes.STRING,
-    //   get() {
-    //     console.log(this.getDataValue('tags'));
-    //     return this.getDataValue('tags').split(',');
-    //   },
-    //   set(val) {
-    //     console.log(this.setDataValue('tags'));
-    //     this.setDataValue('tags', val.join(','));
-    //   },
-    // },
+    tags: DataTypes.JSON,
     type: DataTypes.STRING,
     stayFrom: DataTypes.DATE,
     stayTo: DataTypes.DATE,

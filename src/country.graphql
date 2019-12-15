@@ -15,7 +15,7 @@
 #   stay_time_to: String!
 #   stay_time_total: String!
 #   cost: Int
-#   rates: Int
+#   rates: Float
 #   createdAt: String!
 #   updatedAt: String!
 #   cities: [String!]!

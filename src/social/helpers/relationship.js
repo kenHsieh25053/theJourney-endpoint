@@ -1,16 +1,19 @@
 import models from '../../models';
-const { Sequelize } = require('sequelize');
+const {
+  Sequelize
+} = require('sequelize');
 const Op = Sequelize.Op;
 
 module.exports = {
   _friendActions,
   _friendPendingList,
+  _friendList,
   _likeLists,
   _updateLike
 };
 
 async function _friendActions(args, userId) {
-  switch(args.status) {
+  switch (args.status) {
     // actionUser sends invitation to user_b
     case 'PENDING': {
       args['actionUserId'] = userId;
@@ -20,7 +23,7 @@ async function _friendActions(args, userId) {
     }
     // user_b accepts invitation from actionUser
     case 'CONFIRMED': {
-      const result = await models.relationship.findOne({
+      const relationship = await models.relationship.findOne({
         where: {
           user_b: userId,
           status: 'PENDING',
@@ -31,21 +34,22 @@ async function _friendActions(args, userId) {
         'status': args.status
       }, {
         where: {
-          id: result.id
+          id: relationship.id
         }
       });
+      // todo: update friends table
       return 'Invitation confirm!';
     }
     // actionUser cancels the invitation 
     case 'CANCELED': {
-      const result = await models.relationship.findOne({
+      const relationship = await models.relationship.findOne({
         where: {
           user_b: args.user_b,
           status: 'PENDING',
           actionUserId: userId
         }
       });
-      if (!result) {
+      if (!relationship) {
         return {
           status: 404,
           message: 'Invitation doesn\'t exist'
@@ -55,14 +59,14 @@ async function _friendActions(args, userId) {
         'status': args.status
       }, {
         where: {
-          id: result.id
+          id: relationship.id
         }
       });
       return 'Invitation canceled!';
     }
     // actionUser unfriend user_b
     case 'UNFRIEND': {
-      const result = await models.relationship.findOne({ 
+      const relationship = await models.relationship.findOne({
         where: {
           status: 'CONFIRMED',
           [Op.or]: [
@@ -74,12 +78,12 @@ async function _friendActions(args, userId) {
             // actionUser was invited by user_b
             {
               user_b: userId,
-              actionUserId: args.user_b            
+              actionUserId: args.user_b
             }
           ]
         }
       });
-      if (!result) {
+      if (!relationship) {
         return {
           status: 404,
           message: 'Invitation doesn\'t exist'
@@ -89,16 +93,17 @@ async function _friendActions(args, userId) {
         'status': args.status
       }, {
         where: {
-          id: result.id
+          id: relationship.id
         }
       });
+      // todo: update friend't table
       return 'Unfriended';
-    }  
+    }
   }
 }
 
 async function _friendPendingList(userId) {
-  const result = await models.user.findAll({
+  const relationship = await models.user.findAll({
     include: [{
       model: models.relationship,
       where: {
@@ -108,15 +113,32 @@ async function _friendPendingList(userId) {
     }],
     attributes: ['id', 'username', 'headshot']
   });
-  return result;
+  return relationship;
+}
+
+//todo
+async function _friendList(userId) {
+  // get user's friend's list
+  // return result
 }
 
 async function _likeLists(args) {
-  switch(args.type) {
+  switch (args.type) {
     case 'POSTLIKE': {
       let userList = await models.postLike.findOne({
         where: {
           postId: args.id
+        },
+        attributes: ['likeList']
+      });
+      const userListArray = JSON.parse(userList.likeList);
+      return userListArray;
+    }
+
+    case 'TRVELLISTLIKE': {
+      let userList = await models.travelListLike.findOne({
+        where: {
+          travelListId: args.id
         },
         attributes: ['likeList']
       });
@@ -129,7 +151,7 @@ async function _likeLists(args) {
 // user can like/dislike post and travelList
 // depends on type: 'POSTLIKE' or 'TRVELLISTLIKE'
 async function _updateLike(args, userId) {
-  switch(args.type) {
+  switch (args.type) {
     case 'POSTLIKE': {
       // get user's infomation
       const user = await models.user.findByPk(userId, {
@@ -142,7 +164,7 @@ async function _updateLike(args, userId) {
         headshot: user.headshot,
         href: null
       };
-      
+
       // check the post has been liked by user or not
       const postLikeExisted = await models.postLike.findOne({
         where: {
@@ -172,10 +194,10 @@ async function _updateLike(args, userId) {
       } else {
         // check the user exist or not
         const originalLikeList = JSON.parse(postLikeExisted.likeList);
-        const userExist = originalLikeList.filter(item => { 
+        const userExist = originalLikeList.filter(item => {
           return item.id === userId;
         });
-        switch(userExist.length) {
+        switch (userExist.length) {
           // user dosen't exist
           case 0: {
             originalLikeList.push(likeList);
@@ -230,7 +252,7 @@ async function _updateLike(args, userId) {
       }
       break;
     }
-    
+
     case 'TRVELLISTLIKE': {
       // get user's infomation
       const user = await models.user.findByPk(userId, {
@@ -243,7 +265,7 @@ async function _updateLike(args, userId) {
         headshot: user.headshot,
         href: null
       };
-      
+
       // check the travelList has been liked by user or not
       const travelListLikeExisted = await models.travelListLike.findOne({
         where: {
@@ -273,11 +295,10 @@ async function _updateLike(args, userId) {
       } else {
         // check the user exist or not
         const originalLikeList = JSON.parse(travelListLikeExisted.likeList);
-        // const originalLikeList = travelListLikeExisted.likeList;
-        const userExist = originalLikeList.filter(item => { 
+        const userExist = originalLikeList.filter(item => {
           return item.id === userId;
         });
-        switch(userExist.length) {
+        switch (userExist.length) {
           // user dosen't exist
           case 0: {
             originalLikeList.push(likeList);
@@ -305,7 +326,6 @@ async function _updateLike(args, userId) {
           case 1: {
             // find the userId then delete it
             const likeList = JSON.parse(travelListLikeExisted.likeList);
-            // const likeList = travelListLikeExisted.likeList;
             let updatedList = likeList.filter(item => {
               return item.id != userId;
             });

@@ -15,7 +15,7 @@ type Mutation {
     type: String!
     days: Int!
     cost: Int!
-    rates: Int!
+    rates: Float!
     transportation: String
     review: String
     cityId: ID!
@@ -46,7 +46,7 @@ type TouristSpot implements Node {
   latitude: Int
   days: Int!
   cost: Int!
-  rates: Int!
+  rates: Float!
   transportation: String
   review: String
   photo_url: String

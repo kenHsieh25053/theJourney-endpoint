@@ -13,13 +13,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       tags: {
-        type: Sequelize.STRING,
-        get() {
-          return this.getDataValue('tags').split(',');
-        },
-        set(val) {
-          this.setDataValue('tags', val.join(','));
-        },
+        type: Sequelize.JSON
       },
       type: {
         type: Sequelize.STRING
@@ -44,7 +38,7 @@ module.exports = {
       likes: {
         type: Sequelize.INTEGER,
         defaultValue: 0
-      },    
+      },
       transportation: {
         type: Sequelize.STRING
       },

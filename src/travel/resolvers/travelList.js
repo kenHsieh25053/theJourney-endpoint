@@ -20,6 +20,7 @@ export default {
               id: item.id,
               name: item.name,
               tags: item.tags,
+              type: item.type,
               stayFrom: item.stayFrom,
               stayTo: item.stayTo,
               days: item.days,
@@ -51,7 +52,8 @@ export default {
             return {
               id: item.id,
               name: item.name,
-              tags: item.tags,
+              tags: JSON.parse(item.tags),
+              type: item.type,
               stayFrom: item.stayFrom,
               stayTo: item.stayTo,
               days: item.days,
@@ -87,7 +89,8 @@ export default {
           travelList: {
             id: result.id,
             name: result.name,
-            tags: result.tags,
+            tags: JSON.parse(result.tags),
+            type: result.type,
             stayFrom: result.stayFrom,
             stayTo: result.stayTo,
             days: result.days,
