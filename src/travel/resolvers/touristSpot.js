@@ -7,7 +7,7 @@ import {
 
 export default {
   Query: {
-    touristSpots: async (_, args, {}) => {
+    touristSpots: async (_, args) => {
       try {
         const result = await _getTouristSpots(args);
         return {
@@ -34,14 +34,14 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }
   },
 
   Mutation: {
-    touristSpotPost: async (_, args, {}) => {
+    touristSpotPost: async (_, args) => {
       try {
         const result = await _postTouristSpot(args);
         return {
@@ -66,12 +66,12 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
 
-    touristSpotDelete: async (_, args, {}) => {
+    touristSpotDelete: async (_, args) => {
       try {
         const result = await _deleteTouristSpot(args);
         return {
@@ -81,7 +81,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }

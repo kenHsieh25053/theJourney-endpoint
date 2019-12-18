@@ -10,7 +10,7 @@ type Query {
   """
   friendList: UserLists!
   """
-  get all users who like this post/travellist
+  get all users who like this postComment, post and travellist
   """
   likeList(id: ID!, type: String!): UserLists!
 }
@@ -19,9 +19,9 @@ type Mutation {
   """
   create or update relationship depends on 'PENDING', 'CONFIRMED', 'CANCELED' and 'UNFRIEND' status
   """
-  friendActions(user_b: ID, status: String!, actionUserId: ID): Payload!
+  friendActions(user_b: ID, status: String!): Payload!
   """
-  like/dislike post and travelList
+  like/dislike post, postComment and travelList
   """
   like(id: ID!, type: String!): LikesPayload!
 }

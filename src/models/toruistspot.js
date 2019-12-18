@@ -13,15 +13,15 @@ module.exports = (sequelize, DataTypes) => {
     latitude: DataTypes.FLOAT,
     days: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER
+      defaultValue: 0
     },
     costs: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER
+      defaultValue: 0
     },
     rates: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.FLOAT
+      defaultValue: 0.0
     },
     transportation: DataTypes.STRING,
     review: DataTypes.STRING,

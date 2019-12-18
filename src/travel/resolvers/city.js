@@ -7,7 +7,7 @@ import {
 
 export default {
   Query: {
-    cities: async (_, args, {}) => {
+    cities: async (_, args) => {
       try {
         const result = await _getCities(args);
         return {
@@ -35,14 +35,14 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }
   },
 
   Mutation: {
-    cityPost: async (_, args, {}) => {
+    cityPost: async (_, args) => {
       try {
         const result = await _postCity(args);
         return {
@@ -68,12 +68,12 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
 
-    cityDelete: async (_, args, {}) => {
+    cityDelete: async (_, args) => {
       try {
         const result = await _deleteCity(args);
         return {
@@ -83,7 +83,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }

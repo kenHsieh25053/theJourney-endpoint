@@ -21,3 +21,7 @@ npx sequelize-cli model:generate --name PostLike --attributes id:uuid,likeList:j
 npx sequelize-cli model:generate --name TravelListLike --attributes id:uuid,likeList:json,postId:uuid
 
 npx sequelize-cli model:generate --name Notification --attributes id:uuid,type:string,href:string,message:string,userId:uuid
+
+npx sequelize-cli model:generate --name PostComment  --attributes id:uuid,text:text,like:integer
+
+npx sequelize-cli model:generate --name PostCommentLike --attributes id:uuid,likeList:json,PostCommentId:uuid

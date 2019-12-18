@@ -7,7 +7,7 @@ import {
 
 export default {
   Query: {
-    posts: async (_, args, {}) => {
+    posts: async (_, args) => {
       try {
         const result = await _getPosts(args);
         return {
@@ -16,6 +16,7 @@ export default {
             return {
               id: item.id,
               text: item.text,
+              likes: item.likes,
               createdAt: item.createdAt,
               updatedAt: item.updatedAt,
               userId: item.userId,
@@ -26,7 +27,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }
@@ -54,12 +55,12 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
 
-    postDelete: async (_, args, {}) => {
+    postDelete: async (_, args) => {
       try {
         const result = await _deletePost(args);
         return {
@@ -69,7 +70,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }

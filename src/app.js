@@ -34,8 +34,6 @@ import {
   schema
 } from './schema.js';
 
-
-
 // Server configration
 const server = new ApolloServer({
   schema,

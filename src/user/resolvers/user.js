@@ -21,7 +21,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
@@ -34,7 +34,7 @@ export default {
     //   };
     // },
 
-    userProfile: async (_, {}, {
+    userProfile: async (_, __, {
       user
     }) => {
       try {
@@ -58,7 +58,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }
@@ -79,7 +79,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
@@ -107,12 +107,12 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
 
-    userDelete: async (_, args, {
+    userDelete: async (_, __, {
       user
     }) => {
       try {
@@ -125,7 +125,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }

@@ -7,7 +7,7 @@ import {
 
 export default {
   Query: {
-    travelLists: async (_, {}, {
+    travelLists: async (_, __, {
       user
     }) => {
       const userId = user.id;
@@ -24,7 +24,7 @@ export default {
               stayFrom: item.stayFrom,
               stayTo: item.stayTo,
               days: item.days,
-              cost: item.cost,
+              costs: item.costs,
               rates: item.rates,
               likes: item.likes,
               createdAt: item.createdAt,
@@ -57,7 +57,7 @@ export default {
               stayFrom: item.stayFrom,
               stayTo: item.stayTo,
               days: item.days,
-              cost: item.cost,
+              costs: item.costs,
               rates: item.rates,
               likes: item.likes,
               createdAt: item.createdAt,
@@ -71,7 +71,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }
@@ -94,7 +94,7 @@ export default {
             stayFrom: result.stayFrom,
             stayTo: result.stayTo,
             days: result.days,
-            cost: result.cost,
+            costs: result.costs,
             rates: result.rates,
             likes: result.likes,
             createdAt: result.createdAt,
@@ -107,12 +107,12 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
 
-    travelListDelete: async (_, args, {}) => {
+    travelListDelete: async (_, args) => {
       try {
         const result = await _deleteTravelList(args);
         return {
@@ -122,7 +122,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }

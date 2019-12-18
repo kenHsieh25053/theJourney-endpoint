@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('friends', {
+    return queryInterface.createTable('postCommentLikes', {
       id: {
         type: Sequelize.UUID,
         allowNull: false,
@@ -9,12 +9,21 @@ module.exports = {
         primaryKey: true,
         defaultValue: Sequelize.UUIDV4
       },
-      friends: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      friendList: {
+      likeList: {
         type: Sequelize.JSON
+      },
+      postCommentId: {
+        type: Sequelize.UUID,
+        references: {
+          model: {
+            tableName: 'postComments',
+            key: 'id'
+          },
+        },
+        foreignKey: true,
+        allowNull: false,
+        onDelete: 'cascade',
+        onUpdate: 'cascade'
       },
       createdAt: {
         allowNull: false,
@@ -23,23 +32,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      userId: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'users',
-            key: 'id'
-          },
-        },
-        foreignKey: true,
-        allowNull: false,
-        onDelete: 'cascade',
-        onUpdate: 'cascade'
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('friends');
+    return queryInterface.dropTable('postCommentLikes');
   }
 };

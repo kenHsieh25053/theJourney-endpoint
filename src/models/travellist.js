@@ -14,19 +14,19 @@ module.exports = (sequelize, DataTypes) => {
     stayTo: DataTypes.DATE,
     days: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER
+      defaultValue: 0
     },
     costs: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER
+      defaultValue: 0
     },
     rates: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.FLOAT
+      defaultValue: 0.0
     },
     likes: {
       type: DataTypes.INTEGER,
-      defaultValue: DataTypes.INTEGER
+      defaultValue: 0
     },
     transportation: DataTypes.STRING,
     review: DataTypes.STRING

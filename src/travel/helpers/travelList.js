@@ -8,6 +8,7 @@ module.exports = {
   _deleteTravelList
 };
 
+// user can see the list of travelLists
 async function _getTravelLists(userId) {
   const travelLists = await models.travelList.findAll({
     where: {
@@ -20,6 +21,7 @@ async function _getTravelLists(userId) {
   return travelLists;
 }
 
+// user can see all users' travelLists
 async function _getAllTravelLists() {
   const allTravelLists = await models.travelList.findAll({
     order: [
@@ -55,10 +57,11 @@ async function _postTravelList(userId, args) {
     const updatedResult = await models.travelList.findByPk(travelList[0].id);
     return updatedResult;
   } else {
-    return travelList;
+    return travelList[0];
   }
 }
 
+// user can delete the travelList
 async function _deleteTravelList(args) {
   const travelList = await models.travelList.destroy({
     where: {

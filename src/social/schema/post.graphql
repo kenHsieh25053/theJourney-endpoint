@@ -1,20 +1,19 @@
 type Query {
   """
-  get posts
+  get posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
-  posts(travelListId: ID!): Posts!
-  # postLikes(id:ID!): PostLikes!
+  posts(id: ID!, type: String!): Posts!
 }
 
 type Mutation {
   """
-  create or update post
+  create or update posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
-  postAddorUpdate(id: ID, travelListId: ID!, text: String!): PostPayload!
+  postAddorUpdate(id: ID, travelListId: ID!, text: String!, type: String!): PostPayload!
   """
-  delete post
+  delete posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
-  postDelete(id: ID!): Payload!
+  postDelete(id: ID!, type: String!): Payload!
 }
 
 type PostPayload {

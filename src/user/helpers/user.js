@@ -11,6 +11,7 @@ module.exports = {
   _userDeleted
 };
 
+// user can sign up
 async function _userSignup(email, username, password) {
   let hash = bcrypt.hashSync(password, saltrounds);
 
@@ -51,6 +52,8 @@ async function _userSignup(email, username, password) {
   }
 }
 
+
+// user can log in
 async function _userLogin(args) {
   // validate email
   const emailValidation = await models.user.findOne({
@@ -85,10 +88,12 @@ async function _userLogin(args) {
   };
 }
 
+// user can log out
 async function _userLogout() {
 
 }
 
+// user can delete own account
 async function _userDeleted(userId) {
   const user = await models.user.destroy({
     where: {

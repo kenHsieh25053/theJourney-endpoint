@@ -5,6 +5,7 @@ module.exports = {
   _getUserProfile
 };
 
+// user can create or updating the user profile
 async function _postUserProfile(userId, args) {
   await models.user.update(args, {
     where: {
@@ -15,6 +16,7 @@ async function _postUserProfile(userId, args) {
   return userProfile;
 }
 
+// user can see the user profile
 async function _getUserProfile(userId) {
   const userProfile = await models.user.findByPk(userId);
   return userProfile;

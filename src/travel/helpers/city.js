@@ -7,6 +7,7 @@ module.exports = {
   _deleteCity
 };
 
+// user can create or updating the city 
 async function _postCity(args) {
   // Insert id for new city row if id is null
   if (!args.id) {
@@ -33,6 +34,7 @@ async function _postCity(args) {
   }
 }
 
+// user can get the list of cities
 async function _getCities(args) {
   const city = await models.city.findAll({
     where: {
@@ -45,6 +47,8 @@ async function _getCities(args) {
   return city;
 }
 
+
+// user can delete the city
 async function _deleteCity(args) {
   const city = await models.city.destroy({
     where: {

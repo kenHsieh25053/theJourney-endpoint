@@ -1,7 +1,7 @@
 import {
+  _friendActions,
   _friendPendingList,
   _friendList,
-  _friendActions,
   _likeLists,
   _updateLike
 } from '../helpers/relationship.js';
@@ -9,7 +9,7 @@ import {
 
 export default {
   Query: {
-    friendPendingList: async (_, {}, {
+    friendPendingList: async (_, __, {
       user
     }) => {
       try {
@@ -35,12 +35,12 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
 
-    friendList: async (_, {}, {
+    friendList: async (_, __, {
       user
     }) => {
       try {
@@ -66,12 +66,12 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },
 
-    likeList: async (_, args, {}) => {
+    likeList: async (_, args) => {
       try {
         const result = await _likeLists(args);
         if (!result) {
@@ -94,7 +94,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     }
@@ -120,7 +120,7 @@ export default {
       } catch (err) {
         return {
           status: 500,
-          message: err.message
+          message: err
         };
       }
     },

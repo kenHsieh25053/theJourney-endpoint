@@ -25,6 +25,14 @@ module.exports = {
       createdAt: '2019-10-10',
       updatedAt: '2019-10-15',
       actionUserId: '24e40ba8-5a21-4ba8-a293-445741a2b08f'
+    },
+    {
+      id: 'a613e846-97e2-46f0-9a1b-656481ed231f',
+      user_b: '24e40ba8-5a21-4ba8-a293-445741a2b08f',
+      status: 'CONFIRMED',
+      createdAt: '2019-10-16',
+      updatedAt: '2019-10-16',
+      actionUserId: 'aef8ab8d-0d33-46f3-a23e-fe0ef12190cd'
     }], {});
   },
 

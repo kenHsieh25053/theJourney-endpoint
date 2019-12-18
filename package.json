@@ -38,7 +38,6 @@
     "express": "^4.16.2",
     "googleapis": "^20.1.0",
     "graphql": "^14.5.8",
-    "graphql-subscriptions": "^1.1.0",
     "graphql-tools": "^4.0.6",
     "graphql-upload": "^8.0.4",
     "helmet": "^3.21.2",
@@ -52,7 +51,6 @@
     "sequelize-cli": "^5.5.1",
     "sqlite3": "^4.1.0",
     "stream-to-buffer": "^0.1.0",
-    "subscriptions-transport-ws": "^0.9.16",
     "uuid": "^3.3.3",
     "winston": "^3.2.1"
   },

@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const post = sequelize.define('post', {
+  const postComment = sequelize.define('postComment', {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
@@ -13,26 +13,26 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0
     } 
   }, {});
-  post.associate = function (models) {
+  postComment.associate = function (models) {
     // associations can be defined here
-    post.hasOne(models.postLike, {
-      foreignKey: 'postId',
+    postComment.hasOne(models.postCommentLike, {
+      foreignKey: 'postCommentId',
       sourceKey: 'id',
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE'
     });
-    post.belongsTo(models.user, {
+    postComment.belongsTo(models.post, {
+      foreignKey: 'postId',
+      onDelete: 'SET NULL',
+      onUpdate: 'CASCADE',
+      targetKey: 'id'
+    });
+    postComment.belongsTo(models.user, {
       foreignKey: 'userId',
       onDelete: 'SET NULL',
       onUpdate: 'CASCADE',
       targetKey: 'id'
     });
-    post.belongsTo(models.travelList, {
-      foreignKey: 'travelListId',
-      onDelete: 'SET NULL',
-      onUpdate: 'CASCADE',
-      targetKey: 'id'
-    });
   };
-  return post;
+  return postComment;
 };
