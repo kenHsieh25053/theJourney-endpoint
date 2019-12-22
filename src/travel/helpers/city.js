@@ -2,13 +2,27 @@ import models from '../../models';
 import uuidv4 from 'uuid/v4';
 
 module.exports = {
-  _postCity,
-  _getCities,
-  _deleteCity
+  _cities,
+  _cityPost,
+  _cityDelete
 };
 
+
+// user can get the list of cities
+async function _cities(args) {
+  const city = await models.city.findAll({
+    where: {
+      travelListId: args.travelListId
+    },
+    order: [
+      ['createdAt', 'ASC']
+    ]
+  });
+  return city;
+}
+
 // user can create or updating the city 
-async function _postCity(args) {
+async function _cityPost(args) {
   // Insert id for new city row if id is null
   if (!args.id) {
     const id = uuidv4();
@@ -34,22 +48,8 @@ async function _postCity(args) {
   }
 }
 
-// user can get the list of cities
-async function _getCities(args) {
-  const city = await models.city.findAll({
-    where: {
-      travelListId: args.travelListId
-    },
-    order: [
-      ['createdAt', 'ASC']
-    ]
-  });
-  return city;
-}
-
-
 // user can delete the city
-async function _deleteCity(args) {
+async function _cityDelete(args) {
   const city = await models.city.destroy({
     where: {
       id: args.id

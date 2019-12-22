@@ -1,7 +1,7 @@
 import {
-  _postCity,
-  _getCities,
-  _deleteCity
+  _cities,
+  _cityPost,
+  _cityDelete
 } from '../helpers/city.js';
 
 
@@ -9,7 +9,7 @@ export default {
   Query: {
     cities: async (_, args) => {
       try {
-        const result = await _getCities(args);
+        const result = await _cities(args);
         return {
           status: 200,
           cities: result.map(item => {
@@ -44,7 +44,7 @@ export default {
   Mutation: {
     cityPost: async (_, args) => {
       try {
-        const result = await _postCity(args);
+        const result = await _cityPost(args);
         return {
           status: 200,
           city: {
@@ -75,7 +75,7 @@ export default {
 
     cityDelete: async (_, args) => {
       try {
-        const result = await _deleteCity(args);
+        const result = await _cityDelete(args);
         return {
           status: 200,
           message: result

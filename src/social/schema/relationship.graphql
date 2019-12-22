@@ -2,7 +2,7 @@
 # server should send notification and lock the user_b's invitation button
 type Query {
   """
-  get all pending request
+  get all pending requests
   """
   friendPendingList: UserLists!
   """
@@ -13,6 +13,10 @@ type Query {
   get all users who like this postComment, post and travellist
   """
   likeList(id: ID!, type: String!): UserLists!
+  """
+  get all notifications
+  """
+  notifications: Notifications!
 }
 
 type Mutation {
@@ -26,14 +30,25 @@ type Mutation {
   like(id: ID!, type: String!): LikesPayload!
 }
 
+type Subscription {
+  friendNotifications(id: ID): FriendNotification
+}
+
 type UserLists {
   status: String!
   message: String
-  userLists: [userList!]!
+  userLists: [UserList!]!
 }
 
-type userList implements Node {
-  id: ID!
+type FriendNotification {
+  message: String
+  userBid: ID!
+  createdAt: String!
+  userInfo: UserList!
+}
+
+type UserList {
+  id: ID
   username: String
   headshot: String
   href: String
@@ -48,4 +63,18 @@ type LikesPayload {
 type Like implements Node {
   id: ID!
   liked: Boolean!
+}
+
+type Notifications {
+  status: String!
+  message: String
+  notifications: [Notification]
+}
+
+type Notification implements Node {
+  id: ID!
+  type: String!
+  href: String
+  message: String
+  createdAt: String!
 }

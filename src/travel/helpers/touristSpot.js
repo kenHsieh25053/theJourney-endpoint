@@ -2,13 +2,26 @@ import models from '../../models';
 import uuidv4 from 'uuid/v4';
 
 module.exports = {
-  _postTouristSpot,
-  _getTouristSpots,
-  _deleteTouristSpot
+  _touristSpots,
+  _touristSpotPost,
+  _touristSpotDelete
 };
 
+// user can see the list of touristSpots
+async function _touristSpots(args) {
+  const touristSpot = await models.touristSpot.findAll({
+    where: {
+      cityId: args.cityId
+    },
+    order: [
+      ['createdAt', 'ASC']
+    ]
+  });
+  return touristSpot;
+}
+
 // user can create or updating the touristSpot
-async function _postTouristSpot(args) {
+async function _touristSpotPost(args) {
   // Insert id for new touristSpot row if id is null
   if (!args.id) {
     const id = uuidv4();
@@ -73,21 +86,8 @@ async function _postTouristSpot(args) {
   }
 }
 
-// user can see the list of touristSpots
-async function _getTouristSpots(args) {
-  const touristSpot = await models.touristSpot.findAll({
-    where: {
-      cityId: args.cityId
-    },
-    order: [
-      ['createdAt', 'ASC']
-    ]
-  });
-  return touristSpot;
-}
-
 // user can delete the touristSpot
-async function _deleteTouristSpot(args) {
+async function _touristSpotDelete(args) {
   const touristSpot = await models.touristSpot.destroy({
     where: {
       id: args.id

@@ -28,6 +28,9 @@ import {
   ApolloServer
 } from 'apollo-server-express';
 import {
+  createServer
+} from 'http';
+import {
   auth
 } from './auth.js';
 import {
@@ -39,15 +42,33 @@ const server = new ApolloServer({
   schema,
   tracing: false,
   cacheControl: false, //enable this when schema cache is set up
-  context: auth
+  context: async ({
+    req,
+    connection
+  }) => {
+    if (connection) {
+      const token = connection.id_token;
+      return await auth(token);
+    } else {
+      const token = req.headers.id_token || '';
+      return await auth(token);
+    }
+  }
 });
 
 server.applyMiddleware({
   app,
   path: '/graphql'
 });
-app.listen({
-  port: 4000
+
+const httpServer = createServer(app);
+server.installSubscriptionHandlers(httpServer);
+
+const PORT = process.env.PORT || 4000;
+
+httpServer.listen({
+  port: PORT
 }, () => {
-  console.log('Apollo Server ready on http://localhost:4000/graphql');
+  console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
+  console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`);
 });

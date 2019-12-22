@@ -2,14 +2,14 @@ import models from '../../models';
 import uuidv4 from 'uuid/v4';
 
 module.exports = {
-  _getTravelLists,
-  _getAllTravelLists,
-  _postTravelList,
-  _deleteTravelList
+  _travelLists,
+  _travelListsAll,
+  _travelListPost,
+  _travelListDelete
 };
 
 // user can see the list of travelLists
-async function _getTravelLists(userId) {
+async function _travelLists(userId) {
   const travelLists = await models.travelList.findAll({
     where: {
       userId: userId
@@ -22,7 +22,7 @@ async function _getTravelLists(userId) {
 }
 
 // user can see all users' travelLists
-async function _getAllTravelLists() {
+async function _travelListsAll() {
   const allTravelLists = await models.travelList.findAll({
     order: [
       ['updatedAt', 'DESC']
@@ -31,7 +31,7 @@ async function _getAllTravelLists() {
   return allTravelLists;
 }
 
-async function _postTravelList(userId, args) {
+async function _travelListPost(userId, args) {
   const id = uuidv4();
   // convert tags from string to json string
   args.tags = JSON.stringify(args.tags);
@@ -62,7 +62,7 @@ async function _postTravelList(userId, args) {
 }
 
 // user can delete the travelList
-async function _deleteTravelList(args) {
+async function _travelListDelete(args) {
   const travelList = await models.travelList.destroy({
     where: {
       id: args.id

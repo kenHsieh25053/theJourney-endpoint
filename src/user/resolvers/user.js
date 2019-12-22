@@ -1,18 +1,11 @@
-import {
-  _userSignup,
-  _userLogin,
-  _userDeleted
-} from '../helpers/user.js';
-import {
-  _getUserProfile,
-  _postUserProfile
-} from '../helpers/userProfile.js';
+import { _signup, _login, _userDelete } from '../helpers/user.js';
+import { _userProfile, _userProfilePost } from '../helpers/userProfile.js';
 
 export default {
   Query: {
     login: async (_, args) => {
       try {
-        const result = await _userLogin(args);
+        const result = await _login(args);
         return {
           status: result.status,
           id_token: result.id_token,
@@ -26,7 +19,7 @@ export default {
       }
     },
 
-    // logout: (_, {}, { user }) => {
+    // logout: (_, ＿＿, { user }) => {
     //   return {
     //     status: 200,
     //     message: 'User logout',
@@ -34,12 +27,10 @@ export default {
     //   };
     // },
 
-    userProfile: async (_, __, {
-      user
-    }) => {
+    userProfile: async (_, __, { user }) => {
       try {
         const userId = user.id;
-        const result = await _getUserProfile(userId);
+        const result = await _userProfile(userId);
         return {
           status: 200,
           userProfile: {
@@ -65,13 +56,9 @@ export default {
   },
 
   Mutation: {
-    signup: async (_, {
-      email,
-      username,
-      password
-    }) => {
+    signup: async (_, { email, username, password }) => {
       try {
-        const result = await _userSignup(email, username, password);
+        const result = await _signup(email, username, password);
         return {
           status: result.status,
           message: result.message
@@ -84,12 +71,10 @@ export default {
       }
     },
 
-    userProfilePost: async (_, args, {
-      user
-    }) => {
+    userProfilePost: async (_, args, { user }) => {
       try {
         const userId = user.id;
-        const result = await _postUserProfile(userId, args);
+        const result = await _userProfilePost(userId, args);
         return {
           status: 200,
           userProfile: {
@@ -112,12 +97,10 @@ export default {
       }
     },
 
-    userDelete: async (_, __, {
-      user
-    }) => {
+    userDelete: async (_, __, { user }) => {
       try {
         const userId = user.id;
-        const result = await _userDeleted(userId);
+        const result = await _userDelete(userId);
         return {
           status: 200,
           message: result

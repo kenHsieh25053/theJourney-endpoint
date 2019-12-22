@@ -1,7 +1,7 @@
 import {
-  _getPosts,
-  _addorUpdatePost,
-  _deletePost
+  _posts,
+  _postAddorUpdate,
+  _postDelete
 } from '../helpers/post.js';
 
 
@@ -9,7 +9,7 @@ export default {
   Query: {
     posts: async (_, args) => {
       try {
-        const result = await _getPosts(args);
+        const result = await _posts(args);
         return {
           status: 200,
           posts: result.map(item => {
@@ -39,7 +39,7 @@ export default {
     }) => {
       try {
         const userId = user.id;
-        const result = await _addorUpdatePost(args, userId);
+        const result = await _postAddorUpdate(args, userId);
         return {
           status: 200,
           post: {
@@ -62,7 +62,7 @@ export default {
 
     postDelete: async (_, args) => {
       try {
-        const result = await _deletePost(args);
+        const result = await _postDelete(args);
         return {
           status: 200,
           message: result

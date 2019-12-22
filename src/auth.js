@@ -4,10 +4,7 @@ import {
 } from 'apollo-server-express';
 
 
-export const auth = async ({
-  req
-}) => {
-  const token = req.headers['id_token'];
+export const auth = async (token) => {
   if (token) {
     try {
       const user = await jwt.verify(token, process.env.JWT_SECRETKEY);
@@ -18,5 +15,5 @@ export const auth = async ({
       throw new AuthenticationError('Id_token expired');
     }
   }
-  return {};
+  return '';
 };

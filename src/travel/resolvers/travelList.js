@@ -1,8 +1,8 @@
 import {
-  _getTravelLists,
-  _getAllTravelLists,
-  _postTravelList,
-  _deleteTravelList
+  _travelLists,
+  _travelListsAll,
+  _travelListPost,
+  _travelListDelete
 } from '../helpers/travelList.js';
 
 export default {
@@ -12,7 +12,7 @@ export default {
     }) => {
       const userId = user.id;
       try {
-        const result = await _getTravelLists(userId);
+        const result = await _travelLists(userId);
         return {
           status: 200,
           travelLists: result.map(item => {
@@ -45,7 +45,7 @@ export default {
 
     travelListsAll: async () => {
       try {
-        const result = await _getAllTravelLists();
+        const result = await _travelListsAll();
         return {
           status: 200,
           travelLists: result.map(item => {
@@ -83,7 +83,7 @@ export default {
     }) => {
       try {
         const userId = user.id;
-        const result = await _postTravelList(userId, args);
+        const result = await _travelListPost(userId, args);
         return {
           status: 200,
           travelList: {
@@ -114,7 +114,7 @@ export default {
 
     travelListDelete: async (_, args) => {
       try {
-        const result = await _deleteTravelList(args);
+        const result = await _travelListDelete(args);
         return {
           status: 200,
           message: result

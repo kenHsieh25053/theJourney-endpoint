@@ -2,14 +2,14 @@ import models from '../../models';
 import uuidv4 from 'uuid/v4';
 
 module.exports = {
-  _getPosts,
-  _addorUpdatePost,
-  _deletePost
+  _posts,
+  _postAddorUpdate,
+  _postDelete
 };
 
 // user can see all of the posts
-async function _getPosts(args) {
-  switch(args.type) {
+async function _posts(args) {
+  switch (args.type) {
     case 'POSTS': {
       const posts = await models.post.findAll({
         where: {
@@ -37,8 +37,8 @@ async function _getPosts(args) {
 }
 
 // user can create or updating the post
-async function _addorUpdatePost(args, userId) {
-  switch(args.type) {
+async function _postAddorUpdate(args, userId) {
+  switch (args.type) {
     case 'POST': {
       // Insert id, userId for new post row
       let data = Object.assign({}, args, {
@@ -93,15 +93,15 @@ async function _addorUpdatePost(args, userId) {
 }
 
 // user can delete the post
-async function _deletePost(args) {
-  switch(args.type) {
+async function _postDelete(args) {
+  switch (args.type) {
     case 'POST': {
       const post = await models.post.destroy({
         where: {
           id: args.id
         }
       });
-    
+
       if (post) {
         return 'Post deleted!';
       } else {
@@ -115,7 +115,7 @@ async function _deletePost(args) {
           id: args.id
         }
       });
-    
+
       if (post) {
         return 'PostComment deleted!';
       } else {

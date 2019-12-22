@@ -10,7 +10,8 @@ module.exports = {
   _friendPendingList,
   _friendList,
   _likeLists,
-  _updateLike
+  _updateLike,
+  _notifications
 };
 
 // user can send, accept or canceling friend invitation, disconnect with friend,
@@ -42,7 +43,7 @@ async function _friendActions(args, userId) {
       });
       // update user/user_b's friend table
       const userUpdateList = [userId, args.user_b];
-      userUpdateList.forEach( async (id) => {
+      userUpdateList.forEach(async (id) => {
         const friendExist = await models.friend.findOne({
           where: {
             userId: id
@@ -50,7 +51,7 @@ async function _friendActions(args, userId) {
         });
         // if user/user_b's firend row doesn't exist
         if (!friendExist) {
-          switch(id) {
+          switch (id) {
             // find user_b's info then create the friend row
             case userId: {
               const userBInfo = await models.user.findByPk(args.user_b, {
@@ -93,7 +94,7 @@ async function _friendActions(args, userId) {
           // if user's firend row exist
         } else {
           // find user_b's info then update the friend table
-          switch(id) {
+          switch (id) {
             case userId: {
               const userBInfo = await models.user.findByPk(args.user_b, {
                 attributes: ['id', 'username', 'headshot']
@@ -211,7 +212,7 @@ async function _friendActions(args, userId) {
       // update user/user_b's row in friend table 
       const userUpdateList = [userId, args.user_b];
       userUpdateList.forEach(async (id) => {
-        switch(id) {
+        switch (id) {
           // find user's info then update the friend table
           case userId: {
             const originalfriendList = await models.friend.findOne({
@@ -632,4 +633,20 @@ async function _updateLike(args, userId) {
       break;
     }
   }
+}
+
+// user can see all of the notifications
+async function _notifications(userId) {
+  const notification = models.notification.findAll({
+    where: {
+      userId,
+      message: {
+        [Op.ne]: null
+      }
+    },
+    order: [
+      ['createdAt', 'DESC']
+    ]
+  });
+  return notification;
 }
