@@ -20,7 +20,7 @@ export default {
               createdAt: item.createdAt,
               updatedAt: item.updatedAt,
               userId: item.userId,
-              travelListId: item.travelListId
+              parentId: item.travelListId || item.postId
             };
           })
         };
@@ -49,7 +49,7 @@ export default {
             createdAt: result.createdAt,
             updatedAt: result.updatedAt,
             userId: result.userId,
-            travelListId: result.travelListId
+            parentId: result.travelListId || result.postId
           }
         };
       } catch (err) {
@@ -65,7 +65,8 @@ export default {
         const result = await _postDelete(args);
         return {
           status: 200,
-          message: result
+          message: result,
+          post: {}
         };
       } catch (err) {
         return {

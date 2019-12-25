@@ -155,53 +155,23 @@ export default {
           };
         }
 
+        const userInfo = await models.user.findByPk(userId, {
+          attributes: ['id', 'username', 'headshot']
+        });
+
         // send notification depends on status
         switch (args.status) {
           case 'PENDING': {
-            const userInfo = await models.user.findByPk(userId, {
-              attributes: ['id', 'username', 'headshot']
-            });
-            userInfo.href = null;
             const message = `${userInfo.username} has sent an invitation to you!`;
-            const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
-            await pubsub.publish(NOTIFICATIONS, {
-              friendNotifications: {
-                message,
-                userBid: args.user_b,
-                createdAt,
-                userInfo
-              }
-            });
-            await models.notification.create({
-              type: 'FIS', // friend invitation sent
-              message,
-              createdAt,
-              userId: args.user_b
-            });
+            const type = 'FIS'; // friend invitation sent
+            await updateNotification(userInfo, args.user_b, type, message);
             break;
           }
 
           case 'CONFIRMED': {
-            const userInfo = await models.user.findByPk(userId, {
-              attributes: ['id', 'username', 'headshot']
-            });
-            userInfo.href = null;
             const message = `${userInfo.username} and you are firend now!`;
-            const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
-            await pubsub.publish(NOTIFICATIONS, {
-              friendNotifications: {
-                message,
-                userBid: args.user_b,
-                createdAt,
-                userInfo
-              }
-            });
-            await models.notification.create({
-              type: 'FIC', // friend invitation confirmed
-              message,
-              createdAt,
-              userId: args.user_b
-            });
+            const type = 'FIC'; // friend invitation confirmed
+            await updateNotification(userInfo, args.user_b, type, message);
             break;
           }
 
@@ -241,37 +211,39 @@ export default {
         const userId = user.id;
         const result = await _updateLike(args, userId);
 
+        const userInfo = await models.user.findByPk(userId, {
+          attributes: ['id', 'username', 'headshot']
+        });
+
         switch (args.type) {
           case 'POSTLIKE': {
-            const userInfo = await models.user.findByPk(userId, {
-              attributes: ['id', 'username', 'headshot']
-            });
-            userInfo.href = null;
+            if (!result.liked) {
+              await deleteLikeNotification(args.authorId);
+            }
             const message = `${userInfo.username} likes your post!`;
-            const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
-            await pubsub.publish(NOTIFICATIONS, {
-              friendNotifications: {
-                message,
-                userBid: args.user_b,
-                createdAt,
-                userInfo
-              }
-            });
-            await models.notification.create({
-              type: 'LIKE', // someone likes your post
-              message,
-              createdAt,
-              userId: args.user_b
-            });
+            const type = 'LIKE';
+            await updateNotification(userInfo, args.authorId, type, message);
+            break;
+          }
+
+          case 'POSTCOMMENTLIKE': {
+            if (!result.liked) {
+              await deleteLikeNotification(args.authorId);
+            }
+            const message = `${userInfo.username} likes your postComment!`;
+            const type = 'POSTCOMMENTLIKE';
+            await updateNotification(userInfo, args.authorId, type, message);
             break;
           }
 
           case 'TRVELLISTLIKE': {
-
-          }
-
-          case 'POSTCOMMENTLIKE': {
-
+            if (!result.liked) {
+              await deleteLikeNotification(args.authorId);
+            }
+            const message = `${userInfo.username} likes your travelList!`;
+            const type = 'TRVELLISTLIKE';
+            await updateNotification(userInfo, args.authorId, type, message);
+            break;
           }
         }
 
@@ -302,3 +274,39 @@ export default {
     }
   }
 };
+
+
+// helper functions
+async function updateNotification(userInfo, authorId, type, message) {
+  const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  userInfo.href = null;
+  await pubsub.publish(NOTIFICATIONS, {
+    friendNotifications: {
+      message,
+      userBid: authorId,
+      createdAt,
+      userInfo
+    }
+  });
+  await models.notification.create({
+    type,
+    message,
+    createdAt,
+    userId: authorId
+  });
+}
+
+async function deleteLikeNotification(authorId) {
+  await pubsub.publish(NOTIFICATIONS, {
+    friendNotifications: {
+      message: null,
+      userBid: authorId,
+      userInfo: {}
+    }
+  });
+  await models.notification.destroy({
+    where: {
+      userId: authorId
+    }
+  });
+}

@@ -27,7 +27,7 @@ type Mutation {
   """
   like/dislike post, postComment and travelList
   """
-  like(id: ID!, type: String!): LikesPayload!
+  like(id: ID!, authorId: ID!, type: String!): LikesPayload!
 }
 
 type Subscription {
@@ -43,7 +43,7 @@ type UserLists {
 type FriendNotification {
   message: String
   userBid: ID!
-  createdAt: String!
+  createdAt: String
   userInfo: UserList!
 }
 

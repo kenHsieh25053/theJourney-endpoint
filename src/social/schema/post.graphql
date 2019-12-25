@@ -9,17 +9,17 @@ type Mutation {
   """
   create or update posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
-  postAddorUpdate(id: ID, travelListId: ID!, text: String!, type: String!): PostPayload!
+  postAddorUpdate(id: ID, text: String!, type: String!): PostPayload!
   """
   delete posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
-  postDelete(id: ID!, type: String!): Payload!
+  postDelete(id: ID!, type: String!): PostPayload!
 }
 
 type PostPayload {
   status: String!
   message: String
-  post: Post!
+  post: Post
 }
 
 type Post implements Node {
@@ -29,7 +29,7 @@ type Post implements Node {
   createdAt: String!
   updatedAt: String!
   userId: ID!
-  travelListId: ID!
+  parentId: ID!
 }
 
 type Posts {
@@ -37,15 +37,3 @@ type Posts {
   message: String
   posts: [Post!]!
 }
-
-# type PostLikes {
-#   status: String!
-#   message: String
-#   postlikes: [PostLike!]!
-# }
-
-# type PostLike implements Node {
-#   id: ID!
-#   likeList: JSON!
-#   postId: ID!
-# }
