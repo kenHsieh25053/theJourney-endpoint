@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     likes: {
       type: DataTypes.INTEGER,
       defaultValue: 0
-    } 
+    }
   }, {});
   post.associate = function (models) {
     // associations can be defined here

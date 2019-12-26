@@ -24,28 +24,28 @@ db.sequelize
   });
 
 // Graphql setting
-import {
-  ApolloServer
-} from 'apollo-server-express';
-import {
-  createServer
-} from 'http';
-import {
-  auth
-} from './auth.js';
-import {
-  schema
-} from './schema.js';
+import { ApolloServer } from 'apollo-server-express';
+const { MemcachedCache } = require('apollo-server-cache-memcached');
+import { createServer } from 'http';
+import { auth } from './auth.js';
+import { schema } from './schema.js';
 
 // Server configration
 const server = new ApolloServer({
   schema,
   tracing: false,
-  cacheControl: false, //enable this when schema cache is set up
-  context: async ({
-    req,
-    connection
-  }) => {
+  cacheControl: false, // enable this when schema cache is set up
+  persistedQueries: {
+    // client should also set up up paq
+    cache: new MemcachedCache(
+      ['memcached-server-1', 'memcached-server-2', 'memcached-server-3'],
+      {
+        retries: 10,
+        retry: 10000
+      } // Options
+    )
+  },
+  context: async ({ req, connection }) => {
     if (connection) {
       const token = connection.id_token;
       return await auth(token);
@@ -66,9 +66,16 @@ server.installSubscriptionHandlers(httpServer);
 
 const PORT = process.env.PORT || 4000;
 
-httpServer.listen({
-  port: PORT
-}, () => {
-  console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`);
-  console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`);
-});
+httpServer.listen(
+  {
+    port: PORT
+  },
+  () => {
+    console.log(
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+    );
+    console.log(
+      `🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`
+    );
+  }
+);

@@ -176,17 +176,17 @@ export default {
           }
 
           case 'CANCELED': {
+            await models.notification.create({
+              type: 'FICA', // friend invitation canceled
+              message: null,
+              userId
+            });
             await pubsub.publish(NOTIFICATIONS, {
               friendNotifications: {
                 message: null,
                 userBid: args.user_b,
                 userInfo: {}
               }
-            });
-            await models.notification.create({
-              type: 'FICA', // friend invitation canceled
-              message: null,
-              userId
             });
             break;
           }
@@ -280,6 +280,12 @@ export default {
 async function updateNotification(userInfo, authorId, type, message) {
   const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
   userInfo.href = null;
+  await models.notification.create({
+    type,
+    message,
+    createdAt,
+    userId: authorId
+  });
   await pubsub.publish(NOTIFICATIONS, {
     friendNotifications: {
       message,
@@ -288,25 +294,19 @@ async function updateNotification(userInfo, authorId, type, message) {
       userInfo
     }
   });
-  await models.notification.create({
-    type,
-    message,
-    createdAt,
-    userId: authorId
-  });
 }
 
 async function deleteLikeNotification(authorId) {
+  await models.notification.destroy({
+    where: {
+      userId: authorId
+    }
+  });
   await pubsub.publish(NOTIFICATIONS, {
     friendNotifications: {
       message: null,
       userBid: authorId,
       userInfo: {}
-    }
-  });
-  await models.notification.destroy({
-    where: {
-      userId: authorId
     }
   });
 }

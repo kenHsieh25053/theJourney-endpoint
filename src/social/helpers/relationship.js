@@ -329,20 +329,12 @@ async function _likeLists(args) {
 // user can like/dislike post and travelList
 // depends on type: 'POSTLIKE', 'POSTCOMMENTLIKE' or 'TRVELLISTLIKE'
 async function _updateLike(args, userId) {
+  // get user's infomation
+  const user = await models.user.findByPk(userId, {
+    attributes: ['id', 'username', 'headshot']
+  });
   switch (args.type) {
     case 'POSTLIKE': {
-      // get user's infomation
-      const user = await models.user.findByPk(userId, {
-        attributes: ['username', 'headshot']
-      });
-
-      let likeList = {
-        id: userId,
-        username: user.username,
-        headshot: user.headshot,
-        href: null
-      };
-
       // check the post has been liked by user or not
       const postLikeExisted = await models.postLike.findOne({
         where: {
@@ -351,200 +343,18 @@ async function _updateLike(args, userId) {
         attributes: ['likeList']
       });
 
-      // if postLike doesn't exist
-      if (!postLikeExisted) {
-        const newPostLike = {
-          likeList: JSON.stringify([likeList]),
-          postId: args.id
-        };
-        await models.postLike.create(newPostLike);
-        await models.post.update({
-          likes: 1
-        }, {
-          where: {
-            id: args.id
-          }
-        });
-        return {
-          id: args.id,
-          liked: true
-        };
-      } else {
-        // check the user exist or not
-        const originalLikeList = JSON.parse(postLikeExisted.likeList);
-        const userExist = originalLikeList.filter(item => {
-          return item.id === userId;
-        });
-        switch (userExist.length) {
-          // user dosen't exist
-          case 0: {
-            originalLikeList.push(likeList);
-            const likes = Object.keys(originalLikeList).length;
-            await models.postLike.update({
-              likeList: JSON.stringify(originalLikeList)
-            }, {
-              where: {
-                postId: args.id
-              }
-            });
-            await models.post.update({
-              likes
-            }, {
-              where: {
-                id: args.id
-              }
-            });
-            return {
-              id: args.id,
-              liked: true
-            };
-          }
-          // user exist
-          case 1: {
-            // find the userId then delete it
-            const likeList = JSON.parse(postLikeExisted.likeList);
-            let updatedList = likeList.filter(item => {
-              return item.id != userId;
-            });
-            const likes = Object.keys(updatedList).length;
-            await models.postLike.update({
-              likeList: JSON.stringify(updatedList)
-            }, {
-              where: {
-                postId: args.id
-              }
-            });
-            await models.post.update({
-              likes
-            }, {
-              where: {
-                id: args.id
-              }
-            });
-            return {
-              id: args.id,
-              liked: false
-            };
-          }
-        }
-      }
-      break;
-    }
-
-    case 'TRVELLISTLIKE': {
-      // get user's infomation
-      const user = await models.user.findByPk(userId, {
-        attributes: ['username', 'headshot']
-      });
-
-      let likeList = {
-        id: userId,
-        username: user.username,
-        headshot: user.headshot,
-        href: null
+      // save model tables' operator as variables
+      const postLike = models.postLike;
+      const post = models.post;
+      const postId = {
+        postId: args.id
       };
 
-      // check the travelList has been liked by user or not
-      const travelListLikeExisted = await models.travelListLike.findOne({
-        where: {
-          travelListId: args.id
-        },
-        attributes: ['likeList']
-      });
-
-      // if travelListLike doesn't exist
-      if (!travelListLikeExisted) {
-        const newTravelListLike = {
-          likeList: JSON.stringify([likeList]),
-          travelListId: args.id
-        };
-        await models.travelListLike.create(newTravelListLike);
-        await models.travelList.update({
-          likes: 1
-        }, {
-          where: {
-            id: args.id
-          }
-        });
-        return {
-          id: args.id,
-          liked: true
-        };
-      } else {
-        // check the user exist or not
-        const originalLikeList = JSON.parse(travelListLikeExisted.likeList);
-        const userExist = originalLikeList.filter(item => {
-          return item.id === userId;
-        });
-        switch (userExist.length) {
-          // user dosen't exist
-          case 0: {
-            originalLikeList.push(likeList);
-            const likes = Object.keys(originalLikeList).length;
-            await models.travelListLike.update({
-              likeList: JSON.stringify(originalLikeList)
-            }, {
-              where: {
-                travelListId: args.id
-              }
-            });
-            await models.travelList.update({
-              likes
-            }, {
-              where: {
-                id: args.id
-              }
-            });
-            return {
-              id: args.id,
-              liked: true
-            };
-          }
-          // user exist
-          case 1: {
-            // find the userId then delete it
-            const likeList = JSON.parse(travelListLikeExisted.likeList);
-            let updatedList = likeList.filter(item => {
-              return item.id != userId;
-            });
-            const likes = Object.keys(updatedList).length;
-            await models.travelListLike.update({
-              likeList: JSON.stringify(updatedList)
-            }, {
-              where: {
-                travelListId: args.id
-              }
-            });
-            await models.travelList.update({
-              likes
-            }, {
-              where: {
-                id: args.id
-              }
-            });
-            return {
-              id: args.id,
-              liked: false
-            };
-          }
-        }
-      }
-      break;
+      // update postLike status and return like status
+      return await likeActions(user, postLikeExisted, args, postLike, post, postId);
     }
 
     case 'POSTCOMMENTLIKE': {
-      // get user's infomation
-      const user = await models.user.findByPk(userId, {
-        attributes: ['username', 'headshot']
-      });
-
-      let likeList = {
-        id: userId,
-        username: user.username,
-        headshot: user.headshot,
-        href: null
-      };
-
       // check the postComment has been liked by user or not
       const postCommentLikeExisted = await models.postCommentLike.findOne({
         where: {
@@ -553,84 +363,35 @@ async function _updateLike(args, userId) {
         attributes: ['likeList']
       });
 
-      // if postCommentLike doesn't exist
-      if (!postCommentLikeExisted) {
-        const newPostCommentLikeExisted = {
-          likeList: JSON.stringify([likeList]),
-          postCommentId: args.id
-        };
-        await models.postCommentLike.create(newPostCommentLikeExisted);
-        await models.postComment.update({
-          likes: 1
-        }, {
-          where: {
-            id: args.id
-          }
-        });
-        return {
-          id: args.id,
-          liked: true
-        };
-      } else {
-        // check the user exist or not
-        const originalLikeList = JSON.parse(postCommentLikeExisted.likeList);
-        const userExist = originalLikeList.filter(item => {
-          return item.id === userId;
-        });
-        switch (userExist.length) {
-          // user dosen't exist
-          case 0: {
-            originalLikeList.push(likeList);
-            const likes = Object.keys(originalLikeList).length;
-            await models.postCommentLike.update({
-              likeList: JSON.stringify(originalLikeList)
-            }, {
-              where: {
-                postCommentId: args.id
-              }
-            });
-            await models.postComment.update({
-              likes
-            }, {
-              where: {
-                id: args.id
-              }
-            });
-            return {
-              id: args.id,
-              liked: true
-            };
-          }
-          // user exist
-          case 1: {
-            // find the userId then delete it
-            const likeList = JSON.parse(postCommentLikeExisted.likeList);
-            let updatedList = likeList.filter(item => {
-              return item.id != userId;
-            });
-            const likes = Object.keys(updatedList).length;
-            await models.postCommentLike.update({
-              likeList: JSON.stringify(updatedList)
-            }, {
-              where: {
-                postCommentId: args.id
-              }
-            });
-            await models.postComment.update({
-              likes
-            }, {
-              where: {
-                id: args.id
-              }
-            });
-            return {
-              id: args.id,
-              liked: false
-            };
-          }
-        }
-      }
-      break;
+      // save model tables' operator as variables
+      const postCommentLike = models.postCommentLike;
+      const postComment = models.postComment;
+      const postCommentId = {
+        postCommentId: args.id
+      };
+
+      // update postCommentLike status and return like status
+      return await likeActions(user, postCommentLikeExisted, args, postCommentLike, postComment, postCommentId);
+    }
+
+    case 'TRVELLISTLIKE': {
+      // check the travelList has been liked by user or not
+      const travelListLikeExisted = await models.travelListLike.findOne({
+        where: {
+          travelListId: args.id
+        },
+        attributes: ['likeList']
+      });
+
+      // save model tables' operator as variables
+      const travelListLike = models.travelListLike;
+      const travelList = models.travelList;
+      const travelListId = {
+        travelListId: args.id
+      };
+
+      // update travelListLike status and return like status
+      return await likeActions(user, travelListLikeExisted, args, travelListLike, travelList, travelListId);
     }
   }
 }
@@ -649,4 +410,98 @@ async function _notifications(userId) {
     ]
   });
   return notification;
+}
+
+
+// helper function
+async function likeActions(user, isLikeExisted, args, model1, model2, model1Id) {
+  let likeList = {
+    id: user.userId,
+    username: user.username,
+    headshot: user.headshot,
+    href: null
+  };
+
+  const key = Object.keys(model1Id);
+  const value = model1Id[key];
+
+  // if isLikeExisted doesn't exist
+  if (!isLikeExisted) {
+    console.log('1');
+    const newLikeExisted = {
+      likeList: JSON.stringify([likeList]),
+      [key]: value
+    };
+    await model1.create(newLikeExisted);
+    await model2.update({
+      likes: 1
+    }, {
+      where: {
+        id: args.id
+      }
+    });
+    return {
+      id: args.id,
+      liked: true
+    };
+  } else {
+    console.log('2');
+    // check the user exist or not
+    const originalLikeList = JSON.parse(isLikeExisted.likeList);
+    const userExist = originalLikeList.filter(item => {
+      return item.id === user.userId;
+    });
+    switch (userExist.length) {
+      // user dosen't exist
+      case 0: {
+        originalLikeList.push(likeList);
+        const likes = Object.keys(originalLikeList).length;
+        await model1.update({
+          likeList: JSON.stringify(originalLikeList)
+        }, {
+          where: {
+            [key]: value
+          }
+        });
+        await model2.update({
+          likes
+        }, {
+          where: {
+            id: args.id
+          }
+        });
+        return {
+          id: args.id,
+          liked: true
+        };
+      }
+      // user exist
+      case 1: {
+        // find the userId then delete it
+        const likeList = JSON.parse(isLikeExisted.likeList);
+        let updatedList = likeList.filter(item => {
+          return item.id != user.userId;
+        });
+        const likes = Object.keys(updatedList).length;
+        await model1.update({
+          likeList: JSON.stringify(updatedList)
+        }, {
+          where: {
+            [key]: value
+          }
+        });
+        await model2.update({
+          likes
+        }, {
+          where: {
+            id: args.id
+          }
+        });
+        return {
+          id: args.id,
+          liked: false
+        };
+      }
+    }
+  }
 }
