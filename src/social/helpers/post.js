@@ -58,8 +58,13 @@ async function _postAddorUpdate(args, userId) {
           }
         });
         const updatedResult = await models.post.findByPk(post[0].id);
+
+        // update travelList's comments
+        updateTravelListComments(args, true);
         return updatedResult;
       } else {
+        // update travelList's comments
+        updateTravelListComments(args, true);
         return post[0];
       }
     }
@@ -103,6 +108,8 @@ async function _postDelete(args) {
       });
 
       if (post) {
+        // update travelList's comments
+        updateTravelListComments(args, false);
         return 'Post deleted!';
       } else {
         return 'Can\'t find the post';
@@ -122,5 +129,34 @@ async function _postDelete(args) {
         return 'Can\'t find the postComment';
       }
     }
+  }
+}
+
+
+// helper function
+async function updateTravelListComments(args, o) {
+  let comments = await models.travelList.findOne({
+    where: {
+      id: args.id
+    },
+    attributes: ['comments']
+  });
+
+  if (!o) {
+    await models.travelList.update({
+      comments: comments - 1
+    }, {
+      where: {
+        id: args.id
+      }
+    });
+  } else {
+    await models.travelList.update({
+      comments: comments + 1
+    }, {
+      where: {
+        id: args.id
+      }
+    });
   }
 }

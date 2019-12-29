@@ -27,7 +27,7 @@
     "@babel/preset-env": "^7.7.1",
     "@babel/register": "^7.0.0",
     "amazon-s3-uri": "0.0.3",
-    "apollo-server-cache-memcached": "^0.6.3",
+    "apollo-server-cache-memcached": "^0.6.4",
     "apollo-server-express": "^2.9.9",
     "aws-sdk": "^2.94.0",
     "babel-core": "^7.0.0-bridge.0",

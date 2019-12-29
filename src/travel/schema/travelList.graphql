@@ -2,11 +2,11 @@ type Query {
   """
   get user's travelList
   """
-  travelLists: TravelLists!
+  travelLists(cursor: String!, limit: Int!): TravelLists!
   """
   get all user's travelList
   """
-  travelListsAll: TravelLists!
+  travelListsAll(cursor: String!, limit: Int!): TravelLists!
 }
 
 type Mutation {

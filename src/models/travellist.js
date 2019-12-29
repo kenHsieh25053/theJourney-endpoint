@@ -28,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
+    comments: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
     transportation: DataTypes.STRING,
     review: DataTypes.STRING
   }, {});

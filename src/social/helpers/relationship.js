@@ -35,7 +35,7 @@ async function _friendActions(args, userId) {
         }
       });
       await models.relationship.update({
-        'status': args.status
+        status: args.status
       }, {
         where: {
           id: relationship.id
@@ -43,7 +43,7 @@ async function _friendActions(args, userId) {
       });
       // update user/user_b's friend table
       const userUpdateList = [userId, args.user_b];
-      userUpdateList.forEach(async (id) => {
+      userUpdateList.forEach(async id => {
         const friendExist = await models.friend.findOne({
           where: {
             userId: id
@@ -153,7 +153,7 @@ async function _friendActions(args, userId) {
       });
       return 'Invitation confirmed!';
     }
-    // actionUser cancels the invitation 
+    // actionUser cancels the invitation
     case 'CANCELED': {
       const relationship = await models.relationship.findOne({
         where: {
@@ -169,7 +169,7 @@ async function _friendActions(args, userId) {
         };
       }
       await models.relationship.update({
-        'status': args.status
+        status: args.status
       }, {
         where: {
           id: relationship.id
@@ -203,15 +203,15 @@ async function _friendActions(args, userId) {
         };
       }
       await models.relationship.update({
-        'status': args.status
+        status: args.status
       }, {
         where: {
           id: relationship.id
         }
       });
-      // update user/user_b's row in friend table 
+      // update user/user_b's row in friend table
       const userUpdateList = [userId, args.user_b];
-      userUpdateList.forEach(async (id) => {
+      userUpdateList.forEach(async id => {
         switch (id) {
           // find user's info then update the friend table
           case userId: {
@@ -271,7 +271,7 @@ async function _friendActions(args, userId) {
   }
 }
 
-// user can see who is in the friend pending list 
+// user can see who is in the friend pending list
 async function _friendPendingList(userId) {
   const relationship = await models.user.findAll({
     include: [{
@@ -286,7 +286,7 @@ async function _friendPendingList(userId) {
   return relationship;
 }
 
-// user can see who is in the friend list 
+// user can see who is in the friend list
 async function _friendList(userId) {
   const friend = await models.friend.findOne({
     where: {
@@ -351,7 +351,14 @@ async function _updateLike(args, userId) {
       };
 
       // update postLike status and return like status
-      return await likeActions(user, postLikeExisted, args, postLike, post, postId);
+      return await likeActions(
+        user,
+        postLikeExisted,
+        args,
+        postLike,
+        post,
+        postId
+      );
     }
 
     case 'POSTCOMMENTLIKE': {
@@ -371,7 +378,14 @@ async function _updateLike(args, userId) {
       };
 
       // update postCommentLike status and return like status
-      return await likeActions(user, postCommentLikeExisted, args, postCommentLike, postComment, postCommentId);
+      return await likeActions(
+        user,
+        postCommentLikeExisted,
+        args,
+        postCommentLike,
+        postComment,
+        postCommentId
+      );
     }
 
     case 'TRVELLISTLIKE': {
@@ -391,7 +405,14 @@ async function _updateLike(args, userId) {
       };
 
       // update travelListLike status and return like status
-      return await likeActions(user, travelListLikeExisted, args, travelListLike, travelList, travelListId);
+      return await likeActions(
+        user,
+        travelListLikeExisted,
+        args,
+        travelListLike,
+        travelList,
+        travelListId
+      );
     }
   }
 }
@@ -412,9 +433,15 @@ async function _notifications(userId) {
   return notification;
 }
 
-
 // helper function
-async function likeActions(user, isLikeExisted, args, model1, model2, model1Id) {
+async function likeActions(
+  user,
+  isLikeExisted,
+  args,
+  model1,
+  model2,
+  model1Id
+) {
   let likeList = {
     id: user.userId,
     username: user.username,
@@ -427,7 +454,6 @@ async function likeActions(user, isLikeExisted, args, model1, model2, model1Id) 
 
   // if isLikeExisted doesn't exist
   if (!isLikeExisted) {
-    console.log('1');
     const newLikeExisted = {
       likeList: JSON.stringify([likeList]),
       [key]: value
@@ -445,7 +471,6 @@ async function likeActions(user, isLikeExisted, args, model1, model2, model1Id) 
       liked: true
     };
   } else {
-    console.log('2');
     // check the user exist or not
     const originalLikeList = JSON.parse(isLikeExisted.likeList);
     const userExist = originalLikeList.filter(item => {

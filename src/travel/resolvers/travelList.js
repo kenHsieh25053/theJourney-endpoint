@@ -7,12 +7,12 @@ import {
 
 export default {
   Query: {
-    travelLists: async (_, __, {
+    travelLists: async (_, args, {
       user
     }) => {
       const userId = user.id;
       try {
-        const result = await _travelLists(userId);
+        const result = await _travelLists(args, userId);
         return {
           status: 200,
           travelLists: result.map(item => {
@@ -43,9 +43,9 @@ export default {
       }
     },
 
-    travelListsAll: async () => {
+    travelListsAll: async (_, args) => {
       try {
-        const result = await _travelListsAll();
+        const result = await _travelListsAll(args);
         return {
           status: 200,
           travelLists: result.map(item => {

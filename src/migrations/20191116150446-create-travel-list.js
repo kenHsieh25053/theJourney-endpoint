@@ -39,6 +39,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
+      comments: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
       transportation: {
         type: Sequelize.STRING
       },

@@ -1,5 +1,9 @@
 import models from '../../models';
 import uuidv4 from 'uuid/v4';
+const {
+  Sequelize
+} = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
   _travelLists,
@@ -9,21 +13,34 @@ module.exports = {
 };
 
 // user can see the list of travelLists
-async function _travelLists(userId) {
+async function _travelLists(args, userId) {
+  // const cursorOption = cursor
   const travelLists = await models.travelList.findAll({
     where: {
-      userId: userId
+      userId,
+      [Op.and]: args.cursor ? {
+        createdAt: {
+          [Sequelize.Op.lt]: args.cursor,
+        },
+      } : null
     },
     order: [
       ['createdAt', 'DESC']
-    ]
+    ],
+    limit: args.limit,
   });
   return travelLists;
 }
 
 // user can see all users' travelLists
-async function _travelListsAll() {
+async function _travelListsAll(args) {
   const allTravelLists = await models.travelList.findAll({
+    where: args.cursor ? {
+      createdAt: {
+        [Sequelize.Op.lt]: args.cursor,
+      },
+    } : null,
+    limit: args.limit,
     order: [
       ['updatedAt', 'DESC']
     ]
