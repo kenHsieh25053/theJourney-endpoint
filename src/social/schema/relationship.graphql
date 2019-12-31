@@ -4,19 +4,19 @@ type Query {
   """
   get all pending requests
   """
-  friendPendingList: UserLists!
+  friendPendingList(cursor: String!, limit: Int!): UserLists!
   """
   get all confrimed friends' list
   """
-  friendList: UserLists!
+  friendList(cursor: String!, limit: Int!): UserLists!
   """
   get all users who like this postComment, post and travellist
   """
-  likeList(id: ID!, type: String!): UserLists!
+  likeList(id: ID!, type: String!, cursor: String!, limit: Int!): UserLists!
   """
   get all notifications
   """
-  notifications: Notifications!
+  notifications(cursor: String!, limit: Int!): Notifications!
 }
 
 type Mutation {

@@ -18,12 +18,12 @@ const NOTIFICATIONS = 'NOTIFICATIONS';
 
 export default {
   Query: {
-    friendPendingList: async (_, __, {
+    friendPendingList: async (_, args, {
       user
     }) => {
       try {
         const userId = user.id;
-        const result = await _friendPendingList(userId);
+        const result = await _friendPendingList(userId, args);
         if (!result) {
           return {
             status: 200,
@@ -49,12 +49,12 @@ export default {
       }
     },
 
-    friendList: async (_, __, {
+    friendList: async (_, args, {
       user
     }) => {
       try {
         const userId = user.id;
-        const result = await _friendList(userId);
+        const result = await _friendList(userId, args);
         if (!result) {
           return {
             status: 200,
@@ -80,12 +80,12 @@ export default {
       }
     },
 
-    notifications: async (_, __, {
+    notifications: async (_, args, {
       user
     }) => {
       try {
         const userId = user.id;
-        const result = await _notifications(userId);
+        const result = await _notifications(userId, args);
         if (!result) {
           return {
             status: 200,

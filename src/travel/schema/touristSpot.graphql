@@ -2,7 +2,7 @@ type Query {
   """
   get all touristSpot
   """
-  touristSpots(cityId: ID!): TouristSpots
+  touristSpots(cityId: ID!, cursor: String!, limit: Int!): TouristSpots
 }
 
 type Mutation {

@@ -22,6 +22,7 @@ type Mutation {
     stayTo: String!
     transportation: String
     review: String
+    permissions: String!
   ): TravelListPayload!
   """
   delete travelList
@@ -52,6 +53,8 @@ type Travellist implements Node {
   costs: Int
   rates: Float
   likes: Int
+  comments: Int
+  permissions: String!
   transportation: String
   review: String
   createdAt: String!

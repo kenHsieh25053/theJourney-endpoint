@@ -14,10 +14,65 @@ module.exports = {
 
 // user can see the list of travelLists
 async function _travelLists(args, userId) {
-  // const cursorOption = cursor
+  // get user's friends' id list 
+  const friendList = await models.friend.findOne({
+    where: {
+      userId
+    },
+    attrubitions: ['friendList']
+  });
+
+  // if user dosen't have any friend 
+  if (!friendList || friendList.friendList.length === 0) {
+    const travelList = await models.travelList.findAll({
+      where: {
+        [Op.or]: [{
+          permissions: 'PUBLIC'
+        }, {
+          permissions: 'ONLYME',
+          [Op.and]: {
+            userId
+          }
+        }],
+        [Op.and]: args.cursor ? {
+          createdAt: {
+            [Sequelize.Op.lt]: args.cursor,
+          },
+        } : null
+      },
+      order: [
+        ['createdAt', 'DESC']
+      ],
+      limit: args.limit,
+    });
+    return travelList;
+  }
+
+  const friendListArray = JSON.parse(friendList.friendList);
+  const friendListID = [];
+  friendListArray.forEach(user => {
+    return friendListID.push(user.id);
+  });
+
+  // get the travelist depands on it's permitssions 
   const travelLists = await models.travelList.findAll({
     where: {
-      userId,
+      [Op.or]: [
+        // public or onlyme or onlyfriends(in the friend's list)
+        {
+          permissions: 'PUBLIC'
+        },
+        {
+          permissions: 'ONLYME',
+          userId
+        },
+        {
+          permissions: 'ONLYFRIENDS',
+          userId: {
+            [Op.in]: friendListID
+          }
+        }
+      ],
       [Op.and]: args.cursor ? {
         createdAt: {
           [Sequelize.Op.lt]: args.cursor,
@@ -31,6 +86,7 @@ async function _travelLists(args, userId) {
   });
   return travelLists;
 }
+
 
 // user can see all users' travelLists
 async function _travelListsAll(args) {

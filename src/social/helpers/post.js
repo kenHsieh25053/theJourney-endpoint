@@ -1,5 +1,9 @@
 import models from '../../models';
 import uuidv4 from 'uuid/v4';
+const {
+  Sequelize
+} = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
   _posts,
@@ -13,11 +17,17 @@ async function _posts(args) {
     case 'POSTS': {
       const posts = await models.post.findAll({
         where: {
-          travelListId: args.id
+          travelListId: args.id,
+          [Op.and]: args.cursor ? {
+            createdAt: {
+              [Sequelize.Op.lt]: args.cursor,
+            },
+          } : null
         },
         order: [
           ['createdAt', 'DESC']
-        ]
+        ],
+        limit: args.limit,
       });
       return posts;
     }

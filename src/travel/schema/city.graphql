@@ -2,7 +2,7 @@ type Query {
   """
   get all city
   """
-  cities(travelListId: ID!): Cities!
+  cities(travelListId: ID!, cursor: String!, limit: Int!): Cities!
 }
 
 type Mutation {

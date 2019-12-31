@@ -2,7 +2,7 @@ type Query {
   """
   get posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
-  posts(id: ID!, type: String!): Posts!
+  posts(id: ID!, type: String!, cursor: String!, limit: Int!): Posts!
 }
 
 type Mutation {

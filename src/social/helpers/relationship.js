@@ -272,26 +272,44 @@ async function _friendActions(args, userId) {
 }
 
 // user can see who is in the friend pending list
-async function _friendPendingList(userId) {
+async function _friendPendingList(userId, args) {
   const relationship = await models.user.findAll({
     include: [{
       model: models.relationship,
       where: {
         status: 'PENDING',
-        user_b: userId
+        user_b: userId,
+        [Op.and]: args.cursor ? {
+          createdAt: {
+            [Sequelize.Op.lt]: args.cursor,
+          },
+        } : null
       }
     }],
+    limit: args.limit,
+    order: [
+      ['createdAt', 'DESC']
+    ],
     attributes: ['id', 'username', 'headshot']
   });
   return relationship;
 }
 
 // user can see who is in the friend list
-async function _friendList(userId) {
+async function _friendList(userId, args) {
   const friend = await models.friend.findOne({
     where: {
-      userId
+      userId,
+      [Op.and]: args.cursor ? {
+        createdAt: {
+          [Sequelize.Op.lt]: args.cursor,
+        },
+      } : null
     },
+    order: [
+      ['createdAt', 'DESC']
+    ],
+    limit: args.limit,
     attributes: ['friendList']
   });
   const friendList = JSON.parse(friend.friendList);
@@ -305,8 +323,17 @@ async function _likeLists(args) {
     case 'POSTLIKE': {
       let userList = await models.postLike.findOne({
         where: {
-          postId: args.id
+          postId: args.id,
+          [Op.and]: args.cursor ? {
+            createdAt: {
+              [Sequelize.Op.lt]: args.cursor,
+            },
+          } : null
         },
+        order: [
+          ['createdAt', 'DESC']
+        ],
+        limit: args.limit,
         attributes: ['likeList']
       });
       const userListArray = JSON.parse(userList.likeList);
@@ -418,17 +445,23 @@ async function _updateLike(args, userId) {
 }
 
 // user can see all of the notifications
-async function _notifications(userId) {
+async function _notifications(userId, args) {
   const notification = models.notification.findAll({
     where: {
       userId,
       message: {
         [Op.ne]: null
-      }
+      },
+      [Op.and]: args.cursor ? {
+        createdAt: {
+          [Sequelize.Op.lt]: args.cursor,
+        },
+      } : null
     },
     order: [
       ['createdAt', 'DESC']
-    ]
+    ],
+    limit: args.limit,
   });
   return notification;
 }

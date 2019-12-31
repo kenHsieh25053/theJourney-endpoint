@@ -43,6 +43,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
+      permissions: {
+        type: Sequelize.STRING,
+        defaultValue: Sequelize.STRING
+      },
       transportation: {
         type: Sequelize.STRING
       },

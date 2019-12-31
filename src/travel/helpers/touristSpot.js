@@ -1,5 +1,9 @@
 import models from '../../models';
 import uuidv4 from 'uuid/v4';
+const {
+  Sequelize
+} = require('sequelize');
+const Op = Sequelize.Op;
 
 module.exports = {
   _touristSpots,
@@ -11,11 +15,17 @@ module.exports = {
 async function _touristSpots(args) {
   const touristSpot = await models.touristSpot.findAll({
     where: {
-      cityId: args.cityId
+      cityId: args.cityId,
+      [Op.and]: args.cursor ? {
+        createdAt: {
+          [Sequelize.Op.lt]: args.cursor,
+        },
+      } : null
     },
     order: [
       ['createdAt', 'ASC']
-    ]
+    ],
+    limit: args.limit,
   });
   return touristSpot;
 }

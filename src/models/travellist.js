@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
+    permissions: {
+      type: DataTypes.STRING,
+      defaultValue: 'PUBLIC'
+    },
     transportation: DataTypes.STRING,
     review: DataTypes.STRING
   }, {});
