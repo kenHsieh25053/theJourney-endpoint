@@ -12,8 +12,8 @@ module.exports = {
   _travelListDelete
 };
 
-// user can see the list of travelLists
-async function _travelLists(args, userId) {
+// user can see all travelLists with cities
+async function _travelListsAll(args, userId) {
   // get user's friends' id list 
   const friendList = await models.friend.findOne({
     where: {
@@ -45,13 +45,13 @@ async function _travelLists(args, userId) {
       ],
       limit: args.limit,
     });
-    return travelList;
+    return getCities(travelLists, args);
   }
 
   const friendListArray = JSON.parse(friendList.friendList);
-  const friendListID = [];
+  const friendListIDs = [];
   friendListArray.forEach(user => {
-    return friendListID.push(user.id);
+    return friendListIDs.push(user.id);
   });
 
   // get the travelist depands on it's permitssions 
@@ -69,7 +69,7 @@ async function _travelLists(args, userId) {
         {
           permissions: 'ONLYFRIENDS',
           userId: {
-            [Op.in]: friendListID
+            [Op.in]: friendListIDs
           }
         }
       ],
@@ -84,24 +84,28 @@ async function _travelLists(args, userId) {
     ],
     limit: args.limit,
   });
-  return travelLists;
+
+  return getCities(travelLists, args);
 }
 
 
-// user can see all users' travelLists
-async function _travelListsAll(args) {
-  const allTravelLists = await models.travelList.findAll({
-    where: args.cursor ? {
-      createdAt: {
-        [Sequelize.Op.lt]: args.cursor,
-      },
-    } : null,
+// user can see all users' travelLists with cities
+async function _travelLists(args, userId) {
+  const travelLists = await models.travelList.findAll({
+    where: {
+      userId,
+      [Op.and]: args.cursor ? {
+        createdAt: {
+          [Sequelize.Op.lt]: args.cursor,
+        },
+      } : null
+    },
     limit: args.limit,
     order: [
       ['updatedAt', 'DESC']
     ]
   });
-  return allTravelLists;
+  return getCities(travelLists, args);
 }
 
 async function _travelListPost(userId, args) {
@@ -147,4 +151,31 @@ async function _travelListDelete(args) {
   } else {
     return 'Can\'t find travelList';
   }
+}
+
+
+// helper function
+async function getCities(travelLists, args) {
+  for (let travelList of travelLists) {
+    const cities = await models.city.findAll({
+      where: {
+        travelListId: travelList.id,
+        [Op.and]: args.cursor ? {
+          createdAt: {
+            [Sequelize.Op.lt]: args.cursor,
+          },
+        } : null
+      },
+      limit: args.limit,
+      order: [
+        ['createdAt', 'ASC']
+      ],
+      attrubitions: ['id', 'name', 'photo_url', 'travelListId']
+    });
+
+    Object.assign(travelList, {
+      cities
+    });
+  }
+  return travelLists;
 }

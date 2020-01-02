@@ -1,10 +1,10 @@
 type Query {
   """
-  get user's travelList
+  get user's travelList with cities
   """
   travelLists(cursor: String!, limit: Int!): TravelLists!
   """
-  get all user's travelList
+  get all user's travelList with cites
   """
   travelListsAll(cursor: String!, limit: Int!): TravelLists!
 }
@@ -42,6 +42,26 @@ type TravelLists {
   travelLists: [Travellist!]!
 }
 
+# type Travellist implements Node {
+#   id: ID!
+#   name: String!
+#   tags: [String]
+#   type: String
+#   stayFrom: String!
+#   stayTo: String!
+#   days: String
+#   costs: Int
+#   rates: Float
+#   likes: Int
+#   comments: Int
+#   permissions: String!
+#   transportation: String
+#   review: String
+#   createdAt: String!
+#   updatedAt: String!
+#   userId: ID!
+# }
+
 type Travellist implements Node {
   id: ID!
   name: String!
@@ -60,4 +80,5 @@ type Travellist implements Node {
   createdAt: String!
   updatedAt: String!
   userId: ID!
+  cities: [City]
 }

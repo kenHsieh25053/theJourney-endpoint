@@ -1,8 +1,8 @@
 type Query {
   """
-  get all city
+  get all cities with touristspots
   """
-  cities(travelListId: ID!, cursor: String!, limit: Int!): Cities!
+  cities(id: ID!, cursor: String!, limit: Int!): Cities!
 }
 
 type Mutation {
@@ -43,7 +43,7 @@ type City implements Node {
   latitude: Int
   stayFrom: String!
   stayTo: String!
-  cost: Int
+  costs: Int
   rates: Float
   transportation: String
   review: String
@@ -51,6 +51,5 @@ type City implements Node {
   createdAt: String!
   updatedAt: String!
   travelListId: ID!
-  # tourist_spots: [String!]!
-  # country: String!
+  touristSpots: [TouristSpot]
 }

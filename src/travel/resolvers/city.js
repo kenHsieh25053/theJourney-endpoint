@@ -21,14 +21,15 @@ export default {
               stayFrom: item.stayFrom,
               stayTo: item.stayTo,
               days: item.days,
-              cost: item.cost,
+              costs: item.cost,
               rates: item.rates,
               transportation: item.transportation,
               review: item.review,
               photo_url: item.photo_url,
               createdAt: item.createdAt,
               updatedAt: item.updatedAt,
-              travelListId: item.travelListId
+              travelListId: item.travelListId,
+              touristSpots: item.touristSpots
             };
           })
         };

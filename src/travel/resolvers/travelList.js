@@ -33,7 +33,8 @@ export default {
               updatedAt: item.updatedAt,
               transportation: item.transportation,
               review: item.review,
-              userId: item.userId
+              userId: item.userId,
+              cities: item.cities
             };
           })
         };
@@ -45,9 +46,12 @@ export default {
       }
     },
 
-    travelListsAll: async (_, args) => {
+    travelListsAll: async (_, args, {
+      user
+    }) => {
       try {
-        const result = await _travelListsAll(args);
+        const userId = user.id;
+        const result = await _travelListsAll(args, userId);
         return {
           status: 200,
           travelLists: result.map(item => {
@@ -68,7 +72,8 @@ export default {
               updatedAt: item.updatedAt,
               transportation: item.transportation,
               review: item.review,
-              userId: item.userId
+              userId: item.userId,
+              cities: item.cities
             };
           })
         };

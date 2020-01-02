@@ -12,11 +12,11 @@ module.exports = {
 };
 
 
-// user can get the list of cities
+// user can get the list of cities with touristspots
 async function _cities(args) {
-  const city = await models.city.findAll({
+  const cities = await models.city.findAll({
     where: {
-      travelListId: args.travelListId,
+      travelListId: args.id,
       [Op.and]: args.cursor ? {
         createdAt: {
           [Sequelize.Op.lt]: args.cursor,
@@ -28,7 +28,7 @@ async function _cities(args) {
     ],
     limit: args.limit,
   });
-  return city;
+  return getTouristSpots(cities, args);
 }
 
 // user can create or updating the city 
@@ -71,4 +71,30 @@ async function _cityDelete(args) {
   } else {
     return 'Can\'t find the city';
   }
+}
+
+
+// helper function
+async function getTouristSpots(cities, args) {
+  for (let city of cities) {
+    const touristSpots = await models.touristSpot.findAll({
+      where: {
+        cityId: city.id,
+        [Op.and]: args.cursor ? {
+          createdAt: {
+            [Sequelize.Op.lt]: args.cursor,
+          },
+        } : null
+      },
+      limit: args.limit,
+      order: [
+        ['createdAt', 'ASC']
+      ]
+    });
+
+    Object.assign(city, {
+      touristSpots
+    });
+  }
+  return cities;
 }
