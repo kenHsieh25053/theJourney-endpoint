@@ -82,7 +82,7 @@ async function getTouristSpots(cities, args) {
         cityId: city.id,
         [Op.and]: args.cursor ? {
           createdAt: {
-            [Sequelize.Op.lt]: args.cursor,
+            [Op.lt]: args.cursor,
           },
         } : null
       },

@@ -2,14 +2,25 @@ type Query {
   """
   get posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
-  posts(id: ID!, type: String!, cursor: String!, limit: Int!): Posts!
+  posts(
+    id: ID!
+    travelListId: ID!
+    type: String!
+    cursor: String!
+    limit: Int!
+  ): Posts!
 }
 
 type Mutation {
   """
   create or update posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
-  postAddorUpdate(id: ID, text: String!, type: String!): PostPayload!
+  postAddorUpdate(
+    id: ID
+    travelListId: ID!
+    text: String!
+    type: String!
+  ): PostPayload!
   """
   delete posts/postComment depends on 'POST', 'POSTCOMMENT' type
   """
@@ -36,4 +47,8 @@ type Posts {
   status: String!
   message: String
   posts: [Post!]!
+}
+
+type Subscription {
+  postNotifications(id: ID): FriendNotification
 }

@@ -24,7 +24,7 @@ async function _travelListsAll(args, userId) {
 
   // if user dosen't have any friend 
   if (!friendList || friendList.friendList.length === 0) {
-    const travelList = await models.travelList.findAll({
+    const travelLists = await models.travelList.findAll({
       where: {
         [Op.or]: [{
           permissions: 'PUBLIC'
@@ -36,7 +36,7 @@ async function _travelListsAll(args, userId) {
         }],
         [Op.and]: args.cursor ? {
           createdAt: {
-            [Sequelize.Op.lt]: args.cursor,
+            [Op.lt]: args.cursor,
           },
         } : null
       },
@@ -75,7 +75,7 @@ async function _travelListsAll(args, userId) {
       ],
       [Op.and]: args.cursor ? {
         createdAt: {
-          [Sequelize.Op.lt]: args.cursor,
+          [Op.lt]: args.cursor,
         },
       } : null
     },
@@ -96,7 +96,7 @@ async function _travelLists(args, userId) {
       userId,
       [Op.and]: args.cursor ? {
         createdAt: {
-          [Sequelize.Op.lt]: args.cursor,
+          [Op.lt]: args.cursor,
         },
       } : null
     },
@@ -162,7 +162,7 @@ async function getCities(travelLists, args) {
         travelListId: travelList.id,
         [Op.and]: args.cursor ? {
           createdAt: {
-            [Sequelize.Op.lt]: args.cursor,
+            [Op.lt]: args.cursor,
           },
         } : null
       },

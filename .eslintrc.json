@@ -34,7 +34,6 @@
       {
         "SwitchCase": 1
       }
-    ],
-    "require-atomic-updates": "off"
+    ]
   }
 }
