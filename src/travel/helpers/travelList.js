@@ -110,21 +110,20 @@ async function _travelLists(args, userId) {
 
 async function _travelListPost(userId, args) {
   const id = uuidv4();
-  // convert tags from string to json string
+  // convert tags and countries from string to json string
   args.tags = JSON.stringify(args.tags);
+  args.countries = JSON.stringify(args.countries);
   // Insert id, userId for new travelList row
   let data = Object.assign({}, args, {
     id,
     userId
   });
-
   const travelList = await models.travelList.findOrCreate({
     where: {
       id: args.id
     },
     defaults: data
   });
-
   if (!travelList[1]) {
     await models.travelList.update(args, {
       where: {

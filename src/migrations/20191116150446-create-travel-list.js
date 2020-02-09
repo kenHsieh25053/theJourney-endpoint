@@ -7,76 +7,79 @@ module.exports = {
         allowNull: false,
         autoIncrement: false,
         primaryKey: true,
-        defaultValue: Sequelize.UUIDV4
+        defaultValue: Sequelize.UUIDV4,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       tags: {
-        type: Sequelize.JSON
+        type: Sequelize.JSON,
       },
-      type: {
-        type: Sequelize.STRING
+      types: {
+        type: Sequelize.STRING,
       },
       stayFrom: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       stayTo: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       days: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       costs: {
         type: Sequelize.INTEGER,
-        defaultValue: 0
+        defaultValue: 0,
       },
       rates: {
         type: Sequelize.FLOAT,
-        defaultValue: 0.0
+        defaultValue: 0.0,
       },
       likes: {
         type: Sequelize.INTEGER,
-        defaultValue: 0
+        defaultValue: 0,
       },
       comments: {
         type: Sequelize.INTEGER,
-        defaultValue: 0
+        defaultValue: 0,
       },
       permissions: {
         type: Sequelize.STRING,
-        defaultValue: Sequelize.STRING
+        defaultValue: Sequelize.STRING,
       },
       transportation: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       review: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+      },
+      countries: {
+        type: Sequelize.JSON
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       userId: {
         type: Sequelize.UUID,
         references: {
           model: {
             tableName: 'users',
-            key: 'id'
+            key: 'id',
           },
         },
         foreignKey: true,
         allowNull: false,
         onDelete: 'cascade',
-        onUpdate: 'cascade'
-      }
+        onUpdate: 'cascade',
+      },
     });
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('travelLists');
-  }
+  },
 };

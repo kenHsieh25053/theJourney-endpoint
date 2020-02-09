@@ -1,9 +1,4 @@
-import {
-  _cities,
-  _cityPost,
-  _cityDelete
-} from '../helpers/city.js';
-
+import { _cities, _cityPost, _cityDelete } from '../helpers/city.js';
 
 export default {
   Query: {
@@ -29,23 +24,24 @@ export default {
               createdAt: item.createdAt,
               updatedAt: item.updatedAt,
               travelListId: item.travelListId,
-              touristSpots: item.touristSpots
+              touristSpots: item.touristSpots,
             };
-          })
+          }),
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
-    }
+    },
   },
 
   Mutation: {
-    cityPost: async (_, args) => {
+    cityPost: async (_, args, { user }) => {
       try {
-        const result = await _cityPost(args);
+        const userId = user.id;
+        const result = await _cityPost(args, userId);
         return {
           status: 200,
           city: {
@@ -63,13 +59,13 @@ export default {
             photo_url: result.photo_url,
             createdAt: result.createdAt,
             updatedAt: result.updatedAt,
-            travelListId: result.travelListId
-          }
+            travelListId: result.travelListId,
+          },
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
     },
@@ -79,14 +75,14 @@ export default {
         const result = await _cityDelete(args);
         return {
           status: 200,
-          message: result
+          message: result,
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
-    }
-  }
+    },
+  },
 };

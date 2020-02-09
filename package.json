@@ -8,6 +8,7 @@
     "dev": "nodemon --exec babel-node src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "verify": "./node_modules/.bin/eslint ./src/",
+    "format": "prettier-eslint --write \"{,!(node_modules)/**/}*.{js,jsx}\"",
     "init": "node_modules/.bin/sequelize init",
     "migrate": "node_modules/.bin/sequelize db:migrate --env development",
     "undo": "node_modules/.bin/sequelize db:migrate:undo:all --env development",
@@ -60,7 +61,9 @@
     "@babel/node": "^7.0.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.0.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "mocha": "^6.1.4",
-    "nodemon": "^1.18.7"
+    "nodemon": "^1.18.7",
+    "prettier": "^1.19.1"
   }
 }

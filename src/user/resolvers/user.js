@@ -3,22 +3,6 @@ import { _userProfile, _userProfilePost } from '../helpers/userProfile.js';
 
 export default {
   Query: {
-    login: async (_, args) => {
-      try {
-        const result = await _login(args);
-        return {
-          status: result.status,
-          id_token: result.id_token,
-          message: result.message
-        };
-      } catch (err) {
-        return {
-          status: 500,
-          message: err
-        };
-      }
-    },
-
     // logout: (_, ＿＿, { user }) => {
     //   return {
     //     status: 200,
@@ -40,33 +24,49 @@ export default {
             position: result.position,
             countries: result.countries,
             cities: result.cities,
+            touristSpots: result.touristSpots,
             headshot: result.headshot,
             profile: result.profile,
             createdAt: result.createdAt,
-            updatedAt: result.updatedAt
-          }
+            updatedAt: result.updatedAt,
+          },
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
-    }
+    },
   },
 
   Mutation: {
+    login: async (_, args) => {
+      try {
+        const result = await _login(args);
+        return {
+          status: result.status,
+          id_token: result.id_token,
+          message: result.message,
+        };
+      } catch (err) {
+        return {
+          status: 500,
+          message: err,
+        };
+      }
+    },
     signup: async (_, { email, username, password }) => {
       try {
         const result = await _signup(email, username, password);
         return {
           status: result.status,
-          message: result.message
+          message: result.message,
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
     },
@@ -83,16 +83,17 @@ export default {
             position: result.position,
             countries: result.countries,
             cities: result.cities,
+            touristSpots: result.touristSpots,
             headshot: result.headshot,
             profile: result.profile,
             createdAt: result.createdAt,
-            updatedAt: result.updatedAt
-          }
+            updatedAt: result.updatedAt,
+          },
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
     },
@@ -103,14 +104,14 @@ export default {
         const result = await _userDelete(userId);
         return {
           status: 200,
-          message: result
+          message: result,
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
-    }
-  }
+    },
+  },
 };

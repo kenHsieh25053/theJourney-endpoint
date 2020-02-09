@@ -24,22 +24,12 @@ db.sequelize
   });
 
 // Graphql setting
-import {
-  ApolloServer
-} from 'apollo-server-express';
-const {
-  MemcachedCache
-} = require('apollo-server-cache-memcached');
+import { ApolloServer } from 'apollo-server-express';
+const { MemcachedCache } = require('apollo-server-cache-memcached');
 import depthLimit from 'graphql-depth-limit';
-import {
-  createServer
-} from 'http';
-import {
-  authentication
-} from './authentication.js';
-import {
-  schema
-} from './schema.js';
+import { createServer } from 'http';
+import { authentication } from './authentication.js';
+import { schema } from './schema.js';
 
 // Server configration
 const server = new ApolloServer({
@@ -47,32 +37,29 @@ const server = new ApolloServer({
   tracing: false,
   cacheControl: false, // enable this when schema cache is set up
   persistedQueries: {
-    // client should also set up up paq
     cache: new MemcachedCache(
-      ['memcached-server-1', 'memcached-server-2', 'memcached-server-3'], {
+      ['memcached-server-1', 'memcached-server-2', 'memcached-server-3'],
+      {
         retries: 10,
-        retry: 10000
+        retry: 10000,
       } // Options
-    )
+    ),
   },
   validationRules: [depthLimit(6)],
-  context: async ({
-    req,
-    connection
-  }) => {
+  context: async ({ req, connection }) => {
     if (connection) {
       const token = connection.id_token;
       return await authentication(token);
     } else {
-      const token = req.headers.id_token || '';
+      const token = req.headers.authorization.split(' ')[1] || '';
       return await authentication(token);
     }
-  }
+  },
 });
 
 server.applyMiddleware({
   app,
-  path: '/graphql'
+  path: '/graphql',
 });
 
 const httpServer = createServer(app);
@@ -80,8 +67,9 @@ server.installSubscriptionHandlers(httpServer);
 
 const PORT = process.env.PORT || 4000;
 
-httpServer.listen({
-    port: PORT
+httpServer.listen(
+  {
+    port: PORT,
   },
   () => {
     console.log(

@@ -20,7 +20,7 @@ export default {
               id: item.id,
               name: item.name,
               tags: item.tags,
-              type: item.type,
+              types: item.types,
               stayFrom: item.stayFrom,
               stayTo: item.stayTo,
               days: item.days,
@@ -33,6 +33,7 @@ export default {
               updatedAt: item.updatedAt,
               transportation: item.transportation,
               review: item.review,
+              countries: item.countries,
               userId: item.userId,
               cities: item.cities
             };
@@ -59,7 +60,7 @@ export default {
               id: item.id,
               name: item.name,
               tags: JSON.parse(item.tags),
-              type: item.type,
+              types: item.types,
               stayFrom: item.stayFrom,
               stayTo: item.stayTo,
               days: item.days,
@@ -72,6 +73,7 @@ export default {
               updatedAt: item.updatedAt,
               transportation: item.transportation,
               review: item.review,
+              countries:JSON.parse(item.countries),
               userId: item.userId,
               cities: item.cities
             };
@@ -95,24 +97,26 @@ export default {
         const result = await _travelListPost(userId, args);
         return {
           status: 200,
-          travelList: {
-            id: result.id,
-            name: result.name,
-            tags: JSON.parse(result.tags),
-            type: result.type,
-            stayFrom: result.stayFrom,
-            stayTo: result.stayTo,
-            days: result.days,
-            costs: result.costs,
-            rates: result.rates,
-            likes: result.likes,
-            comments: result.comments,
-            permissions: result.permissions,
-            createdAt: result.createdAt,
-            updatedAt: result.updatedAt,
-            transportation: result.transportation,
-            review: result.review,
-            userId: result.userId
+          travelList: 
+            {
+              id: result.id,
+              name: result.name,
+              tags: result.tags,
+              types: result.types,
+              stayFrom: result.stayFrom,
+              stayTo: result.stayTo,
+              days: result.days,
+              costs: result.costs,
+              rates: result.rates,
+              likes: result.likes,
+              comments: result.comments,
+              permissions: result.permissions,
+              createdAt: result.createdAt,
+              updatedAt: result.updatedAt,
+              transportation: result.transportation,
+              review: result.review,
+              countries: JSON.parse(result.countries),
+              userId: result.userId
           }
         };
       } catch (err) {

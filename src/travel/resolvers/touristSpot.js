@@ -1,9 +1,8 @@
 import {
   _touristSpotPost,
   _touristSpots,
-  _touristSpotDelete
+  _touristSpotDelete,
 } from '../helpers/touristSpot.js';
-
 
 export default {
   Query: {
@@ -27,23 +26,24 @@ export default {
               photo_url: item.photo_url,
               createdAt: item.createdAt,
               updatedAt: item.updatedAt,
-              cityId: item.cityId
+              cityId: item.cityId,
             };
-          })
+          }),
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
-    }
+    },
   },
 
   Mutation: {
-    touristSpotPost: async (_, args) => {
+    touristSpotPost: async (_, args, { user }) => {
       try {
-        const result = await _touristSpotPost(args);
+        const userId = user.id;
+        const result = await _touristSpotPost(args, userId);
         return {
           status: 200,
           touristSpot: {
@@ -60,30 +60,31 @@ export default {
             photo_url: result.photo_url,
             createdAt: result.createdAt,
             updatedAt: result.updatedAt,
-            cityId: result.cityId
-          }
+            cityId: result.cityId,
+          },
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
     },
 
-    touristSpotDelete: async (_, args) => {
+    touristSpotDelete: async (_, args, { user }) => {
       try {
-        const result = await _touristSpotDelete(args);
+        const userId = user.id;
+        const result = await _touristSpotDelete(args, userId);
         return {
           status: 200,
-          message: result
+          message: result,
         };
       } catch (err) {
         return {
           status: 500,
-          message: err
+          message: err,
         };
       }
-    }
-  }
+    },
+  },
 };

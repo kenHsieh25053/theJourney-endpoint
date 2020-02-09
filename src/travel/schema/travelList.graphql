@@ -17,11 +17,12 @@ type Mutation {
     id: ID
     name: String!
     tags: [String]
-    type: String
+    types: String
     stayFrom: String!
     stayTo: String!
     transportation: String
     review: String
+    countries: [String]
     permissions: String!
   ): TravelListPayload!
   """
@@ -33,40 +34,20 @@ type Mutation {
 type TravelListPayload {
   status: String!
   message: String
-  travelList: Travellist!
+  travelList: TravelList!
 }
 
 type TravelLists {
   status: String!
   message: String
-  travelLists: [Travellist!]!
+  travelLists: [TravelList!]!
 }
 
-# type Travellist implements Node {
-#   id: ID!
-#   name: String!
-#   tags: [String]
-#   type: String
-#   stayFrom: String!
-#   stayTo: String!
-#   days: String
-#   costs: Int
-#   rates: Float
-#   likes: Int
-#   comments: Int
-#   permissions: String!
-#   transportation: String
-#   review: String
-#   createdAt: String!
-#   updatedAt: String!
-#   userId: ID!
-# }
-
-type Travellist implements Node {
+type TravelList implements Node {
   id: ID!
   name: String!
   tags: [String]
-  type: String
+  types: String
   stayFrom: String!
   stayTo: String!
   days: String
@@ -74,9 +55,10 @@ type Travellist implements Node {
   rates: Float
   likes: Int
   comments: Int
-  permissions: String!
   transportation: String
   review: String
+  countries: [String]
+  permissions: String!
   createdAt: String!
   updatedAt: String!
   userId: ID!

@@ -1,16 +1,15 @@
 type Query {
   """
-  login with email and password
-  """
-  login(email: String!, password: String!): LoginInfo!
-
-  """
   get the user own profile
   """
   userProfile: UserProfilePayload!
 }
 
 type Mutation {
+  """
+  login with email and password
+  """
+  login(email: String!, password: String!): LoginInfo!
   """
   sign up with email and password
   """
@@ -47,6 +46,7 @@ type User implements Node {
   position: String
   countries: Int
   cities: Int
+  touristSpots: Int
   headshot: String
   profile: String
   createdAt: String!

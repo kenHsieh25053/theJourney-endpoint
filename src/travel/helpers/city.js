@@ -1,38 +1,35 @@
 import models from '../../models';
 import uuidv4 from 'uuid/v4';
-const {
-  Sequelize
-} = require('sequelize');
+const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
 module.exports = {
   _cities,
   _cityPost,
-  _cityDelete
+  _cityDelete,
 };
-
 
 // user can get the list of cities with touristspots
 async function _cities(args) {
   const cities = await models.city.findAll({
     where: {
       travelListId: args.id,
-      [Op.and]: args.cursor ? {
-        createdAt: {
-          [Sequelize.Op.lt]: args.cursor,
-        },
-      } : null
+      [Op.and]: args.cursor
+        ? {
+            createdAt: {
+              [Sequelize.Op.lt]: args.cursor,
+            },
+          }
+        : null,
     },
-    order: [
-      ['createdAt', 'ASC']
-    ],
+    order: [['createdAt', 'ASC']],
     limit: args.limit,
   });
   return getTouristSpots(cities, args);
 }
 
-// user can create or updating the city 
-async function _cityPost(args) {
+// user can create or updating the city
+async function _cityPost(args, userId) {
   // Insert id for new city row if id is null
   if (!args.id) {
     const id = uuidv4();
@@ -40,20 +37,22 @@ async function _cityPost(args) {
   }
   const city = await models.city.findOrCreate({
     where: {
-      id: args.id
+      id: args.id,
     },
-    defaults: args
+    defaults: args,
   });
 
   if (!city[1]) {
     await models.city.update(args, {
       where: {
-        id: city[0].id
-      }
+        id: city[0].id,
+      },
     });
     const updatedResult = await models.city.findByPk(city[0].id);
+    updateUserCityCounts(true, userId);
     return updatedResult;
   } else {
+    updateUserCityCounts(true, userId);
     return city[0];
   }
 }
@@ -62,17 +61,17 @@ async function _cityPost(args) {
 async function _cityDelete(args) {
   const city = await models.city.destroy({
     where: {
-      id: args.id
-    }
+      id: args.id,
+    },
   });
 
   if (city) {
+    updateUserCityCounts(false, userId);
     return 'City deleted!';
   } else {
-    return 'Can\'t find the city';
+    return "Can't find the city";
   }
 }
-
 
 // helper function
 async function getTouristSpots(cities, args) {
@@ -80,21 +79,50 @@ async function getTouristSpots(cities, args) {
     const touristSpots = await models.touristSpot.findAll({
       where: {
         cityId: city.id,
-        [Op.and]: args.cursor ? {
-          createdAt: {
-            [Op.lt]: args.cursor,
-          },
-        } : null
+        [Op.and]: args.cursor
+          ? {
+              createdAt: {
+                [Op.lt]: args.cursor,
+              },
+            }
+          : null,
       },
       limit: args.limit,
-      order: [
-        ['createdAt', 'ASC']
-      ]
+      order: [['createdAt', 'ASC']],
     });
 
     Object.assign(city, {
-      touristSpots
+      touristSpots,
     });
   }
   return cities;
+}
+
+// helper function
+async function updateUserCityCounts(addOrDelete, userId) {
+  let cities = await models.user.findOne({
+    where: {
+      id: userId,
+    },
+    attrubitions: ['cities'],
+  });
+  if (!addOrDelete) {
+    await models.user.update(
+      { cities: cities - 1 },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    );
+  } else {
+    await models.user.update(
+      { cities: cities + 1 },
+      {
+        where: {
+          id: userId,
+        },
+      }
+    );
+  }
 }
