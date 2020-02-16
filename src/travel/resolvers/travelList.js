@@ -140,6 +140,12 @@ export default {
           message: err
         };
       }
+    },
+
+    _travelListPost: async (_, args, {
+      user
+    }) => {
+      console.log(args)
     }
   }
 };

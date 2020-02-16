@@ -1,0 +1,58 @@
+type Mutation {
+    _travelListPost(input: TravelListPostInput!): _TravelListPayload!
+}
+
+input TravelListPostInput {
+    name: String!
+    types: String
+    stayFrom: String!
+    stayTo: String!
+    review: String
+    countries: [String]
+    permissions: String!
+    cities: [CityInput]
+}
+
+input CityInput {
+  name: String!
+  stayFrom: String!
+  stayTo: String!
+  costs: Int
+  rates: Float
+#   photo_url: String
+  touristSpots: [TouristSpotInput]
+}
+
+input TouristSpotInput {
+  name: String!
+  rates: Float!
+#   photo_url: String
+}
+
+type _TravelListPayload {
+    status: String!
+    message: String
+    travelLists: TravelList!
+}
+
+type TravelList implements Node {
+  id: ID!
+  name: String!
+  tags: [String]
+  types: String
+  stayFrom: String!
+  stayTo: String!
+  days: String
+  costs: Int
+  rates: Float
+  likes: Int
+  comments: Int
+  transportation: String
+  review: String
+  countries: [String]
+  permissions: String!
+  createdAt: String!
+  updatedAt: String!
+  userId: ID!
+  cities: [City]
+}

@@ -64,3 +64,5 @@ type TravelList implements Node {
   userId: ID!
   cities: [City]
 }
+
+scalar Upload
