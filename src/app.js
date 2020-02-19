@@ -34,7 +34,7 @@ db.sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-// Apollo server configrations
+// Apollo server configurations
 const server = new ApolloServer({
   schema,
   tracing: false,
@@ -54,7 +54,8 @@ const server = new ApolloServer({
       const token = connection.id_token;
       return await authentication(token);
     } else {
-      const token = req.headers.authorization.split(' ')[1] || '';
+      // const token = req.headers.authorization.split(' ')[1] || '';
+      const token = req.headers.id_token || '';
       return await authentication(token);
     }
   },

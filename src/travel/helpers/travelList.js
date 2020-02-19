@@ -5,6 +5,13 @@ const {
 } = require('sequelize');
 const Op = Sequelize.Op;
 
+import {
+  _cityPost
+} from './city';
+import {
+  _touristSpotPost
+} from './touristSpot';
+
 module.exports = {
   _travelLists,
   _travelListsAll,
@@ -88,7 +95,6 @@ async function _travelListsAll(args, userId) {
   return getCities(travelLists, args);
 }
 
-
 // user can see all users' travelLists with cities
 async function _travelLists(args, userId) {
   const travelLists = await models.travelList.findAll({
@@ -108,35 +114,6 @@ async function _travelLists(args, userId) {
   return getCities(travelLists, args);
 }
 
-async function _travelListPost(userId, args) {
-  const id = uuidv4();
-  // convert tags and countries from string to json string
-  args.tags = JSON.stringify(args.tags);
-  args.countries = JSON.stringify(args.countries);
-  // Insert id, userId for new travelList row
-  let data = Object.assign({}, args, {
-    id,
-    userId
-  });
-  const travelList = await models.travelList.findOrCreate({
-    where: {
-      id: args.id
-    },
-    defaults: data
-  });
-  if (!travelList[1]) {
-    await models.travelList.update(args, {
-      where: {
-        id: travelList[0].id
-      }
-    });
-    const updatedResult = await models.travelList.findByPk(travelList[0].id);
-    return updatedResult;
-  } else {
-    return travelList[0];
-  }
-}
-
 // user can delete the travelList
 async function _travelListDelete(args) {
   const travelList = await models.travelList.destroy({
@@ -151,7 +128,6 @@ async function _travelListDelete(args) {
     return 'Can\'t find travelList';
   }
 }
-
 
 // helper function
 async function getCities(travelLists, args) {
@@ -177,4 +153,103 @@ async function getCities(travelLists, args) {
     });
   }
   return travelLists;
+}
+
+// user can create or update travellist
+async function _travelListPost(args, userId) {
+  const travelListId = uuidv4();
+  // insert id to travelList
+  args.id = travelListId
+  // check cities exist, if it does insert cities into db
+  if (args.cities.length !== 0) {
+    let touristSpots = []
+    // insert city id into every city obj
+    args.cities.forEach(city => {
+      city.id = uuidv4()
+      city.travelListId = travelListId
+      // check touristSpots exist, if it does insert an id
+      if (city.touristSpots.length !== 0) {
+        city.touristSpots.forEach(touristSpot => {
+          touristSpot.id = uuidv4()
+          touristSpot.cityId = city.id
+        })
+      }
+      touristSpots.push(city.touristSpots)
+    })
+    const touristSpotList = touristSpots.flat()
+    // insert travelList to db
+    const travelList = await models.travelList.findOrCreate({
+      where: {
+        id: args.id
+      },
+      defaults: {
+        id: args.id,
+        name: args.name,
+        types: args.types,
+        stayFrom: args.stayFrom,
+        stayTo: args.stayTo,
+        review: args.review,
+        countries: JSON.stringify(args.countries),
+        permissions: args.permissions,
+        userId
+      }
+    });
+
+    if (!travelList[1]) {
+      await models.travelList.update({
+        name: args.name,
+        types: args.types,
+        stayFrom: args.stayFrom,
+        stayTo: args.stayTo,
+        review: args.review,
+        countries: JSON.stringify(args.countries),
+        permissions: args.permissions,
+        userId
+      }, {
+        where: {
+          id: travelList[0].id
+        }
+      });
+    }
+    await _cityPost(args.cities, userId)
+    await _touristSpotPost(touristSpotList, userId)
+  } else {
+    // only insert travelList to db
+    const travelList = await models.travelList.findOrCreate({
+      where: {
+        id: args.id
+      },
+      defaults: {
+        id,
+        name: args.name,
+        types: args.types,
+        stayFrom: args.stayFrom,
+        stayTo: args.stayTo,
+        review: args.review,
+        countries: JSON.stringify(args.countries),
+        permissions: args.permissions,
+        userId
+      }
+    });
+
+    if (!travelList[1]) {
+      await models.travelList.update({
+        name: args.name,
+        types: args.types,
+        stayFrom: args.stayFrom,
+        stayTo: args.stayTo,
+        review: args.review,
+        countries: JSON.stringify(args.countries),
+        permissions: args.permissions,
+        userId
+      }, {
+        where: {
+          id: travelList[0].id
+        }
+      });
+    }
+  }
+  // need to fix it
+  // return travellist post (cities, travelSpots)
+  return args
 }

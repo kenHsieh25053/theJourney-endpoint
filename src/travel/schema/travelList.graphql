@@ -10,21 +10,21 @@ type Query {
 }
 
 type Mutation {
-  """
-  create or update travelList
-  """
-  travelListPost(
-    id: ID
-    name: String!
-    tags: [String]
-    types: String
-    stayFrom: String!
-    stayTo: String!
-    transportation: String
-    review: String
-    countries: [String]
-    permissions: String!
-  ): TravelListPayload!
+  # """
+  # create or update travelList
+  # """
+  # travelListPost(
+  #   id: ID
+  #   name: String!
+  #   tags: [String]
+  #   types: String
+  #   stayFrom: String!
+  #   stayTo: String!
+  #   transportation: String
+  #   review: String
+  #   countries: [String]
+  #   permissions: String!
+  # ): TravelListPayload!
   """
   delete travelList
   """
@@ -43,26 +43,26 @@ type TravelLists {
   travelLists: [TravelList!]!
 }
 
-type TravelList implements Node {
-  id: ID!
-  name: String!
-  tags: [String]
-  types: String
-  stayFrom: String!
-  stayTo: String!
-  days: String
-  costs: Int
-  rates: Float
-  likes: Int
-  comments: Int
-  transportation: String
-  review: String
-  countries: [String]
-  permissions: String!
-  createdAt: String!
-  updatedAt: String!
-  userId: ID!
-  cities: [City]
-}
+# type TravelList implements Node {
+#   id: ID!
+#   name: String!
+#   tags: [String]
+#   types: String
+#   stayFrom: String!
+#   stayTo: String!
+#   days: String
+#   costs: Int
+#   rates: Float
+#   likes: Int
+#   comments: Int
+#   transportation: String
+#   review: String
+#   countries: [String]
+#   permissions: String!
+#   createdAt: String!
+#   updatedAt: String!
+#   userId: ID!
+#   cities: [City]
+# }
 
 scalar Upload
