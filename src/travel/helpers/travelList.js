@@ -22,7 +22,7 @@ async function _travelListsAll(args, userId) {
     attrubitions: ['friendList']
   });
 
-  // if user dosen't have any friend 
+  // if user doesn't have any friend 
   if (!friendList || friendList.friendList.length === 0) {
     const travelLists = await models.travelList.findAll({
       where: {
@@ -54,7 +54,7 @@ async function _travelListsAll(args, userId) {
     return friendListIDs.push(user.id);
   });
 
-  // get the travelist depands on it's permitssions 
+  // get the travelist depends on it's permissions 
   const travelLists = await models.travelList.findAll({
     where: {
       [Op.or]: [
@@ -169,7 +169,7 @@ async function getCities(travelLists, args) {
       order: [
         ['createdAt', 'ASC']
       ],
-      attrubitions: ['id', 'name', 'photo_url', 'travelListId']
+      attributions: ['id', 'name', 'photo_url', 'travelListId']
     });
 
     Object.assign(travelList, {
