@@ -14,7 +14,7 @@ module.exports = {
           birthday: '1990-10-10',
           gender: 'male',
           position: null,
-          countries: 0,
+          countries: 1,
           cities: 2,
           touristSpots: 4,
           headshot: null,
