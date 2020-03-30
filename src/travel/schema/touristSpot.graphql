@@ -38,19 +38,19 @@ type TouristSpots {
   touristSpots: [TouristSpot!]!
 }
 
-type TouristSpot implements Node {
-  id: ID!
-  name: String!
-  type: String!
-  longtitude: Int
+type TouristSpot  {
+  id: ID
+  name: String
+  type: String
+  longitude: Int
   latitude: Int
-  days: Int!
-  costs: Int!
-  rates: Float!
+  days: Int
+  costs: Int
+  rates: Float
   transportation: String
   review: String
   photo_url: String
-  createdAt: String!
-  updatedAt: String!
-  cityId: ID!
+  createdAt: String
+  updatedAt: String
+  cityId: ID
 }

@@ -36,20 +36,20 @@ type Cities {
   cities: [City!]!
 }
 
-type City implements Node {
-  id: ID!
-  name: String!
-  longtitude: Int
+type City {
+  id: ID
+  name: String
+  longitude: Int
   latitude: Int
-  stayFrom: String!
-  stayTo: String!
+  stayFrom: String
+  stayTo: String
   costs: Int
   rates: Float
   transportation: String
   review: String
   photo_url: String
-  createdAt: String!
-  updatedAt: String!
-  travelListId: ID!
+  createdAt: String
+  updatedAt: String
+  travelListId: ID
   touristSpots: [TouristSpot]
 }

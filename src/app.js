@@ -1,3 +1,4 @@
+// Express packages
 require('dotenv').config();
 const express = require('express');
 const compression = require('compression');
@@ -6,10 +7,20 @@ const helmet = require('helmet');
 const cors = require('cors');
 const app = express();
 
+// Graphql packages
+import { ApolloServer } from 'apollo-server-express';
+const { MemcachedCache } = require('apollo-server-cache-memcached');
+import depthLimit from 'graphql-depth-limit';
+import { graphqlUploadExpress } from 'graphql-upload';
+import { createServer } from 'http';
+import { authentication } from './authentication.js';
+import { schema } from './schema.js';
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(compression());
 app.use(helmet());
+app.use('/graphql', graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
 
 // Database connection setting
 const db = require('./models/index.js');
@@ -23,15 +34,7 @@ db.sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-// Graphql setting
-import { ApolloServer } from 'apollo-server-express';
-const { MemcachedCache } = require('apollo-server-cache-memcached');
-import depthLimit from 'graphql-depth-limit';
-import { createServer } from 'http';
-import { authentication } from './authentication.js';
-import { schema } from './schema.js';
-
-// Server configration
+// Apollo server configurations
 const server = new ApolloServer({
   schema,
   tracing: false,
@@ -52,6 +55,7 @@ const server = new ApolloServer({
       return await authentication(token);
     } else {
       const token = req.headers.authorization.split(' ')[1] || '';
+      // const token = req.headers.id_token || '';
       return await authentication(token);
     }
   },

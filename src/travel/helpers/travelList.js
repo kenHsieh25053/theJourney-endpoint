@@ -1,9 +1,17 @@
 import models from '../../models';
 import uuidv4 from 'uuid/v4';
+import _ from 'lodash'
 const {
   Sequelize
 } = require('sequelize');
 const Op = Sequelize.Op;
+
+import {
+  _cityPost
+} from './city';
+import {
+  _touristSpotPost
+} from './touristSpot';
 
 module.exports = {
   _travelLists,
@@ -22,7 +30,7 @@ async function _travelListsAll(args, userId) {
     attrubitions: ['friendList']
   });
 
-  // if user dosen't have any friend 
+  // if user doesn't have any friend 
   if (!friendList || friendList.friendList.length === 0) {
     const travelLists = await models.travelList.findAll({
       where: {
@@ -54,7 +62,7 @@ async function _travelListsAll(args, userId) {
     return friendListIDs.push(user.id);
   });
 
-  // get the travelist depands on it's permitssions 
+  // get the travelist depends on it's permissions 
   const travelLists = await models.travelList.findAll({
     where: {
       [Op.or]: [
@@ -88,7 +96,6 @@ async function _travelListsAll(args, userId) {
   return getCities(travelLists, args);
 }
 
-
 // user can see all users' travelLists with cities
 async function _travelLists(args, userId) {
   const travelLists = await models.travelList.findAll({
@@ -108,50 +115,108 @@ async function _travelLists(args, userId) {
   return getCities(travelLists, args);
 }
 
-async function _travelListPost(userId, args) {
-  const id = uuidv4();
-  // convert tags and countries from string to json string
-  args.tags = JSON.stringify(args.tags);
-  args.countries = JSON.stringify(args.countries);
-  // Insert id, userId for new travelList row
-  let data = Object.assign({}, args, {
-    id,
-    userId
-  });
+// user can create or update travellist
+async function _travelListPost(args, userId) {
+  if (args.id.length === 0 ) {
+    args.id = uuidv4();
+  }
+
+  // get days
+  let d1 = new Date(args.stayTo)
+  let d2 = new Date(args.stayFrom)
+  const days = (Math.abs(d1 - d2) / 86400000) + 1
+  args.days = days
+  
+  let touristSpots = []
+  // insert city id into every city obj
+  args.cities.forEach(city => {
+    if (city.id.length === 0) {
+      city.id = uuidv4()
+      city.travelListId = args.id
+      // check touristSpots exist, if it does insert an id
+      if (city.touristSpots.length !== 0) {
+        city.touristSpots.forEach(touristSpot => {
+          touristSpot.id = uuidv4()
+          touristSpot.cityId = city.id
+        })
+      }
+    }
+    touristSpots.push(city.touristSpots)
+  })
+  const touristSpotList = touristSpots.flat()
+
+  const argsCopy = _.cloneDeep(args)
+  console.log(args)
+
+  // insert travelList to db
   const travelList = await models.travelList.findOrCreate({
     where: {
       id: args.id
     },
-    defaults: data
+    defaults: {
+      id: args.id,
+      name: args.name,
+      types: args.types,
+      stayFrom: args.stayFrom,
+      stayTo: args.stayTo,
+      review: args.review,
+      countries: JSON.stringify(args.countries),
+      permissions: args.permissions,
+      userId
+    }
   });
+
+  // count the number of countries 
+  const count = args.countries.length
+  // update user's countries
+  updateCountries(true, count, userId)
+
+  // insert timestamp to args
+  Object.assign(args, {
+    createdAt: travelList[0].createdAt,
+    updatedAt: travelList[0].updatedAt
+  })
+
+  // if false, update travelList, city and touristspot
   if (!travelList[1]) {
-    await models.travelList.update(args, {
+    await models.travelList.update({
+      name: args.name,
+      types: args.types,
+      stayFrom: args.stayFrom,
+      stayTo: args.stayTo,
+      review: args.review,
+      countries: JSON.stringify(args.countries),
+      permissions: args.permissions
+    }, {
       where: {
-        id: travelList[0].id
+        id: args.id
       }
     });
-    const updatedResult = await models.travelList.findByPk(travelList[0].id);
-    return updatedResult;
+    await _cityPost(argsCopy, userId)
+    await _touristSpotPost(touristSpotList, userId)
   } else {
-    return travelList[0];
+    await _cityPost(argsCopy, userId)
+    await _touristSpotPost(touristSpotList, userId)
   }
+  return args
 }
 
 // user can delete the travelList
-async function _travelListDelete(args) {
+async function _travelListDelete(args, userId) {
   const travelList = await models.travelList.destroy({
     where: {
       id: args.id
     }
   });
-
+  const count = args.countries.length
+  // update the number of countries
+  updateCountries(false, count, userId)
   if (travelList) {
-    return 'TravelList deleted!';
+    return {};
   } else {
     return 'Can\'t find travelList';
   }
 }
-
 
 // helper function
 async function getCities(travelLists, args) {
@@ -169,7 +234,7 @@ async function getCities(travelLists, args) {
       order: [
         ['createdAt', 'ASC']
       ],
-      attrubitions: ['id', 'name', 'photo_url', 'travelListId']
+      attributions: ['id', 'name', 'photo_url', 'travelListId']
     });
 
     Object.assign(travelList, {
@@ -177,4 +242,23 @@ async function getCities(travelLists, args) {
     });
   }
   return travelLists;
+}
+
+async function updateCountries(addOrMinus, count, userId) {
+  let countries = await models.user.findOne({
+    where: {
+      id: userId
+    },
+    attributes: ['countries']
+  })
+  if(!addOrMinus) {
+    countries - count
+  } else {
+    countries + count
+  }
+  await models.user.update(countries, {
+    where: {
+      id: userId
+    }
+  })
 }

@@ -13,43 +13,57 @@ type Mutation {
   """
   create or update travelList
   """
-  travelListPost(
-    id: ID
-    name: String!
-    tags: [String]
-    types: String
-    stayFrom: String!
-    stayTo: String!
-    transportation: String
-    review: String
-    countries: [String]
-    permissions: String!
-  ): TravelListPayload!
+  travelListPost(input: TravelListPostInput!): TravelListPayload!
   """
   delete travelList
   """
-  travelListDelete(id: ID!): Payload
+  travelListDelete(id: ID!): TravelListPayload
+}
+
+input TravelListPostInput {
+  id: ID
+  name: String!
+  types: String
+  stayFrom: String!
+  stayTo: String!
+  review: String
+  countries: [String]
+  permissions: String!
+  cities: [CityInput]
+}
+
+input CityInput {
+  id: ID
+  name: String!
+  stayFrom: String!
+  stayTo: String!
+  costs: Int
+  photo_url: String
+  travelListId: ID
+  touristSpots: [TouristSpotInput]
+}
+
+input TouristSpotInput {
+  id: ID
+  name: String!
+  rates: Float!
+  photo_url: String
+  cityId: ID
 }
 
 type TravelListPayload {
   status: String!
   message: String
-  travelList: TravelList!
+  travelLists: TravelList
 }
 
-type TravelLists {
-  status: String!
-  message: String
-  travelLists: [TravelList!]!
-}
-
-type TravelList implements Node {
-  id: ID!
-  name: String!
+type TravelList {
+  id: ID
+  name: String
   tags: [String]
   types: String
-  stayFrom: String!
-  stayTo: String!
+  stayFrom: String
+  stayTo: String
   days: String
   costs: Int
   rates: Float
@@ -58,9 +72,17 @@ type TravelList implements Node {
   transportation: String
   review: String
   countries: [String]
-  permissions: String!
-  createdAt: String!
-  updatedAt: String!
-  userId: ID!
+  permissions: String
+  createdAt: String
+  updatedAt: String
+  userId: ID
   cities: [City]
 }
+
+type TravelLists {
+  status: String!
+  message: String
+  travelLists: [TravelList!]!
+}
+
+scalar Upload

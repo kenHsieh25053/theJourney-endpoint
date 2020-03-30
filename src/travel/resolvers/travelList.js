@@ -73,7 +73,7 @@ export default {
               updatedAt: item.updatedAt,
               transportation: item.transportation,
               review: item.review,
-              countries:JSON.parse(item.countries),
+              countries: JSON.parse(item.countries),
               userId: item.userId,
               cities: item.cities
             };
@@ -94,11 +94,12 @@ export default {
     }) => {
       try {
         const userId = user.id;
-        const result = await _travelListPost(userId, args);
-        return {
-          status: 200,
-          travelList: 
-            {
+        console.log(args)
+        const result = await _travelListPost(args.input, userId);
+        if (result.cities.length > 0) {
+          return {
+            status: 200,
+            travelLists: {
               id: result.id,
               name: result.name,
               tags: result.tags,
@@ -115,10 +116,72 @@ export default {
               updatedAt: result.updatedAt,
               transportation: result.transportation,
               review: result.review,
-              countries: JSON.parse(result.countries),
-              userId: result.userId
-          }
-        };
+              countries: result.countries,
+              userId: result.userId,
+              cities: result.cities.map(city => {
+                return {
+                  id: city.id,
+                  name: city.name,
+                  longitude: city.longitude,
+                  latitude: city.latitude,
+                  stayFrom: city.stayFrom,
+                  stayTo: city.stayTo,
+                  costs: city.costs,
+                  rates: city.rates,
+                  transportation: city.transportation,
+                  review: city.review,
+                  photo_url: city.photo_url,
+                  createdAt: city.createdAt,
+                  updatedAt: city.updatedAt,
+                  travelListId: city.travelListId,
+                  touristSpots: city.touristSpots.map(touristSpot => {
+                    return {
+                      id: touristSpot.id,
+                      name: touristSpot.name,
+                      type: touristSpot.type,
+                      longitude: touristSpot.longitude,
+                      latitude: touristSpot.latitude,
+                      days: touristSpot.days,
+                      costs: touristSpot.costs,
+                      rates: touristSpot.rates,
+                      transportation: touristSpot.transportation,
+                      review: touristSpot.review,
+                      photo_url: touristSpot.photo_url,
+                      createdAt: touristSpot.createdAt,
+                      updatedAt: touristSpot.updatedAt,
+                      cityId: touristSpot.cityId,
+                    }
+                  })
+                }
+              })
+            }
+          };
+        } else {
+          return {
+            status: 200,
+            travelLists: {
+              id: result.id,
+              name: result.name,
+              tags: result.tags,
+              types: result.types,
+              stayFrom: result.stayFrom,
+              stayTo: result.stayTo,
+              days: result.days,
+              costs: result.costs,
+              rates: result.rates,
+              likes: result.likes,
+              comments: result.comments,
+              permissions: result.permissions,
+              createdAt: result.createdAt,
+              updatedAt: result.updatedAt,
+              transportation: result.transportation,
+              review: result.review,
+              countries: result.countries,
+              userId: result.userId,
+              cities: []
+            }
+          };
+        }
       } catch (err) {
         return {
           status: 500,
@@ -127,12 +190,15 @@ export default {
       }
     },
 
-    travelListDelete: async (_, args) => {
+    travelListDelete: async (_, args, {
+      user
+    }) => {
       try {
-        const result = await _travelListDelete(args);
+        const userId = user.id
+        const result = await _travelListDelete(args, userId);
         return {
           status: 200,
-          message: result
+          travelLists: {}
         };
       } catch (err) {
         return {
